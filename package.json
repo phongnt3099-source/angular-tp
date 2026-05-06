@@ -1,8 +1,11 @@
 {
-  "name": "abp-gogi-dating",
-  "version": "13.1.1",
-  "license": "MIT",
-  "angular-cli": {},
+  "name": "@phongnt3099/thienphucdental-api",
+  "version": "13.1.3",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "ng": "ng",
     "publish": "gulp build && ng build --configuration production",
