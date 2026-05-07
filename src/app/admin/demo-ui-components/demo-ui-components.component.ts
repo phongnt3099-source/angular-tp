@@ -6,11 +6,14 @@ import { AppComponentBase } from '@shared/common/app-component-base';
     templateUrl: './demo-ui-components.component.html',
     animations: [appModuleAnimation()],
 })
-export class DemoUiComponentsComponent extends AppComponentBase {
+export class DemoUiComponentsComponent extends AppComponentBase implements OnInit {
     alertVisible = true;
 
     constructor(injector: Injector) {
         super(injector);
+    }
+    ngOnInit(): void {
+        console.log('OK');
     }
 
     hideAlert(): void{

@@ -1,0 +1,181 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Khách Hàng' | localize">
+        <div role="actions">
+            <button *ngIf="'Pages.Tenants.Create' | permission" class="btn btn-primary" (click)="createCustomer()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    {{ 'Thêm ' | localize }}
+                </span>
+            </button>
+        </div>
+    </sub-header>
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="form">
+                    <form (submit)="getCustomer()" autocomplete="new-password">
+                        <div class="form-body">
+                            <div class="row mb-4">
+                                <div class="col-xl-6">
+                                    <label for="CustomerFilter" class="form-label">
+                                        {{ 'Nhập SĐT' | localize }}
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            id="CustomerFilter"
+                                            [(ngModel)]="filterInput.cuS_PHONE"
+                                            name="filterText"
+                                            class="form-control"
+                                            placeholder="{{ 'Nhập SĐT' | localize }}"
+                                            type="text"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-xl-12 text-end">
+                                    <button name="RefreshButton" class="btn btn-primary">
+                                        <i class="fa fa-search btn-md-icon"></i>
+                                        <span class="d-none d-md-inline-block">
+                                            {{ 'Tìm Kiếm' | localize }}
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getCustomer($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{'min-width': '50rem'}"
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="cuS_CODE">
+                                        {{ 'Mã KH' | localize }}
+                                        <p-sortIcon field="cuS_CODE"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_NAME">
+                                        {{ 'Tên khách hàng' | localize }}
+                                        <p-sortIcon field="cuS_NAME"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="SN">
+                                        {{ 'SN' | localize }}
+                                        <p-sortIcon field="SN"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="age">
+                                        {{ 'Tuổi' | localize }}
+                                        <p-sortIcon field="age"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_GENDER">
+                                        {{ 'GT' | localize }}
+                                        <p-sortIcon field="cuS_GENDER"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_PHONE">
+                                        {{ 'Điện thoại' | localize }}
+                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_PHONE">
+                                        {{ 'Đang khám' | localize }}
+                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_PHONE">
+                                        {{ 'Lịch hẹn tới' | localize }}
+                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_PHONE">
+                                        {{ 'Lịch hẹn tới' | localize }}
+                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_PHONE">
+                                        {{ 'Hoạt động gần đây' | localize }}
+                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_PHONE">
+                                        {{ 'Còn nợ' | localize }}
+                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cuS_PHONE">
+                                        {{ 'Thanh toán' | localize }}
+                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Mã KH' | localize }}</span>
+                                        {{ record.cuS_CODE }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Tên khách hàng' | localize }}</span>
+                                        {{ record.cuS_NAME }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'SN' | localize }}</span>
+                                        {{ record.cuS_DOS }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'GT' | localize }}</span>
+                                        {{ record.cuS_GENDER }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Điện thoại' | localize }}</span>
+                                        {{ record.cuS_PHONE }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Đang khám' | localize }}</span>
+                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Lịch hẹn tới' | localize }}</span>
+                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Hoạt động gần đây' | localize }}</span>
+                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Còn nợ' | localize }}</span>
+                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Thanh toán' | localize }}</span>
+                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{ 'NoData' | localize }}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getCustomer($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount
+                                "
+                            ></p-paginator>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<createCustomerModal #createCustomerModal (modalSave)="getCustomer()"></createCustomerModal>

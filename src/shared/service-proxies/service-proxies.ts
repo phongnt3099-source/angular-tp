@@ -1913,6 +1913,666 @@ export class CommonLookupServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param cdType (optional) 
+     * @param cdName (optional) 
+     * @param cdVal (optional) 
+     * @return Success
+     */
+    cM_ALLCODE_GetByCDNAME(cdType: string | undefined, cdName: string | undefined, cdVal: string | undefined): Observable<CM_ALLCODE_ENTITY> {
+        let url_ = this.baseUrl + "/api/services/app/CommonLookup/CM_ALLCODE_GetByCDNAME?";
+        if (cdType === null)
+            throw new Error("The parameter 'cdType' cannot be null.");
+        else if (cdType !== undefined)
+            url_ += "cdType=" + encodeURIComponent("" + cdType) + "&";
+        if (cdName === null)
+            throw new Error("The parameter 'cdName' cannot be null.");
+        else if (cdName !== undefined)
+            url_ += "cdName=" + encodeURIComponent("" + cdName) + "&";
+        if (cdVal === null)
+            throw new Error("The parameter 'cdVal' cannot be null.");
+        else if (cdVal !== undefined)
+            url_ += "cdVal=" + encodeURIComponent("" + cdVal) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_ALLCODE_GetByCDNAME(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_ALLCODE_GetByCDNAME(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CM_ALLCODE_ENTITY>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CM_ALLCODE_ENTITY>;
+        }));
+    }
+
+    protected processCM_ALLCODE_GetByCDNAME(response: HttpResponseBase): Observable<CM_ALLCODE_ENTITY> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CM_ALLCODE_ENTITY.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param cdType (optional) 
+     * @param cdName (optional) 
+     * @return Success
+     */
+    cM_ALLCODE_DROPDOWNLIST(cdType: string | undefined, cdName: string | undefined): Observable<CM_ALLCODE_ENTITY[]> {
+        let url_ = this.baseUrl + "/api/services/app/CommonLookup/CM_ALLCODE_DROPDOWNLIST?";
+        if (cdType === null)
+            throw new Error("The parameter 'cdType' cannot be null.");
+        else if (cdType !== undefined)
+            url_ += "cdType=" + encodeURIComponent("" + cdType) + "&";
+        if (cdName === null)
+            throw new Error("The parameter 'cdName' cannot be null.");
+        else if (cdName !== undefined)
+            url_ += "cdName=" + encodeURIComponent("" + cdName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_ALLCODE_DROPDOWNLIST(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_ALLCODE_DROPDOWNLIST(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CM_ALLCODE_ENTITY[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CM_ALLCODE_ENTITY[]>;
+        }));
+    }
+
+    protected processCM_ALLCODE_DROPDOWNLIST(response: HttpResponseBase): Observable<CM_ALLCODE_ENTITY[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CM_ALLCODE_ENTITY.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_ALLCODE_Search(body: CM_ALLCODE_ENTITY | undefined): Observable<PagedResultDtoOfCM_ALLCODE_ENTITY> {
+        let url_ = this.baseUrl + "/api/services/app/CommonLookup/CM_ALLCODE_Search";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_ALLCODE_Search(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_ALLCODE_Search(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfCM_ALLCODE_ENTITY>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfCM_ALLCODE_ENTITY>;
+        }));
+    }
+
+    protected processCM_ALLCODE_Search(response: HttpResponseBase): Observable<PagedResultDtoOfCM_ALLCODE_ENTITY> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfCM_ALLCODE_ENTITY.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_ALLCODE_Ins(body: CM_ALLCODE_ENTITY | undefined): Observable<InsertResult> {
+        let url_ = this.baseUrl + "/api/services/app/CommonLookup/CM_ALLCODE_Ins";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_ALLCODE_Ins(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_ALLCODE_Ins(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InsertResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InsertResult>;
+        }));
+    }
+
+    protected processCM_ALLCODE_Ins(response: HttpResponseBase): Observable<InsertResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InsertResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_ALLCODE_Upd(body: CM_ALLCODE_ENTITY | undefined): Observable<InsertResult> {
+        let url_ = this.baseUrl + "/api/services/app/CommonLookup/CM_ALLCODE_Upd";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_ALLCODE_Upd(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_ALLCODE_Upd(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InsertResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InsertResult>;
+        }));
+    }
+
+    protected processCM_ALLCODE_Upd(response: HttpResponseBase): Observable<InsertResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InsertResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    cM_ALLCODE_Del(id: number | undefined): Observable<CommonResult> {
+        let url_ = this.baseUrl + "/api/services/app/CommonLookup/CM_ALLCODE_Del?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_ALLCODE_Del(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_ALLCODE_Del(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CommonResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CommonResult>;
+        }));
+    }
+
+    protected processCM_ALLCODE_Del(response: HttpResponseBase): Observable<CommonResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CommonResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class CustomerServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param cdType (optional) 
+     * @param cdName (optional) 
+     * @param cdVal (optional) 
+     * @return Success
+     */
+    cM_CUSTOMER_GetByCDNAME(cdType: string | undefined, cdName: string | undefined, cdVal: string | undefined): Observable<CM_CUSTOMER_ENTITY> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_GetByCDNAME?";
+        if (cdType === null)
+            throw new Error("The parameter 'cdType' cannot be null.");
+        else if (cdType !== undefined)
+            url_ += "cdType=" + encodeURIComponent("" + cdType) + "&";
+        if (cdName === null)
+            throw new Error("The parameter 'cdName' cannot be null.");
+        else if (cdName !== undefined)
+            url_ += "cdName=" + encodeURIComponent("" + cdName) + "&";
+        if (cdVal === null)
+            throw new Error("The parameter 'cdVal' cannot be null.");
+        else if (cdVal !== undefined)
+            url_ += "cdVal=" + encodeURIComponent("" + cdVal) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_CUSTOMER_GetByCDNAME(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_CUSTOMER_GetByCDNAME(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CM_CUSTOMER_ENTITY>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CM_CUSTOMER_ENTITY>;
+        }));
+    }
+
+    protected processCM_CUSTOMER_GetByCDNAME(response: HttpResponseBase): Observable<CM_CUSTOMER_ENTITY> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CM_CUSTOMER_ENTITY.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_CUSTOMER_Search(body: CM_CUSTOMER_ENTITY | undefined): Observable<PagedResultDtoOfCM_CUSTOMER_ENTITY> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_Search";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_CUSTOMER_Search(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_CUSTOMER_Search(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfCM_CUSTOMER_ENTITY>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfCM_CUSTOMER_ENTITY>;
+        }));
+    }
+
+    protected processCM_CUSTOMER_Search(response: HttpResponseBase): Observable<PagedResultDtoOfCM_CUSTOMER_ENTITY> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfCM_CUSTOMER_ENTITY.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_CUSTOMER_Ins(body: CM_CUSTOMER_ENTITY | undefined): Observable<InsertResult> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_Ins";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_CUSTOMER_Ins(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_CUSTOMER_Ins(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InsertResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InsertResult>;
+        }));
+    }
+
+    protected processCM_CUSTOMER_Ins(response: HttpResponseBase): Observable<InsertResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InsertResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_CUSTOMER_Upd(body: CM_CUSTOMER_ENTITY | undefined): Observable<InsertResult> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_Upd";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_CUSTOMER_Upd(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_CUSTOMER_Upd(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InsertResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InsertResult>;
+        }));
+    }
+
+    protected processCM_CUSTOMER_Upd(response: HttpResponseBase): Observable<InsertResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InsertResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    cM_CUSTOMER_Del(id: number | undefined): Observable<CommonResult> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_Del?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_CUSTOMER_Del(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_CUSTOMER_Del(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CommonResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CommonResult>;
+        }));
+    }
+
+    protected processCM_CUSTOMER_Del(response: HttpResponseBase): Observable<CommonResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CommonResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -11275,6 +11935,78 @@ export class TenantServiceProxy {
 }
 
 @Injectable()
+export class TenantCustomizationServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param tenantId (optional) 
+     * @param extension (optional) 
+     * @return Success
+     */
+    getTenantLogo(skin: string, tenantId: number | undefined, extension: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/TenantCustomization/GetTenantLogo/{skin}/{tenantId}/{extension}?";
+        if (skin === undefined || skin === null)
+            throw new Error("The parameter 'skin' must be defined.");
+        url_ = url_.replace("{skin}", encodeURIComponent("" + skin));
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "tenantId=" + encodeURIComponent("" + tenantId) + "&";
+        if (extension === null)
+            throw new Error("The parameter 'extension' cannot be null.");
+        else if (extension !== undefined)
+            url_ += "extension=" + encodeURIComponent("" + extension) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTenantLogo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTenantLogo(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processGetTenantLogo(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class TenantDashboardServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -16654,6 +17386,226 @@ export interface IBlockUserInput {
     tenantId: number | undefined;
 }
 
+export class CM_ALLCODE_ENTITY implements ICM_ALLCODE_ENTITY {
+    cdname!: string | undefined;
+    cname!: string | undefined;
+    cdval!: string | undefined;
+    content!: string | undefined;
+    cdtype!: string | undefined;
+
+    constructor(data?: ICM_ALLCODE_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.cdname = _data["cdname"];
+            this.cname = _data["cname"];
+            this.cdval = _data["cdval"];
+            this.content = _data["content"];
+            this.cdtype = _data["cdtype"];
+        }
+    }
+
+    static fromJS(data: any): CM_ALLCODE_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new CM_ALLCODE_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["cdname"] = this.cdname;
+        data["cname"] = this.cname;
+        data["cdval"] = this.cdval;
+        data["content"] = this.content;
+        data["cdtype"] = this.cdtype;
+        return data;
+    }
+}
+
+export interface ICM_ALLCODE_ENTITY {
+    cdname: string | undefined;
+    cname: string | undefined;
+    cdval: string | undefined;
+    content: string | undefined;
+    cdtype: string | undefined;
+}
+
+export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
+    cuS_ID!: string | undefined;
+    cuS_CODE!: string | undefined;
+    cuS_DOB!: string | undefined;
+    cuS_GENDER!: string | undefined;
+    cuS_PHONE!: string | undefined;
+    cuS_NAME!: string | undefined;
+    cuS_PHONE2!: string | undefined;
+    cuS_EMAIL!: string | undefined;
+    cuS_ADDRESS!: string | undefined;
+    cuS_WARD!: string | undefined;
+    cuS_CITY!: string | undefined;
+    cuS_MEDICAL_HISTORY!: string | undefined;
+    cuS_MEDICAL_HISTORY_NOTES!: string | undefined;
+    cuS_JOB!: string | undefined;
+    cuS_ETHNICITY!: string | undefined;
+    cuS_NATIONALITY!: string | undefined;
+    cuS_CCCD!: string | undefined;
+    notes!: string | undefined;
+    makeR_ID!: string | undefined;
+    creatE_DT!: DateTime | undefined;
+    updatE_ID!: string | undefined;
+    updatE_DT!: DateTime | undefined;
+    recorD_STATUS!: string | undefined;
+    isHuyetAp!: boolean;
+    isDongKinh!: boolean;
+    isMauKhongDong!: boolean;
+    isBenhTim!: boolean;
+    isTieuDuongType1!: boolean;
+    isTieuDuongType2!: boolean;
+    isDiUng!: boolean;
+    isSocPhanVe!: boolean;
+    isStentVanh!: boolean;
+    isDotQuy!: boolean;
+    isLoangXuong!: boolean;
+
+    constructor(data?: ICM_CUSTOMER_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.cuS_ID = _data["cuS_ID"];
+            this.cuS_CODE = _data["cuS_CODE"];
+            this.cuS_DOB = _data["cuS_DOB"];
+            this.cuS_GENDER = _data["cuS_GENDER"];
+            this.cuS_PHONE = _data["cuS_PHONE"];
+            this.cuS_NAME = _data["cuS_NAME"];
+            this.cuS_PHONE2 = _data["cuS_PHONE2"];
+            this.cuS_EMAIL = _data["cuS_EMAIL"];
+            this.cuS_ADDRESS = _data["cuS_ADDRESS"];
+            this.cuS_WARD = _data["cuS_WARD"];
+            this.cuS_CITY = _data["cuS_CITY"];
+            this.cuS_MEDICAL_HISTORY = _data["cuS_MEDICAL_HISTORY"];
+            this.cuS_MEDICAL_HISTORY_NOTES = _data["cuS_MEDICAL_HISTORY_NOTES"];
+            this.cuS_JOB = _data["cuS_JOB"];
+            this.cuS_ETHNICITY = _data["cuS_ETHNICITY"];
+            this.cuS_NATIONALITY = _data["cuS_NATIONALITY"];
+            this.cuS_CCCD = _data["cuS_CCCD"];
+            this.notes = _data["notes"];
+            this.makeR_ID = _data["makeR_ID"];
+            this.creatE_DT = _data["creatE_DT"] ? DateTime.fromISO(_data["creatE_DT"].toString()) : <any>undefined;
+            this.updatE_ID = _data["updatE_ID"];
+            this.updatE_DT = _data["updatE_DT"] ? DateTime.fromISO(_data["updatE_DT"].toString()) : <any>undefined;
+            this.recorD_STATUS = _data["recorD_STATUS"];
+            this.isHuyetAp = _data["isHuyetAp"];
+            this.isDongKinh = _data["isDongKinh"];
+            this.isMauKhongDong = _data["isMauKhongDong"];
+            this.isBenhTim = _data["isBenhTim"];
+            this.isTieuDuongType1 = _data["isTieuDuongType1"];
+            this.isTieuDuongType2 = _data["isTieuDuongType2"];
+            this.isDiUng = _data["isDiUng"];
+            this.isSocPhanVe = _data["isSocPhanVe"];
+            this.isStentVanh = _data["isStentVanh"];
+            this.isDotQuy = _data["isDotQuy"];
+            this.isLoangXuong = _data["isLoangXuong"];
+        }
+    }
+
+    static fromJS(data: any): CM_CUSTOMER_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new CM_CUSTOMER_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["cuS_ID"] = this.cuS_ID;
+        data["cuS_CODE"] = this.cuS_CODE;
+        data["cuS_DOB"] = this.cuS_DOB;
+        data["cuS_GENDER"] = this.cuS_GENDER;
+        data["cuS_PHONE"] = this.cuS_PHONE;
+        data["cuS_NAME"] = this.cuS_NAME;
+        data["cuS_PHONE2"] = this.cuS_PHONE2;
+        data["cuS_EMAIL"] = this.cuS_EMAIL;
+        data["cuS_ADDRESS"] = this.cuS_ADDRESS;
+        data["cuS_WARD"] = this.cuS_WARD;
+        data["cuS_CITY"] = this.cuS_CITY;
+        data["cuS_MEDICAL_HISTORY"] = this.cuS_MEDICAL_HISTORY;
+        data["cuS_MEDICAL_HISTORY_NOTES"] = this.cuS_MEDICAL_HISTORY_NOTES;
+        data["cuS_JOB"] = this.cuS_JOB;
+        data["cuS_ETHNICITY"] = this.cuS_ETHNICITY;
+        data["cuS_NATIONALITY"] = this.cuS_NATIONALITY;
+        data["cuS_CCCD"] = this.cuS_CCCD;
+        data["notes"] = this.notes;
+        data["makeR_ID"] = this.makeR_ID;
+        data["creatE_DT"] = this.creatE_DT ? this.creatE_DT.toString() : <any>undefined;
+        data["updatE_ID"] = this.updatE_ID;
+        data["updatE_DT"] = this.updatE_DT ? this.updatE_DT.toString() : <any>undefined;
+        data["recorD_STATUS"] = this.recorD_STATUS;
+        data["isHuyetAp"] = this.isHuyetAp;
+        data["isDongKinh"] = this.isDongKinh;
+        data["isMauKhongDong"] = this.isMauKhongDong;
+        data["isBenhTim"] = this.isBenhTim;
+        data["isTieuDuongType1"] = this.isTieuDuongType1;
+        data["isTieuDuongType2"] = this.isTieuDuongType2;
+        data["isDiUng"] = this.isDiUng;
+        data["isSocPhanVe"] = this.isSocPhanVe;
+        data["isStentVanh"] = this.isStentVanh;
+        data["isDotQuy"] = this.isDotQuy;
+        data["isLoangXuong"] = this.isLoangXuong;
+        return data;
+    }
+}
+
+export interface ICM_CUSTOMER_ENTITY {
+    cuS_ID: string | undefined;
+    cuS_CODE: string | undefined;
+    cuS_DOB: string | undefined;
+    cuS_GENDER: string | undefined;
+    cuS_PHONE: string | undefined;
+    cuS_NAME: string | undefined;
+    cuS_PHONE2: string | undefined;
+    cuS_EMAIL: string | undefined;
+    cuS_ADDRESS: string | undefined;
+    cuS_WARD: string | undefined;
+    cuS_CITY: string | undefined;
+    cuS_MEDICAL_HISTORY: string | undefined;
+    cuS_MEDICAL_HISTORY_NOTES: string | undefined;
+    cuS_JOB: string | undefined;
+    cuS_ETHNICITY: string | undefined;
+    cuS_NATIONALITY: string | undefined;
+    cuS_CCCD: string | undefined;
+    notes: string | undefined;
+    makeR_ID: string | undefined;
+    creatE_DT: DateTime | undefined;
+    updatE_ID: string | undefined;
+    updatE_DT: DateTime | undefined;
+    recorD_STATUS: string | undefined;
+    isHuyetAp: boolean;
+    isDongKinh: boolean;
+    isMauKhongDong: boolean;
+    isBenhTim: boolean;
+    isTieuDuongType1: boolean;
+    isTieuDuongType2: boolean;
+    isDiUng: boolean;
+    isSocPhanVe: boolean;
+    isStentVanh: boolean;
+    isDotQuy: boolean;
+    isLoangXuong: boolean;
+}
+
 export class CacheDto implements ICacheDto {
     name!: string | undefined;
 
@@ -17060,6 +18012,66 @@ export interface IComboboxItemDto {
     value: string | undefined;
     displayText: string | undefined;
     isSelected: boolean;
+}
+
+export class CommonResult implements ICommonResult {
+    result!: string | undefined;
+    errorDesc!: string | undefined;
+    attr1!: string | undefined;
+    attr2!: string | undefined;
+    attr3!: string | undefined;
+    attr4!: string | undefined;
+    attr5!: string | undefined;
+
+    constructor(data?: ICommonResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"];
+            this.errorDesc = _data["errorDesc"];
+            this.attr1 = _data["attr1"];
+            this.attr2 = _data["attr2"];
+            this.attr3 = _data["attr3"];
+            this.attr4 = _data["attr4"];
+            this.attr5 = _data["attr5"];
+        }
+    }
+
+    static fromJS(data: any): CommonResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new CommonResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result;
+        data["errorDesc"] = this.errorDesc;
+        data["attr1"] = this.attr1;
+        data["attr2"] = this.attr2;
+        data["attr3"] = this.attr3;
+        data["attr4"] = this.attr4;
+        data["attr5"] = this.attr5;
+        return data;
+    }
+}
+
+export interface ICommonResult {
+    result: string | undefined;
+    errorDesc: string | undefined;
+    attr1: string | undefined;
+    attr2: string | undefined;
+    attr3: string | undefined;
+    attr4: string | undefined;
+    attr5: string | undefined;
 }
 
 export class ConstructorInfo implements IConstructorInfo {
@@ -23536,6 +24548,74 @@ export interface IInsertOrUpdateAllValuesInputItem {
     values: string[] | undefined;
 }
 
+export class InsertResult implements IInsertResult {
+    result!: string | undefined;
+    errorDesc!: string | undefined;
+    attr1!: string | undefined;
+    attr2!: string | undefined;
+    attr3!: string | undefined;
+    attr4!: string | undefined;
+    attr5!: string | undefined;
+    id!: string | undefined;
+    ids!: string | undefined;
+
+    constructor(data?: IInsertResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"];
+            this.errorDesc = _data["errorDesc"];
+            this.attr1 = _data["attr1"];
+            this.attr2 = _data["attr2"];
+            this.attr3 = _data["attr3"];
+            this.attr4 = _data["attr4"];
+            this.attr5 = _data["attr5"];
+            this.id = _data["id"];
+            this.ids = _data["ids"];
+        }
+    }
+
+    static fromJS(data: any): InsertResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new InsertResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result;
+        data["errorDesc"] = this.errorDesc;
+        data["attr1"] = this.attr1;
+        data["attr2"] = this.attr2;
+        data["attr3"] = this.attr3;
+        data["attr4"] = this.attr4;
+        data["attr5"] = this.attr5;
+        data["id"] = this.id;
+        data["ids"] = this.ids;
+        return data;
+    }
+}
+
+export interface IInsertResult {
+    result: string | undefined;
+    errorDesc: string | undefined;
+    attr1: string | undefined;
+    attr2: string | undefined;
+    attr3: string | undefined;
+    attr4: string | undefined;
+    attr5: string | undefined;
+    id: string | undefined;
+    ids: string | undefined;
+}
+
 export class InstallDto implements IInstallDto {
     connectionString!: string;
     adminPassword!: string;
@@ -26387,6 +27467,102 @@ export class PagedResultDtoOfAuditLogListDto implements IPagedResultDtoOfAuditLo
 
 export interface IPagedResultDtoOfAuditLogListDto {
     items: AuditLogListDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfCM_ALLCODE_ENTITY implements IPagedResultDtoOfCM_ALLCODE_ENTITY {
+    items!: CM_ALLCODE_ENTITY[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfCM_ALLCODE_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(CM_ALLCODE_ENTITY.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfCM_ALLCODE_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfCM_ALLCODE_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfCM_ALLCODE_ENTITY {
+    items: CM_ALLCODE_ENTITY[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfCM_CUSTOMER_ENTITY implements IPagedResultDtoOfCM_CUSTOMER_ENTITY {
+    items!: CM_CUSTOMER_ENTITY[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfCM_CUSTOMER_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(CM_CUSTOMER_ENTITY.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfCM_CUSTOMER_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfCM_CUSTOMER_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfCM_CUSTOMER_ENTITY {
+    items: CM_CUSTOMER_ENTITY[] | undefined;
     totalCount: number;
 }
 

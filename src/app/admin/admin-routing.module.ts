@@ -96,6 +96,14 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         data: { permission: 'Pages.DemoUiComponents' },
                     },
                     {
+                        path: 'customer-components',
+                        loadChildren: () =>
+                            import('./customer-components/customer-components.module').then(
+                                (m) => m.CustomerComponentsModule
+                            ),
+                        data: { permission: '' },
+                    },
+                    {
                         path: 'install',
                         loadChildren: () => import('./install/install.module').then((m) => m.InstallModule),
                     },

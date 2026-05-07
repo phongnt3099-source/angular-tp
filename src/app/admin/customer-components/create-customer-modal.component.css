@@ -1,0 +1,110 @@
+.custom-toggle-input {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    overflow: hidden;
+}
+
+.custom-toggle-input .input-group-text {
+    border: none;
+    padding-right: 15px;
+}
+
+.custom-toggle-input .form-control {
+    border: none;
+    border-left: 1px solid #dee2e6;
+}
+
+/* Màu chữ xanh giống trong hình khi ở chế độ tự động */
+.text-success {
+    color: #10b981 !important;
+    font-weight: 600;
+}
+
+/* Tùy chỉnh nút gạt */
+.form-check-input:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+
+/* Màu nền nhẹ cho khu vực y tế */
+.bg-light-blue {
+    background-color: #f8fbff;
+    border: 1px solid #e3f2fd;
+}
+
+/* Tùy chỉnh Checkbox cho chuyên nghiệp */
+.custom-checkbox {
+    padding-bottom: 8px;
+}
+
+.custom-checkbox .form-check-input {
+    width: 1.25em;
+    height: 1.25em;
+    margin-top: 0.15em;
+    cursor: pointer;
+    border: 1.5px solid #d1d5db;
+    border-radius: 4px; /* Bo góc nhẹ */
+}
+
+/* Hiệu ứng khi checked */
+.custom-checkbox .form-check-input:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.custom-checkbox .form-check-label {
+    padding-left: 8px;
+    font-size: 0.92rem;
+    color: #4b5563;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+/* Input "Bệnh lý khác" */
+.other-medical .form-control {
+    border-radius: 0;
+    padding: 0;
+    font-size: 0.85rem;
+}
+.other-medical .form-control:focus {
+    box-shadow: none;
+    border-color: #4f46e5;
+}
+
+/* Màu chữ tiêu đề cảnh báo */
+.text-warning-emphasis {
+    color: #856404 !important;
+}
+
+/* Card Shadow */
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+}
+
+.custom-radio-large .form-check-input {
+    width: 26px !important;   /* Độ rộng nút */
+    height: 26px !important;  /* Độ cao nút */
+    cursor: pointer;
+    border: 2px solid #adb5bd; /* Viền đậm hơn cho rõ */
+}
+
+/* Khoảng cách giữa nút và chữ */
+.custom-radio-large .form-check-label {
+    padding-left: 10px;
+    margin-top: 2px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* Màu sắc khi được chọn */
+.custom-radio-large .form-check-input:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.2);
+}
+
+/* Hiệu ứng khi rê chuột vào */
+.custom-radio-large:hover .form-check-label {
+    color: #4f46e5 !important;
+}

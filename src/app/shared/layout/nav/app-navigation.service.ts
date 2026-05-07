@@ -122,6 +122,12 @@ export class AppNavigationService {
                 'flaticon-shapes',
                 '/app/admin/demo-ui-components'
             ),
+            new AppMenuItem(
+                'Khách Hàng',
+                '',
+                'fas fa-users',
+                '/app/admin/customer-components'
+            ),
         ]);
     }
 
