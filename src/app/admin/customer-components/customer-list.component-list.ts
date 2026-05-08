@@ -8,7 +8,7 @@ import { Paginator } from 'primeng/paginator';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-    templateUrl: './customer-components.component.html',
+    templateUrl: './customer-list.component.html',
     animations: [appModuleAnimation()],
 })
 export class CustomerComponentsComponent extends AppComponentBase implements OnInit {

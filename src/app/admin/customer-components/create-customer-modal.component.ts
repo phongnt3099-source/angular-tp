@@ -115,7 +115,7 @@ export class CreateCustomerModalComponent extends AppComponentBase {
         this.customer.cuS_NATIONALITY = this.selectedNationality;
         this.customer.makeR_ID = this.appSession.user.userName?.toString();
         this.customer.creatE_DT = new Date() as any;
-        this.customer.cuS_MEDICAL_HISTORY = this.concatMedicalHistory() + ', ' + this.customer.cuS_MEDICAL_HISTORY_NOTES;
+        this.customer.cuS_MEDICAL_HISTORY = this.concatMedicalHistory();
         this._customerService
             .cM_CUSTOMER_Ins(this.customer)
             .pipe(finalize(() => (this.saving = false)))
@@ -132,24 +132,33 @@ export class CreateCustomerModalComponent extends AppComponentBase {
     }
 
     concatMedicalHistory(): string {
-    const medicalMap = {
-        isHuyetAp: 'Huyết áp',
-        isDongKinh: 'Động kinh',
-        isMauKhongDong: 'Máu không đông',
-        isBenhTim: 'Bệnh tim',
-        isTieuDuongType1: 'Đái tháo đường type 1',
-        isTieuDuongType2: 'Đái tháo đường type 2',
-        isDiUng: 'Dị ứng',
-        isSocPhanVe: 'Sốc phản vệ',
-        isStentVanh: 'Đặt stent ĐM vành',
-        isDotQuy: 'Đột quỵ',
-        isLoangXuong: 'Loãng xương'
-    };
+        const medicalMap = {
+            isHuyetAp: 'Huyết áp',
+            isDongKinh: 'Động kinh',
+            isMauKhongDong: 'Máu không đông',
+            isBenhTim: 'Bệnh tim',
+            isTieuDuongType1: 'Đái tháo đường type 1',
+            isTieuDuongType2: 'Đái tháo đường type 2',
+            isDiUng: 'Dị ứng',
+            isSocPhanVe: 'Sốc phản vệ',
+            isStentVanh: 'Đặt stent ĐM vành',
+            isDotQuy: 'Đột quỵ',
+            isLoangXuong: 'Loãng xương',
+            cuS_MEDICAL_HISTORY_NOTES: this.customer.cuS_MEDICAL_HISTORY_NOTES
+        };
 
-        return Object.keys(medicalMap)
+        // 1. Lấy danh sách các bệnh từ checkbox
+        const selectedFromCheckboxes = Object.keys(medicalMap)
             .filter(key => this.customer[key] === true)
-            .map(key => medicalMap[key])
-            .join(', ');
+            .map(key => medicalMap[key]);
+
+        // 2. Kiểm tra nếu có ghi chú "Bệnh lý khác" thì thêm vào mảng
+        if (this.customer.cuS_MEDICAL_HISTORY_NOTES && this.customer.cuS_MEDICAL_HISTORY_NOTES.trim() !== '') {
+            selectedFromCheckboxes.push(this.customer.cuS_MEDICAL_HISTORY_NOTES.trim());
+        }
+
+        // 3. Nối tất cả lại bằng dấu phẩy
+        return selectedFromCheckboxes.join(', ');
     }
 
     close(): void {

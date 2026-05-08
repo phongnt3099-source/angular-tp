@@ -78,7 +78,6 @@
                                     </th>
                                     <th pSortableColumn="cuS_GENDER">
                                         {{ 'GT' | localize }}
-                                        <p-sortIcon field="cuS_GENDER"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="cuS_PHONE">
                                         {{ 'Điện thoại' | localize }}
@@ -86,10 +85,6 @@
                                     </th>
                                     <th pSortableColumn="cuS_PHONE">
                                         {{ 'Đang khám' | localize }}
-                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="cuS_PHONE">
-                                        {{ 'Lịch hẹn tới' | localize }}
                                         <p-sortIcon field="cuS_PHONE"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="cuS_PHONE">
@@ -122,11 +117,22 @@
                                     </td>
                                     <td>
                                         <span class="p-column-title">{{ 'SN' | localize }}</span>
-                                        {{ record.cuS_DOS }}
+                                        {{ record.sn }}
                                     </td>
                                     <td>
-                                        <span class="p-column-title">{{ 'GT' | localize }}</span>
-                                        {{ record.cuS_GENDER }}
+                                        <span class="p-column-title">{{ 'Age' | localize }}</span>
+                                        {{ record.age }}
+                                    </td>
+                                    <td>
+                                        <i class="fas fs-5" 
+                                            [class.fa-mars]="record.cuS_GENDER === 1" 
+                                            [class.fa-venus]="record.cuS_GENDER === 2"
+                                            [class.fa-genderless]="record.cuS_GENDER === 3"
+                                            [class.text-primary]="record.cuS_GENDER === 1"
+                                            [class.text-danger]="record.cuS_GENDER === 2"
+                                            [class.text-secondary]="record.cuS_GENDER === 3"
+                                            [title]="record.cuS_GENDER === 1 ? 'Nam' : (record.cuS_GENDER === 2 ? 'Nữ' : 'Khác')">
+                                        </i>
                                     </td>
                                     <td>
                                         <span class="p-column-title">{{ 'Điện thoại' | localize }}</span>

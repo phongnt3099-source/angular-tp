@@ -87,16 +87,16 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                             import('./dashboard/host-dashboard.module').then((m) => m.HostDashboardModule),
                         data: { permission: 'Pages.Administration.Host.Dashboard' },
                     },
+                    // {
+                    //     path: 'demo-ui-components',
+                    //     loadChildren: () =>
+                    //         import('./demo-ui-components/demo-ui-components.module').then(
+                    //             (m) => m.DemoUIComponentsModule
+                    //         ),
+                    //     data: { permission: 'Pages.DemoUiComponents' },
+                    // },
                     {
-                        path: 'demo-ui-components',
-                        loadChildren: () =>
-                            import('./demo-ui-components/demo-ui-components.module').then(
-                                (m) => m.DemoUIComponentsModule
-                            ),
-                        data: { permission: 'Pages.DemoUiComponents' },
-                    },
-                    {
-                        path: 'customer-components',
+                        path: 'customer-list',
                         loadChildren: () =>
                             import('./customer-components/customer-components.module').then(
                                 (m) => m.CustomerComponentsModule

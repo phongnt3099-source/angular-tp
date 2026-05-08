@@ -17439,10 +17439,14 @@ export interface ICM_ALLCODE_ENTITY {
 }
 
 export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
+    maxResultCount!: number;
+    skipCount!: number;
+    top!: number | undefined;
+    sorting!: string | undefined;
     cuS_ID!: string | undefined;
     cuS_CODE!: string | undefined;
     cuS_DOB!: string | undefined;
-    cuS_GENDER!: string | undefined;
+    cuS_GENDER!: number | undefined;
     cuS_PHONE!: string | undefined;
     cuS_NAME!: string | undefined;
     cuS_PHONE2!: string | undefined;
@@ -17473,6 +17477,8 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
     isStentVanh!: boolean;
     isDotQuy!: boolean;
     isLoangXuong!: boolean;
+    age!: number;
+    sn!: number;
 
     constructor(data?: ICM_CUSTOMER_ENTITY) {
         if (data) {
@@ -17485,6 +17491,10 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
 
     init(_data?: any) {
         if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.top = _data["top"];
+            this.sorting = _data["sorting"];
             this.cuS_ID = _data["cuS_ID"];
             this.cuS_CODE = _data["cuS_CODE"];
             this.cuS_DOB = _data["cuS_DOB"];
@@ -17519,6 +17529,8 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
             this.isStentVanh = _data["isStentVanh"];
             this.isDotQuy = _data["isDotQuy"];
             this.isLoangXuong = _data["isLoangXuong"];
+            this.age = _data["age"];
+            this.sn = _data["sn"];
         }
     }
 
@@ -17531,6 +17543,10 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["top"] = this.top;
+        data["sorting"] = this.sorting;
         data["cuS_ID"] = this.cuS_ID;
         data["cuS_CODE"] = this.cuS_CODE;
         data["cuS_DOB"] = this.cuS_DOB;
@@ -17565,15 +17581,21 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
         data["isStentVanh"] = this.isStentVanh;
         data["isDotQuy"] = this.isDotQuy;
         data["isLoangXuong"] = this.isLoangXuong;
+        data["age"] = this.age;
+        data["sn"] = this.sn;
         return data;
     }
 }
 
 export interface ICM_CUSTOMER_ENTITY {
+    maxResultCount: number;
+    skipCount: number;
+    top: number | undefined;
+    sorting: string | undefined;
     cuS_ID: string | undefined;
     cuS_CODE: string | undefined;
     cuS_DOB: string | undefined;
-    cuS_GENDER: string | undefined;
+    cuS_GENDER: number | undefined;
     cuS_PHONE: string | undefined;
     cuS_NAME: string | undefined;
     cuS_PHONE2: string | undefined;
@@ -17604,6 +17626,8 @@ export interface ICM_CUSTOMER_ENTITY {
     isStentVanh: boolean;
     isDotQuy: boolean;
     isLoangXuong: boolean;
+    age: number;
+    sn: number;
 }
 
 export class CacheDto implements ICacheDto {
