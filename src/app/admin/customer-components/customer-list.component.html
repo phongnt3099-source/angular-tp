@@ -12,39 +12,25 @@
     <div [class]="containerClass">
         <div class="card card-custom gutter-b">
             <div class="card-body">
-                <div class="form">
-                    <form (submit)="getCustomer()" autocomplete="new-password">
-                        <div class="form-body">
-                            <div class="row mb-4">
-                                <div class="col-xl-6">
-                                    <label for="CustomerFilter" class="form-label">
-                                        {{ 'Nhập SĐT' | localize }}
-                                    </label>
-                                    <div class="input-group">
-                                        <input
-                                            id="CustomerFilter"
-                                            [(ngModel)]="filterInput.cuS_PHONE"
-                                            name="filterText"
-                                            class="form-control"
-                                            placeholder="{{ 'Nhập SĐT' | localize }}"
-                                            type="text"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-xl-12 text-end">
-                                    <button name="RefreshButton" class="btn btn-primary">
-                                        <i class="fa fa-search btn-md-icon"></i>
-                                        <span class="d-none d-md-inline-block">
-                                            {{ 'Tìm Kiếm' | localize }}
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                <div class="row align-items-end mb-4">
+                <div class="col-md-4">
+                    <label for="CustomerFilter" class="form-label fw-bold text-dark">
+                        <i class="fas fa-filter me-1"></i> {{ 'Tìm kiếm bệnh nhân' | localize }}
+                    </label>
+                    <div class="input-group">
+                        <input id="CustomerFilter" [(ngModel)]="filterInput.cuS_PHONE" name="filterText"
+                            class="form-control" placeholder="{{ 'Nhập SĐT hoặc tên...' | localize }}" type="text" />
+                        <button class="btn btn-primary" (click)="getCustomer()">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
                 </div>
+                <!-- <div class="col-md-8 text-end">
+                    <button class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-file-export me-1"></i> Xuất Excel
+                    </button>
+                </div> -->
+            </div>
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
@@ -60,6 +46,9 @@
                         >
                             <ng-template pTemplate="header">
                                 <tr>
+                                    <!-- <th class="center">
+                                        <span style="width: 40px">{{l("No")}}</span>
+                                    </th> -->
                                     <th pSortableColumn="cuS_CODE">
                                         {{ 'Mã KH' | localize }}
                                         <p-sortIcon field="cuS_CODE"></p-sortIcon>
@@ -106,14 +95,18 @@
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
+                                <tr (click)="viewDetail(record)" class="cursor-pointer-row">
+                                    <!-- <td class="center">
+                                        {{ primengTableHelper.getRecordIndex(record) }}
+                                    </td> -->
                                     <td>
                                         <span class="p-column-title">{{ 'Mã KH' | localize }}</span>
                                         {{ record.cuS_CODE }}
                                     </td>
                                     <td>
                                         <span class="p-column-title">{{ 'Tên khách hàng' | localize }}</span>
-                                        {{ record.cuS_NAME }}
+                                        <!-- {{ record.cuS_NAME }} -->
+                                        <div class="fw-bold text-primary">{{ record.cuS_NAME }}</div>
                                     </td>
                                     <td>
                                         <span class="p-column-title">{{ 'SN' | localize }}</span>
@@ -123,16 +116,15 @@
                                         <span class="p-column-title">{{ 'Age' | localize }}</span>
                                         {{ record.age }}
                                     </td>
-                                    <td>
-                                        <i class="fas fs-5" 
-                                            [class.fa-mars]="record.cuS_GENDER === 1" 
-                                            [class.fa-venus]="record.cuS_GENDER === 2"
-                                            [class.fa-genderless]="record.cuS_GENDER === 3"
-                                            [class.text-primary]="record.cuS_GENDER === 1"
-                                            [class.text-danger]="record.cuS_GENDER === 2"
-                                            [class.text-secondary]="record.cuS_GENDER === 3"
-                                            [title]="record.cuS_GENDER === 1 ? 'Nam' : (record.cuS_GENDER === 2 ? 'Nữ' : 'Khác')">
-                                        </i>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <i class="fas fs-5 me-2" 
+                                                [class.fa-mars]="record.cuS_GENDER === 1" 
+                                                [class.fa-venus]="record.cuS_GENDER === 2"
+                                                [class.text-primary]="record.cuS_GENDER === 1"
+                                                [class.text-danger]="record.cuS_GENDER === 2">
+                                            </i>
+                                        </div>
                                     </td>
                                     <td>
                                         <span class="p-column-title">{{ 'Điện thoại' | localize }}</span>
@@ -152,11 +144,15 @@
                                     </td>
                                     <td>
                                         <span class="p-column-title">{{ 'Còn nợ' | localize }}</span>
-                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
+                                        <span class="badge bg-danger-subtle text-danger fw-bold px-3">
+                                            {{ record.debtAmount | number }}đ
+                                        </span>
                                     </td>
                                     <td>
                                         <span class="p-column-title">{{ 'Thanh toán' | localize }}</span>
-                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
+                                        <span class="text-success fw-bold">
+                                            {{ record.totalPayment | number }}đ
+                                        </span>
                                     </td>
                                 </tr>
                             </ng-template>

@@ -2285,25 +2285,15 @@ export class CustomerServiceProxy {
     }
 
     /**
-     * @param cdType (optional) 
-     * @param cdName (optional) 
-     * @param cdVal (optional) 
+     * @param id (optional) 
      * @return Success
      */
-    cM_CUSTOMER_GetByCDNAME(cdType: string | undefined, cdName: string | undefined, cdVal: string | undefined): Observable<CM_CUSTOMER_ENTITY> {
-        let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_GetByCDNAME?";
-        if (cdType === null)
-            throw new Error("The parameter 'cdType' cannot be null.");
-        else if (cdType !== undefined)
-            url_ += "cdType=" + encodeURIComponent("" + cdType) + "&";
-        if (cdName === null)
-            throw new Error("The parameter 'cdName' cannot be null.");
-        else if (cdName !== undefined)
-            url_ += "cdName=" + encodeURIComponent("" + cdName) + "&";
-        if (cdVal === null)
-            throw new Error("The parameter 'cdVal' cannot be null.");
-        else if (cdVal !== undefined)
-            url_ += "cdVal=" + encodeURIComponent("" + cdVal) + "&";
+    cM_CUSTOMER_GetById(id: string | undefined): Observable<CM_CUSTOMER_ENTITY> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2315,11 +2305,11 @@ export class CustomerServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCM_CUSTOMER_GetByCDNAME(response_);
+            return this.processCM_CUSTOMER_GetById(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCM_CUSTOMER_GetByCDNAME(response_ as any);
+                    return this.processCM_CUSTOMER_GetById(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<CM_CUSTOMER_ENTITY>;
                 }
@@ -2328,7 +2318,7 @@ export class CustomerServiceProxy {
         }));
     }
 
-    protected processCM_CUSTOMER_GetByCDNAME(response: HttpResponseBase): Observable<CM_CUSTOMER_ENTITY> {
+    protected processCM_CUSTOMER_GetById(response: HttpResponseBase): Observable<CM_CUSTOMER_ENTITY> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2522,7 +2512,7 @@ export class CustomerServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    cM_CUSTOMER_Del(id: number | undefined): Observable<CommonResult> {
+    cM_CUSTOMER_Del(id: string | undefined): Observable<CommonResult> {
         let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_Del?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -17454,6 +17444,7 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
     cuS_ADDRESS!: string | undefined;
     cuS_WARD!: string | undefined;
     cuS_CITY!: string | undefined;
+    cuS_ADDRESS_FULL!: string | undefined;
     cuS_MEDICAL_HISTORY!: string | undefined;
     cuS_MEDICAL_HISTORY_NOTES!: string | undefined;
     cuS_JOB!: string | undefined;
@@ -17479,6 +17470,8 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
     isLoangXuong!: boolean;
     age!: number;
     sn!: number;
+    debtAmount!: number;
+    totalPayment!: number;
 
     constructor(data?: ICM_CUSTOMER_ENTITY) {
         if (data) {
@@ -17506,6 +17499,7 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
             this.cuS_ADDRESS = _data["cuS_ADDRESS"];
             this.cuS_WARD = _data["cuS_WARD"];
             this.cuS_CITY = _data["cuS_CITY"];
+            this.cuS_ADDRESS_FULL = _data["cuS_ADDRESS_FULL"];
             this.cuS_MEDICAL_HISTORY = _data["cuS_MEDICAL_HISTORY"];
             this.cuS_MEDICAL_HISTORY_NOTES = _data["cuS_MEDICAL_HISTORY_NOTES"];
             this.cuS_JOB = _data["cuS_JOB"];
@@ -17531,6 +17525,8 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
             this.isLoangXuong = _data["isLoangXuong"];
             this.age = _data["age"];
             this.sn = _data["sn"];
+            this.debtAmount = _data["debtAmount"];
+            this.totalPayment = _data["totalPayment"];
         }
     }
 
@@ -17558,6 +17554,7 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
         data["cuS_ADDRESS"] = this.cuS_ADDRESS;
         data["cuS_WARD"] = this.cuS_WARD;
         data["cuS_CITY"] = this.cuS_CITY;
+        data["cuS_ADDRESS_FULL"] = this.cuS_ADDRESS_FULL;
         data["cuS_MEDICAL_HISTORY"] = this.cuS_MEDICAL_HISTORY;
         data["cuS_MEDICAL_HISTORY_NOTES"] = this.cuS_MEDICAL_HISTORY_NOTES;
         data["cuS_JOB"] = this.cuS_JOB;
@@ -17583,6 +17580,8 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
         data["isLoangXuong"] = this.isLoangXuong;
         data["age"] = this.age;
         data["sn"] = this.sn;
+        data["debtAmount"] = this.debtAmount;
+        data["totalPayment"] = this.totalPayment;
         return data;
     }
 }
@@ -17603,6 +17602,7 @@ export interface ICM_CUSTOMER_ENTITY {
     cuS_ADDRESS: string | undefined;
     cuS_WARD: string | undefined;
     cuS_CITY: string | undefined;
+    cuS_ADDRESS_FULL: string | undefined;
     cuS_MEDICAL_HISTORY: string | undefined;
     cuS_MEDICAL_HISTORY_NOTES: string | undefined;
     cuS_JOB: string | undefined;
@@ -17628,6 +17628,8 @@ export interface ICM_CUSTOMER_ENTITY {
     isLoangXuong: boolean;
     age: number;
     sn: number;
+    debtAmount: number;
+    totalPayment: number;
 }
 
 export class CacheDto implements ICacheDto {

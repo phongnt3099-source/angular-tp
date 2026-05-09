@@ -6,10 +6,12 @@ import { CM_CUSTOMER_ENTITY,CustomerServiceProxy } from '@shared/service-proxies
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { finalize } from 'rxjs/operators';
+import { Router } from '@node_modules/@angular/router';
 
 @Component({
     templateUrl: './customer-list.component.html',
     animations: [appModuleAnimation()],
+    styleUrls: ['./customer-list.component.css']
 })
 export class CustomerComponentsComponent extends AppComponentBase implements OnInit {
 
@@ -19,7 +21,8 @@ export class CustomerComponentsComponent extends AppComponentBase implements OnI
     filterInput: CM_CUSTOMER_ENTITY = new CM_CUSTOMER_ENTITY();
     constructor(
       injector: Injector,
-      private _customerService: CustomerServiceProxy
+      private _customerService: CustomerServiceProxy,
+      private _router: Router
     ) {
         super(injector);
     }
@@ -32,17 +35,27 @@ export class CustomerComponentsComponent extends AppComponentBase implements OnI
     hideAlert(): void{
         this.alertVisible = false;
     }
-    getCustomer(event?: LazyLoadEvent): void{
-      if (event && this.primengTableHelper.shouldResetPaging(event)) {
-          this.paginator.changePage(0);
+    viewDetail(record: CM_CUSTOMER_ENTITY): void{
+      this._router.navigate(['/app/admin/customer-detail', record.cuS_ID]);
+    }
+    getCustomer(event?: any): void{
+      // 1. Reset về trang đầu nếu có filter mới
+        if (this.primengTableHelper.shouldResetPaging(event)) {
+            this.paginator.changePage(0);
+            return;
+        }
 
-          if (this.primengTableHelper.records && this.primengTableHelper.records.length > 0) {
-              return;
-          }
-      }
+        this.primengTableHelper.showLoadingIndicator();
 
-      this.primengTableHelper.showLoadingIndicator();
-
+        // 2. Lấy vị trí bắt đầu (SkipCount) và số lượng bản ghi (MaxResultCount)
+        const skipCount = event && event.first !== undefined
+                        ? event.first
+                        : this.primengTableHelper.getSkipCount(this.paginator, event);
+        const maxResultCount = event && event.rows !== undefined
+                            ? event.rows
+                            : this.primengTableHelper.getMaxResultCount(this.paginator, event);
+        this.filterInput.skipCount = skipCount;
+        this.filterInput.maxResultCount = maxResultCount;
       this._customerService
           .cM_CUSTOMER_Search(
               this.filterInput)

@@ -1,0 +1,106 @@
+/* Làm cho bảng không bị dính sát vào nhau */
+.primeng-datatable-container ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem 0.5rem;
+    vertical-align: middle;
+}
+
+/* Hiệu ứng hover cho hàng */
+.primeng-datatable-container ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+    background-color: #f8f9fa !important;
+    cursor: pointer;
+}
+
+/* Badge màu sắc hiện đại */
+.bg-danger-subtle {
+    background-color: #fee2e2 !important;
+    color: #dc2626 !important;
+}
+
+.bg-primary-subtle {
+    background-color: #e0e7ff !important;
+    color: #4338ca !important;
+}
+
+/* Tiêu đề bảng in hoa và đậm */
+th {
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    font-weight: 700 !important;
+    color: #64748b !important;
+}
+
+/* 1. Card bao ngoài cho sang trọng */
+.card-custom {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.05) !important;
+    overflow: hidden;
+}
+
+/* 2. Style cho tiêu đề cột (Header) */
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    background-color: #f8fafc !important; /* Màu nền xám nhạt hiện đại */
+    color: #64748b !important; /* Chữ xám đậm */
+    font-size: 11px;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 0.75rem !important;
+    border-top: none !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+}
+
+/* 3. Style cho các dòng dữ liệu (Body) */
+::ng-deep .p-datatable .p-datatable-tbody > tr {
+    transition: all 0.2s ease;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1.25rem 0.75rem !important; /* Tăng padding để bảng thoáng hơn */
+    border-bottom: 1px solid #f1f5f9 !important;
+    vertical-align: middle;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+/* 4. Hiệu ứng Hover dòng */
+::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+    background-color: #f0f7ff !important; /* Màu xanh cực nhạt khi rê chuột */
+    cursor: pointer;
+}
+
+/* 5. Style cho các Badges (Nợ/Thanh toán) */
+.badge-custom {
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.debt-red {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.paid-green {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+::ng-deep .p-paginator {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 1.5rem 0 !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+    border-radius: 8px;
+    margin: 0 4px;
+    transition: all 0.2s;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background-color: #4f46e5 !important; /* Màu xanh Indigo hiện đại */
+    color: #ffffff !important;
+}

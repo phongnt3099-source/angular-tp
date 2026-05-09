@@ -1,5 +1,6 @@
 ﻿import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { co } from '@node_modules/@fullcalendar/core/internal-common';
+import { pipe } from '@node_modules/rxjs/dist/types/internal/util/pipe';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     SubscribableEditionComboboxItemDto,
@@ -39,6 +40,7 @@ export class CreateCustomerModalComponent extends AppComponentBase {
     selectedNationality = '';
     nationalities: any[] = [];
     isAutoGenerate = true;
+    isLoad = false;
 
     constructor(
         injector: Injector,
@@ -49,21 +51,22 @@ export class CreateCustomerModalComponent extends AppComponentBase {
         console.log(this);
     }
 
-    show() {
+    show(id?: string): void {
+        this.isLoad = true;
+        if (id) {
+            this._customerService.cM_CUSTOMER_GetById(id).subscribe((result) => {
+                this.customer = result;
+                this.selectedCity = this.customer.cuS_CITY || '';
+                this.selectedWard = this.customer.cuS_WARD || '';
+                this.selectedNationality = this.customer.cuS_NATIONALITY || '';
+                (this.customer as any).cuS_DOB = new Date(result['cuS_DOB']);
+                this.loadDropdowns();
+            });
+        }else{
+            this.init();
+            this.loadDropdowns();
+        }
         this.active = true;
-        this.init();
-        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('PROVINCE','CITY_PROVINCE').subscribe((res) => {
-            this.provinces = res;
-            this.selectedCity = '28';
-        });
-        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('NAT','NATIONALITY').subscribe((res) => {
-            this.nationalities = res;
-        });
-        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('WARD','28').subscribe((res) => {
-                this.wards = res;
-        });
-        this.selectedWard = '71317009';
-        this.selectedNationality = 'VN';
         this.modal.show();
     }
 
@@ -75,6 +78,9 @@ export class CreateCustomerModalComponent extends AppComponentBase {
 
     init(): void {
         this.customer = new CM_CUSTOMER_ENTITY();
+        this.selectedCity =this.customer.cuS_CITY = '28';
+        this.selectedWard = this.customer.cuS_WARD = '71317009';
+        this.selectedNationality = this.customer.cuS_NATIONALITY = 'VN';
         this.customer.creatE_DT = new Date() as any;
         this.customer.isHuyetAp = false;
         this.customer.isDongKinh = false;
@@ -94,18 +100,17 @@ export class CreateCustomerModalComponent extends AppComponentBase {
     }
 
     onCityChange(cityCode: any) {
-        // Ví dụ: Load danh sách quận huyện dựa trên cityCode
         if (cityCode) {
             this.wards = [];
             this.selectedWard = '';
             this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('WARD',cityCode).subscribe((res) => {
                 this.wards = res;
             });
-        } else {
+        } else if(!this.isLoad){
             this.wards = [];
             this.selectedWard = '';
         }
-        }
+    }
 
     save(): void {
         this.saving = true;
@@ -116,19 +121,38 @@ export class CreateCustomerModalComponent extends AppComponentBase {
         this.customer.makeR_ID = this.appSession.user.userName?.toString();
         this.customer.creatE_DT = new Date() as any;
         this.customer.cuS_MEDICAL_HISTORY = this.concatMedicalHistory();
-        this._customerService
-            .cM_CUSTOMER_Ins(this.customer)
+        if(this.customer.cuS_ID){
+            this.customer.makeR_ID = this.appSession.user.userName?.toString();
+            this._customerService
+            .cM_CUSTOMER_Upd(this.customer)
             .pipe(finalize(() => (this.saving = false)))
             .subscribe((response) => {
                 if(response.result == '0'){
                     this.notify.info(this.l('SavedSuccessfully'));
                     this.close();
-                    this.modalSave.emit(null);
-                }
-                else{
-                    this.notify.error(this.l('Thêm Thất Bại! ') + ': ' + response.errorDesc);
-                }
-            });
+                        this.modalSave.emit(null);
+                    }
+                    else{
+                        this.notify.error(this.l('Cập Nhật Thất Bại! ') + ': ' + response.errorDesc);
+                    }
+                });
+            }
+            else{
+                this.customer.updatE_ID = this.appSession.user.userName?.toString();
+                this._customerService
+                .cM_CUSTOMER_Ins(this.customer)
+                .pipe(finalize(() => (this.saving = false)))
+                .subscribe((response) => {
+                    if(response.result == '0'){
+                        this.notify.info(this.l('SavedSuccessfully'));
+                        this.close();
+                        this.modalSave.emit(null);
+                    }
+                    else{
+                        this.notify.error(this.l('Thêm Thất Bại! ') + ': ' + response.errorDesc);
+                    }
+                });
+            }
     }
 
     concatMedicalHistory(): string {
@@ -165,5 +189,13 @@ export class CreateCustomerModalComponent extends AppComponentBase {
         this.active = false;
         this.tenantAdminPasswordRepeat = '';
         this.modal.hide();
+    }
+    private loadDropdowns(): void {
+        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('PROVINCE','CITY_PROVINCE').subscribe(res => this.provinces = res);
+        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('NAT','NATIONALITY').subscribe(res => this.nationalities = res);
+        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('WARD', this.customer.cuS_CITY).subscribe(res => {
+            this.wards = res;
+            this.isLoad = false;
+        });
     }
 }
