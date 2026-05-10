@@ -8,6 +8,8 @@ import { CustomerServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CustomerComponentsComponent } from './customer-list.component';
 import { CommonModule } from '@node_modules/@angular/common';
 import { CustomerDetailComponent } from './customer-detail.component';
+import { CreateAppointmentModalComponent } from '../appointment-components/create-appointment-modal.component';
+import { AppointmentComponentsModule } from '../appointment-components/appointment-components.module';
 
 @NgModule({
     declarations: [
@@ -15,7 +17,7 @@ import { CustomerDetailComponent } from './customer-detail.component';
         CreateCustomerModalComponent,
         CustomerDetailComponent,
     ],
-    imports: [AppSharedModule, AdminSharedModule, CustomerComponentsRoutingModule,SharedDropdownComponent,CommonModule],
+    imports: [AppSharedModule, AdminSharedModule, CustomerComponentsRoutingModule,SharedDropdownComponent,CommonModule,AppointmentComponentsModule],
     providers: [
         CustomerServiceProxy
     ]

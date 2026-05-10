@@ -104,3 +104,31 @@ th {
     background-color: #4f46e5 !important; /* Màu xanh Indigo hiện đại */
     color: #ffffff !important;
 }
+
+.avatar-custom {
+    width: 65px;
+    height: 65px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    
+    /* Điều chỉnh font-size nhỏ lại một chút so với lúc chỉ hiện 1 chữ cái */
+    font-size: 18px; 
+    
+    /* Đảm bảo chữ không sát mép */
+    padding: 5px;
+    text-align: center;
+    line-height: 1.2;
+    word-break: break-all; /* Nếu tên quá dài sẽ tự xuống dòng hoặc co lại */
+    text-transform: capitalize; /* Luôn viết hoa chữ cái đầu cho đẹp */
+}
+
+/* Đối với size nhỏ 50px */
+.avatar-sm {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 14px !important;
+}

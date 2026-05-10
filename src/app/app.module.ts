@@ -1,5 +1,5 @@
 ﻿import { CommonModule } from '@angular/common';
-import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
+import { APP_INITIALIZER, Injector, LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { ChatSignalrService } from '@app/shared/layout/chat/chat-signalr.service';
@@ -173,6 +173,7 @@ import { FriendsLookupTableComponent } from './shared/layout/chat/friends-lookup
             useFactory: appInitializerFactory,
             multi: true,
         },
+        { provide: LOCALE_ID, useValue: 'vi-VN' }
     ],
     imports: [
         CommonModule,

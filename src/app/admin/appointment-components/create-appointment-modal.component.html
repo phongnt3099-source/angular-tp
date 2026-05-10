@@ -1,0 +1,233 @@
+<div bsModal #createModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" [config]="{ backdrop: 'static', keyboard: !saving }">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            
+            <div class="modal-header-custom d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="icon-box-header me-3">
+                        <i class="fas fa-calendar-check text-white"></i>
+                    </div>
+                    <h5 class="modal-title-custom mb-0 text-white">{{ 'ĐẶT LỊCH HẸN MỚI' | localize }}</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white shadow-none" (click)="close()" aria-label="Close"></button>
+            </div>
+
+            <form [formGroup]="appointmentForm" (ngSubmit)="save()" *ngIf="active">
+                <div class="modal-body p-0 bg-white">
+                    <div class="row g-0">
+                        <div class="col-lg-5 border-end p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="fw-bold text-muted small">Ngày giờ đã chọn:</span>
+                                <button type="button" 
+                                        class="btn btn-outline-danger btn-sm rounded-1 px-3" 
+                                        (click)="setToToday()">
+                                    Hôm nay
+                                </button>
+                            </div>
+
+                            <div class="custom-calendar border rounded-3 p-3 bg-white shadow-sm">
+                                <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+                                    <button type="button" 
+                                            class="btn-nav-month" 
+                                            (click)="prevMonth()" 
+                                            [disabled]="!canPrevMonth">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+
+                                    <h5 class="fw-bold mb-0 text-dark month-title">
+                                        {{ currentMonthText }}
+                                    </h5>
+
+                                    <button type="button" 
+                                            class="btn-nav-month" 
+                                            (click)="nextMonth()">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+
+                                <div class="calendar-grid text-center">
+                                    <div class="day-name">T2</div><div class="day-name">T3</div><div class="day-name">T4</div>
+                                    <div class="day-name">T5</div><div class="day-name">T6</div><div class="day-name">T7</div><div class="day-name">CN</div>
+
+                                    <div *ngFor="let day of days" 
+                                        class="day-num"
+                                        [class.empty]="!day.value"
+                                        [class.active]="day.isActive"
+                                        [class.disabled]="day.isDisable"
+                                        (click)="selectDate(day)">
+                                        {{ day.value }}
+                                    </div>
+                                </div>
+                                
+                                <div class="border-top mt-3 pt-3 px-2">
+                                    <div class="small text-muted text-uppercase mb-2 fw-bold">
+                                        {{ getDayName(appointmentForm.get('MED_DATE').value) }}, 
+                                        {{ appointmentForm.get('MED_DATE').value | date: 'dd/MM/yyyy' }}
+                                    </div>
+                                    <div class="mb-3 p-3 rounded-3 bg-light border border-dashed">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="small fw-bold text-primary">
+                                                <i class="fas fa-magic me-1"></i> Khung giờ gợi ý
+                                            </span>
+                                            <span class="badge bg-success-subtle text-success" style="font-size: 10px;">Còn trống</span>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @for (hour of hours; track hour) {
+                                                <button 
+                                                    type="button"
+                                                    (click)="selectHour(hour)"
+                                                    [disabled]="isHourBusy(hour)"
+                                                    [class]="isHourBusy(hour) ? 'btn-time-busy' : 'btn-time-free'">
+                                                    {{ hour }}:00
+                                                </button>
+                                            }
+                                        </div>
+                                        <div class="mt-2 small text-muted italic" style="font-size: 11px;">
+                                            * Các giờ gạch chéo là bác sĩ đã có lịch hẹn.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="time-picker-container">
+                                        <i class="far fa-clock text-muted me-1"></i>
+                                        
+                                        <app-simple-dropdown 
+                                            [dataList]="hours" 
+                                            [disabled]="selectedDoctor"
+                                            formControlName="HOUR">
+                                        </app-simple-dropdown>
+                                        
+                                        <span class="time-separator">:</span>
+                                        
+                                        <app-simple-dropdown 
+                                            [dataList]="minutes" 
+                                            [disabled]="selectedDoctor"
+                                            formControlName="MINUTE">
+                                        </app-simple-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7 p-4 bg-light-gray">
+                            <div class="row g-3">
+                                <div class="col-12 mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label small fw-bold text-muted mb-0">Thời gian điều trị (phút) *</label>
+                                        <div class="range-time-badge px-3 py-2 rounded-3 shadow-sm">
+                                            <i class="far fa-clock me-2"></i>
+                                            <span class="fw-bold">{{ rangeTimeDisplay }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div style="width: 100px;">
+                                            <input type="number" formControlName="DURATION" 
+                                                class="form-control text-center fw-bold" 
+                                                min="5" step="5">
+                                        </div>
+
+                                        <div class="d-flex gap-2 time-chip-group">
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" (click)="setDuration(30)">
+                                                30p
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" (click)="setDuration(60)">
+                                                60p
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" (click)="setDuration(90)">
+                                                90p
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" (click)="setDuration(120)">
+                                                120p
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-muted">Khách hàng</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0"><i class="far fa-user"></i></span>
+                                        <div class="form-control border-start-0 shadow-none">{{
+                                            customer.cuS_NAME 
+                                        }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-muted">Bác sĩ *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0"><i class="fas fa-user-md text-primary"></i></span>
+                                        <app-dropdown 
+                                            [dataList]="listDoctors" 
+                                            labelField="emP_NAME" 
+                                            valueField="emP_ID" 
+                                            class="form-select border-start-0 shadow-none"
+                                            (change)="loadExistingAppointments()"
+                                            [(selectedValue)]="selectedDoctor">
+                                        </app-dropdown> 
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="border rounded bg-white shadow-sm overflow-hidden">
+                                        <div class="p-2 px-3 d-flex justify-content-between align-items-center cursor-pointer border-bottom" (click)="isHidenAssistant = !isHidenAssistant">
+                                            <span class="small fw-bold text-primary"><i class="fas fa-users-cog me-2"></i>Chỉ định phụ tá</span>
+                                            <i class="fas fa-chevron-down small text-muted"></i>
+                                        </div>
+
+                                        <div [hidden]="!isHidenAssistant">
+                                            <div class="p-3 bg-light">
+                                                <div class="row g-2">
+                                                    <div class="col-6">
+                                                        <label class="small fw-bold text-muted mb-1">Phụ tá 1</label>
+                                                        <div class="dropdown-wrapper">
+                                                            <app-dropdown 
+                                                                [dataList]="listAssistants" 
+                                                                labelField="emP_NAME" 
+                                                                valueField="emP_ID" 
+                                                                placeholder="-- Chọn phụ tá --"
+                                                                [(selectedValue)]="selectedAssistant1"
+                                                                >
+                                                            </app-dropdown> 
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-6">
+                                                        <label class="small fw-bold text-muted mb-1">Phụ tá 2</label>
+                                                        <div class="dropdown-wrapper">
+                                                            <app-dropdown 
+                                                                [dataList]="listAssistants" 
+                                                                labelField="emP_NAME" 
+                                                                valueField="emP_ID" 
+                                                                placeholder="-- Chọn phụ tá --"
+                                                                [(selectedValue)]="selectedAssistant2">
+                                                            </app-dropdown> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-muted">Nội dung</label>
+                                    <textarea formControlName="MED_CONTENT" rows="2" class="form-control shadow-none" placeholder="Ghi chú..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 bg-white p-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" (click)="close()">HỦY BỎ</button>
+                    <!-- [disabled]="!appointmentForm.valid || saving" -->
+                    <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow" >
+                        XÁC NHẬN ĐẶT LỊCH
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

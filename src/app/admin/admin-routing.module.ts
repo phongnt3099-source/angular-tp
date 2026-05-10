@@ -96,6 +96,14 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     //     data: { permission: 'Pages.DemoUiComponents' },
                     // },
                     {
+                        path: 'appointment-list',
+                        loadChildren: () =>
+                            import('./appointment-components/appointment-components.module').then(
+                                (m) => m.AppointmentComponentsModule
+                            ),
+                        data: { permission: '' },
+                    },
+                    {
                         path: 'customer-list',
                         loadChildren: () =>
                             import('./customer-components/customer-components.module').then(

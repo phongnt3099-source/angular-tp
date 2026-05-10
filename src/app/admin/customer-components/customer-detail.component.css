@@ -6,12 +6,27 @@
 
 /* Header & Avatar */
 .avatar-large {
-    width: 65px; height: 65px;
-    background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+    width: 65px; 
+    height: 65px;
     border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 26px; font-weight: bold;
-    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    color: white; 
+    font-size: 26px; 
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+/* Màu Xanh (Nam hoặc Mặc định) */
+.bg-male {
+    background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+/* Màu Hồng (Nữ) - Tông hồng phấn sang trọng */
+.bg-female {
+    background: linear-gradient(135deg, #f472b6, #db2777);
+    box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
 }
 
 /* Nút không bị tràn */
@@ -211,4 +226,9 @@ textarea.form-control:focus {
     max-width: 100px;
     opacity: 1;
     color: #4f46e5;
+}
+
+/* Class viền hồng cho nữ */
+.border-female {
+    border-color: #f472b6 !important; /* Màu hồng Pink 400 */
 }

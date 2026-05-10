@@ -1,0 +1,13 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Khách Hàng' | localize">
+        <div role="actions">
+            <button *ngIf="'Pages.Tenants.Create' | permission" class="btn btn-primary" (click)="createCustomer()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    {{ 'Thêm ' | localize }}
+                </span>
+            </button>
+        </div>
+    </sub-header>
+    
+</div>

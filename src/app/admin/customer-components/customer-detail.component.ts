@@ -7,6 +7,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@node_modules/@angular/router';
+import { CreateAppointmentModalComponent } from '../appointment-components/create-appointment-modal.component';
 
 @Component({
     templateUrl: './customer-detail.component.html',
@@ -16,6 +17,7 @@ import { ActivatedRoute, Router } from '@node_modules/@angular/router';
 export class CustomerDetailComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('createCustomerModal', { static: true }) createCustomerModal!: CreateCustomerModalComponent;
+    @ViewChild('createAppointmentModal', { static: true }) createAppointmentModal!: CreateAppointmentModalComponent;
     @ViewChild('paginator', { static: true }) paginator!: Paginator;
     alertVisible = true;
     inputModel: CM_CUSTOMER_ENTITY = new CM_CUSTOMER_ENTITY();
@@ -38,6 +40,15 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
             this.goBack();
             });
     }
+    getDisplayName(fullName: string): string {
+    if (!fullName) return '';
+    
+    // Cắt chuỗi theo khoảng trắng và lấy phần tử cuối cùng
+    const words = fullName.trim().split(' ');
+    const firstName = words[words.length - 1];
+
+    return firstName; 
+}
     printProfile(): void {
         // Logic to print customer profile
     }
@@ -87,7 +98,7 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
         // Logic to add treatment
     }
     addAppointment(): void {
-        // Logic to add appointment
+        this.createAppointmentModal.show(this.inputModel.cuS_ID);
     }
     editCustomer(): void{
       this.createCustomerModal.show(this.inputModel.cuS_ID);

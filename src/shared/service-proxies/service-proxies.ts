@@ -738,6 +738,298 @@ export class AccountServiceProxy {
 }
 
 @Injectable()
+export class AppointmentServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    mED_APPOINTMENT_GetById(id: string | undefined): Observable<MED_APPOINTMENT_ENTITY> {
+        let url_ = this.baseUrl + "/api/services/app/Appointment/MED_APPOINTMENT_GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMED_APPOINTMENT_GetById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMED_APPOINTMENT_GetById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MED_APPOINTMENT_ENTITY>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MED_APPOINTMENT_ENTITY>;
+        }));
+    }
+
+    protected processMED_APPOINTMENT_GetById(response: HttpResponseBase): Observable<MED_APPOINTMENT_ENTITY> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MED_APPOINTMENT_ENTITY.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    mED_APPOINTMENT_Search(body: MED_APPOINTMENT_ENTITY | undefined): Observable<PagedResultDtoOfMED_APPOINTMENT_ENTITY> {
+        let url_ = this.baseUrl + "/api/services/app/Appointment/MED_APPOINTMENT_Search";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMED_APPOINTMENT_Search(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMED_APPOINTMENT_Search(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfMED_APPOINTMENT_ENTITY>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfMED_APPOINTMENT_ENTITY>;
+        }));
+    }
+
+    protected processMED_APPOINTMENT_Search(response: HttpResponseBase): Observable<PagedResultDtoOfMED_APPOINTMENT_ENTITY> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMED_APPOINTMENT_ENTITY.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    mED_APPOINTMENT_Ins(body: MED_APPOINTMENT_ENTITY | undefined): Observable<InsertResult> {
+        let url_ = this.baseUrl + "/api/services/app/Appointment/MED_APPOINTMENT_Ins";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMED_APPOINTMENT_Ins(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMED_APPOINTMENT_Ins(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InsertResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InsertResult>;
+        }));
+    }
+
+    protected processMED_APPOINTMENT_Ins(response: HttpResponseBase): Observable<InsertResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InsertResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    mED_APPOINTMENT_Upd(body: MED_APPOINTMENT_ENTITY | undefined): Observable<InsertResult> {
+        let url_ = this.baseUrl + "/api/services/app/Appointment/MED_APPOINTMENT_Upd";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMED_APPOINTMENT_Upd(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMED_APPOINTMENT_Upd(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InsertResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InsertResult>;
+        }));
+    }
+
+    protected processMED_APPOINTMENT_Upd(response: HttpResponseBase): Observable<InsertResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InsertResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    mED_APPOINTMENT_Del(id: string | undefined): Observable<CommonResult> {
+        let url_ = this.baseUrl + "/api/services/app/Appointment/MED_APPOINTMENT_Del?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMED_APPOINTMENT_Del(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMED_APPOINTMENT_Del(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CommonResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CommonResult>;
+        }));
+    }
+
+    protected processMED_APPOINTMENT_Del(response: HttpResponseBase): Observable<CommonResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CommonResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class AuditLogServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -5618,6 +5910,81 @@ export class EditionServiceProxy {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 !== undefined ? resultData200 : <any>null;
     
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class EmployeeServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param eMP_ROLE (optional) 
+     * @return Success
+     */
+    cM_EMPLOYEE_DROPDOWNLIST(eMP_ROLE: string | undefined): Observable<CM_EMPLOYEE_ENTITY[]> {
+        let url_ = this.baseUrl + "/api/services/app/Employee/CM_EMPLOYEE_DROPDOWNLIST?";
+        if (eMP_ROLE === null)
+            throw new Error("The parameter 'eMP_ROLE' cannot be null.");
+        else if (eMP_ROLE !== undefined)
+            url_ += "EMP_ROLE=" + encodeURIComponent("" + eMP_ROLE) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_EMPLOYEE_DROPDOWNLIST(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_EMPLOYEE_DROPDOWNLIST(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CM_EMPLOYEE_ENTITY[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CM_EMPLOYEE_ENTITY[]>;
+        }));
+    }
+
+    protected processCM_EMPLOYEE_DROPDOWNLIST(response: HttpResponseBase): Observable<CM_EMPLOYEE_ENTITY[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CM_EMPLOYEE_ENTITY.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -17632,6 +17999,118 @@ export interface ICM_CUSTOMER_ENTITY {
     totalPayment: number;
 }
 
+export class CM_EMPLOYEE_ENTITY implements ICM_EMPLOYEE_ENTITY {
+    maxResultCount!: number;
+    skipCount!: number;
+    top!: number | undefined;
+    sorting!: string | undefined;
+    emP_ID!: string | undefined;
+    emP_NAME!: string | undefined;
+    emP_PHONE!: string | undefined;
+    emP_DOB!: DateTime | undefined;
+    emP_CCCD!: string | undefined;
+    emP_GENDER!: string | undefined;
+    emP_ADDRESS!: string | undefined;
+    emP_CITY!: string | undefined;
+    emP_WARD!: string | undefined;
+    emP_NO!: number | undefined;
+    emP_ROLE!: string | undefined;
+    notes!: string | undefined;
+    recorD_STATUS!: string | undefined;
+    isactive!: string | undefined;
+    makeR_ID!: string | undefined;
+    creatE_DT!: DateTime | undefined;
+
+    constructor(data?: ICM_EMPLOYEE_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.top = _data["top"];
+            this.sorting = _data["sorting"];
+            this.emP_ID = _data["emP_ID"];
+            this.emP_NAME = _data["emP_NAME"];
+            this.emP_PHONE = _data["emP_PHONE"];
+            this.emP_DOB = _data["emP_DOB"] ? DateTime.fromISO(_data["emP_DOB"].toString()) : <any>undefined;
+            this.emP_CCCD = _data["emP_CCCD"];
+            this.emP_GENDER = _data["emP_GENDER"];
+            this.emP_ADDRESS = _data["emP_ADDRESS"];
+            this.emP_CITY = _data["emP_CITY"];
+            this.emP_WARD = _data["emP_WARD"];
+            this.emP_NO = _data["emP_NO"];
+            this.emP_ROLE = _data["emP_ROLE"];
+            this.notes = _data["notes"];
+            this.recorD_STATUS = _data["recorD_STATUS"];
+            this.isactive = _data["isactive"];
+            this.makeR_ID = _data["makeR_ID"];
+            this.creatE_DT = _data["creatE_DT"] ? DateTime.fromISO(_data["creatE_DT"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CM_EMPLOYEE_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new CM_EMPLOYEE_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["top"] = this.top;
+        data["sorting"] = this.sorting;
+        data["emP_ID"] = this.emP_ID;
+        data["emP_NAME"] = this.emP_NAME;
+        data["emP_PHONE"] = this.emP_PHONE;
+        data["emP_DOB"] = this.emP_DOB ? this.emP_DOB.toString() : <any>undefined;
+        data["emP_CCCD"] = this.emP_CCCD;
+        data["emP_GENDER"] = this.emP_GENDER;
+        data["emP_ADDRESS"] = this.emP_ADDRESS;
+        data["emP_CITY"] = this.emP_CITY;
+        data["emP_WARD"] = this.emP_WARD;
+        data["emP_NO"] = this.emP_NO;
+        data["emP_ROLE"] = this.emP_ROLE;
+        data["notes"] = this.notes;
+        data["recorD_STATUS"] = this.recorD_STATUS;
+        data["isactive"] = this.isactive;
+        data["makeR_ID"] = this.makeR_ID;
+        data["creatE_DT"] = this.creatE_DT ? this.creatE_DT.toString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ICM_EMPLOYEE_ENTITY {
+    maxResultCount: number;
+    skipCount: number;
+    top: number | undefined;
+    sorting: string | undefined;
+    emP_ID: string | undefined;
+    emP_NAME: string | undefined;
+    emP_PHONE: string | undefined;
+    emP_DOB: DateTime | undefined;
+    emP_CCCD: string | undefined;
+    emP_GENDER: string | undefined;
+    emP_ADDRESS: string | undefined;
+    emP_CITY: string | undefined;
+    emP_WARD: string | undefined;
+    emP_NO: number | undefined;
+    emP_ROLE: string | undefined;
+    notes: string | undefined;
+    recorD_STATUS: string | undefined;
+    isactive: string | undefined;
+    makeR_ID: string | undefined;
+    creatE_DT: DateTime | undefined;
+}
+
 export class CacheDto implements ICacheDto {
     name!: string | undefined;
 
@@ -25974,6 +26453,114 @@ export interface ILocalizableComboboxItemSourceDto {
     items: LocalizableComboboxItemDto[] | undefined;
 }
 
+export class MED_APPOINTMENT_ENTITY implements IMED_APPOINTMENT_ENTITY {
+    maxResultCount!: number;
+    skipCount!: number;
+    top!: number | undefined;
+    sorting!: string | undefined;
+    apP_ID!: number;
+    apP_DATE!: DateTime;
+    rangE_TIME!: number;
+    hour!: string | undefined;
+    minute!: string | undefined;
+    sloT_NAME!: string | undefined;
+    apP_CUST_ID!: string | undefined;
+    apP_DOC_ID!: string | undefined;
+    apP_ASSISTANT_ID_1!: string | undefined;
+    apP_ASSISTANT_ID_2!: string | undefined;
+    apP_STATUS!: string | undefined;
+    apP_CONTENT!: string | undefined;
+    recorD_STATUS!: string | undefined;
+    makeR_ID!: string | undefined;
+    creatE_DT!: DateTime | undefined;
+
+    constructor(data?: IMED_APPOINTMENT_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.top = _data["top"];
+            this.sorting = _data["sorting"];
+            this.apP_ID = _data["apP_ID"];
+            this.apP_DATE = _data["apP_DATE"] ? DateTime.fromISO(_data["apP_DATE"].toString()) : <any>undefined;
+            this.rangE_TIME = _data["rangE_TIME"];
+            this.hour = _data["hour"];
+            this.minute = _data["minute"];
+            this.sloT_NAME = _data["sloT_NAME"];
+            this.apP_CUST_ID = _data["apP_CUST_ID"];
+            this.apP_DOC_ID = _data["apP_DOC_ID"];
+            this.apP_ASSISTANT_ID_1 = _data["apP_ASSISTANT_ID_1"];
+            this.apP_ASSISTANT_ID_2 = _data["apP_ASSISTANT_ID_2"];
+            this.apP_STATUS = _data["apP_STATUS"];
+            this.apP_CONTENT = _data["apP_CONTENT"];
+            this.recorD_STATUS = _data["recorD_STATUS"];
+            this.makeR_ID = _data["makeR_ID"];
+            this.creatE_DT = _data["creatE_DT"] ? DateTime.fromISO(_data["creatE_DT"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): MED_APPOINTMENT_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new MED_APPOINTMENT_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["top"] = this.top;
+        data["sorting"] = this.sorting;
+        data["apP_ID"] = this.apP_ID;
+        data["apP_DATE"] = this.apP_DATE ? this.apP_DATE.toString() : <any>undefined;
+        data["rangE_TIME"] = this.rangE_TIME;
+        data["hour"] = this.hour;
+        data["minute"] = this.minute;
+        data["sloT_NAME"] = this.sloT_NAME;
+        data["apP_CUST_ID"] = this.apP_CUST_ID;
+        data["apP_DOC_ID"] = this.apP_DOC_ID;
+        data["apP_ASSISTANT_ID_1"] = this.apP_ASSISTANT_ID_1;
+        data["apP_ASSISTANT_ID_2"] = this.apP_ASSISTANT_ID_2;
+        data["apP_STATUS"] = this.apP_STATUS;
+        data["apP_CONTENT"] = this.apP_CONTENT;
+        data["recorD_STATUS"] = this.recorD_STATUS;
+        data["makeR_ID"] = this.makeR_ID;
+        data["creatE_DT"] = this.creatE_DT ? this.creatE_DT.toString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IMED_APPOINTMENT_ENTITY {
+    maxResultCount: number;
+    skipCount: number;
+    top: number | undefined;
+    sorting: string | undefined;
+    apP_ID: number;
+    apP_DATE: DateTime;
+    rangE_TIME: number;
+    hour: string | undefined;
+    minute: string | undefined;
+    sloT_NAME: string | undefined;
+    apP_CUST_ID: string | undefined;
+    apP_DOC_ID: string | undefined;
+    apP_ASSISTANT_ID_1: string | undefined;
+    apP_ASSISTANT_ID_2: string | undefined;
+    apP_STATUS: string | undefined;
+    apP_CONTENT: string | undefined;
+    recorD_STATUS: string | undefined;
+    makeR_ID: string | undefined;
+    creatE_DT: DateTime | undefined;
+}
+
 export class MarkAllUnreadMessagesOfUserAsReadInput implements IMarkAllUnreadMessagesOfUserAsReadInput {
     tenantId!: number | undefined;
     userId!: number;
@@ -27877,6 +28464,54 @@ export class PagedResultDtoOfLinkedUserDto implements IPagedResultDtoOfLinkedUse
 
 export interface IPagedResultDtoOfLinkedUserDto {
     items: LinkedUserDto[] | undefined;
+    totalCount: number;
+}
+
+export class PagedResultDtoOfMED_APPOINTMENT_ENTITY implements IPagedResultDtoOfMED_APPOINTMENT_ENTITY {
+    items!: MED_APPOINTMENT_ENTITY[] | undefined;
+    totalCount!: number;
+
+    constructor(data?: IPagedResultDtoOfMED_APPOINTMENT_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MED_APPOINTMENT_ENTITY.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMED_APPOINTMENT_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMED_APPOINTMENT_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfMED_APPOINTMENT_ENTITY {
+    items: MED_APPOINTMENT_ENTITY[] | undefined;
     totalCount: number;
 }
 

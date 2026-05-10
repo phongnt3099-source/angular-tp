@@ -123,6 +123,12 @@ export class AppNavigationService {
             //     '/app/admin/demo-ui-components'
             // ),
             new AppMenuItem(
+                'Lịch hẹn',
+                '',
+                'fas fa-calendar-alt',
+                '/app/admin/appointment-list'
+            ),
+            new AppMenuItem(
                 'Khách Hàng',
                 '',
                 'fas fa-users',

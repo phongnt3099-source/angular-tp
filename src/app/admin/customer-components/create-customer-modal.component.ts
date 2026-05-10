@@ -48,7 +48,6 @@ export class CreateCustomerModalComponent extends AppComponentBase {
         private _customerService: CustomerServiceProxy
     ) {
         super(injector);
-        console.log(this);
     }
 
     show(id?: string): void {
