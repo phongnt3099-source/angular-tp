@@ -414,3 +414,50 @@ app-dropdown {
     border-width: 2px !important;
     border-color: #cbd5e1 !important;
 }
+
+.hour-group {
+    min-width: 75px;
+    flex-grow: 0;
+}
+
+.slot-free {
+    width: 12px;
+    height: 12px;
+    background-color: #22c55e; /* Màu xanh lá rảnh */
+    border-radius: 2px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.slot-busy {
+    width: 12px;
+    height: 12px;
+    background-color: #ef4444; /* Màu đỏ bận */
+    border-radius: 2px;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.slot-free:hover {
+    transform: scale(1.3);
+    background-color: #16a34a;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+
+/* Ô bị vô hiệu hóa (Bận hoặc Đã qua) */
+.slot-disabled {
+    width: 12px; height: 12px;
+    background-color: #cbd5e1; /* Màu xám nhạt */
+    border-radius: 2px;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Nếu bạn muốn phân biệt rõ giờ Bác sĩ đang bận (Đỏ) */
+.slot-busy-real {
+    background-color: #ef4444 !important;
+}

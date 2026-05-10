@@ -12,7 +12,7 @@
                 <button type="button" class="btn-close btn-close-white shadow-none" (click)="close()" aria-label="Close"></button>
             </div>
 
-            <form [formGroup]="appointmentForm" (ngSubmit)="save()" *ngIf="active">
+            <form #form="ngForm" role="form" novalidate class="form-validation" (ngSubmit)="save()" *ngIf="active">
                 <div class="modal-body p-0 bg-white">
                     <div class="row g-0">
                         <div class="col-lg-5 border-end p-4">
@@ -61,30 +61,39 @@
                                 
                                 <div class="border-top mt-3 pt-3 px-2">
                                     <div class="small text-muted text-uppercase mb-2 fw-bold">
-                                        {{ getDayName(appointmentForm.get('MED_DATE').value) }}, 
-                                        {{ appointmentForm.get('MED_DATE').value | date: 'dd/MM/yyyy' }}
+                                        {{ getDayName(appointmentForm.apP_DATE) }}, 
+                                        {{ appointmentForm.apP_DATE | date: 'dd/MM/yyyy' }}
                                     </div>
                                     <div class="mb-3 p-3 rounded-3 bg-light border border-dashed">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="small fw-bold text-primary">
-                                                <i class="fas fa-magic me-1"></i> Khung giờ gợi ý
+                                                <i class="fas fa-clock me-1"></i> Mật độ lịch hẹn trong ngày
                                             </span>
-                                            <span class="badge bg-success-subtle text-success" style="font-size: 10px;">Còn trống</span>
+                                            <div class="d-flex gap-2">
+                                                <span class="badge bg-success" style="font-size: 9px;">Trống</span>
+                                                <span class="badge bg-danger" style="font-size: 9px;">Bận</span>
+                                            </div>
                                         </div>
 
                                         <div class="d-flex flex-wrap gap-2">
                                             @for (hour of hours; track hour) {
-                                                <button 
-                                                    type="button"
-                                                    (click)="selectHour(hour)"
-                                                    [disabled]="isHourBusy(hour)"
-                                                    [class]="isHourBusy(hour) ? 'btn-time-busy' : 'btn-time-free'">
-                                                    {{ hour }}:00
-                                                </button>
+                                                <div class="hour-group p-1 border rounded bg-white shadow-sm">
+                                                    <div class="text-center small fw-bold border-bottom mb-1" style="font-size: 11px;">{{ hour }}h</div>
+                                                    <div class="d-flex gap-1 justify-content-center">
+                                                        @for (min of ['00', '15', '30', '45']; track min) {
+                                                            <div 
+                                                                (click)="!isTimeDisabled(hour, min) && selectTime(hour, min)"
+                                                                [class]="isTimeDisabled(hour, min) ? 'slot-disabled' : 'slot-free'"
+                                                                [title]="hour + ':' + min + (isTimeDisabled(hour, min) ? ' - Không thể chọn' : ' - Trống')">
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
                                             }
                                         </div>
-                                        <div class="mt-2 small text-muted italic" style="font-size: 11px;">
-                                            * Các giờ gạch chéo là bác sĩ đã có lịch hẹn.
+
+                                        <div class="mt-2 small text-muted italic" style="font-size: 10px;">
+                                            * Mỗi ô tương ứng 15 phút. Nhấn vào ô xanh để chọn giờ nhanh.
                                         </div>
                                     </div>
                                     
@@ -93,16 +102,16 @@
                                         
                                         <app-simple-dropdown 
                                             [dataList]="hours" 
-                                            [disabled]="selectedDoctor"
-                                            formControlName="HOUR">
+                                            (change)="appointmentForm.hour = selectedHour"
+                                            [(selectedValue)]="selectedHour">
                                         </app-simple-dropdown>
                                         
                                         <span class="time-separator">:</span>
                                         
                                         <app-simple-dropdown 
                                             [dataList]="minutes" 
-                                            [disabled]="selectedDoctor"
-                                            formControlName="MINUTE">
+                                            (change)="appointmentForm.minute = selectedMinute"
+                                            [(selectedValue)]="selectedMinute">
                                         </app-simple-dropdown>
                                     </div>
                                 </div>
@@ -122,9 +131,15 @@
 
                                     <div class="d-flex align-items-center gap-3">
                                         <div style="width: 100px;">
-                                            <input type="number" formControlName="DURATION" 
-                                                class="form-control text-center fw-bold" 
-                                                min="5" step="5">
+                                            <input type="number"  
+                                                    id="rangE_TIME"
+                                                    #rangeTimeInput="ngModel" 
+                                                    name="rangeTimeInput"
+                                                    class="form-control text-center fw-bold" 
+                                                    min="5" step="5"
+                                                    [ngClass]="{ edited: appointmentForm.rangE_TIME}"
+                                                    [(ngModel)]="appointmentForm.rangE_TIME"
+                                                >
                                         </div>
 
                                         <div class="d-flex gap-2 time-chip-group">
@@ -163,8 +178,8 @@
                                             labelField="emP_NAME" 
                                             valueField="emP_ID" 
                                             class="form-select border-start-0 shadow-none"
-                                            (change)="loadExistingAppointments()"
-                                            [(selectedValue)]="selectedDoctor">
+                                            [(selectedValue)]="selectedDoctor"
+                                            (selectedValueChange)="loadExistingAppointments($event)">
                                         </app-dropdown> 
                                     </div>
                                 </div>
@@ -213,7 +228,7 @@
 
                                 <div class="col-12">
                                     <label class="form-label small fw-bold text-muted">Nội dung</label>
-                                    <textarea formControlName="MED_CONTENT" rows="2" class="form-control shadow-none" placeholder="Ghi chú..."></textarea>
+                                    <textarea #ContentInput="ngModel" name="Content" id="ContentInput" type="text" [ngClass]="{ edited: appointmentForm.apP_CONTENT}" [(ngModel)]="appointmentForm.apP_CONTENT" rows="10" class="form-control shadow-none" placeholder="Ghi chú..."></textarea>
                                 </div>
                             </div>
                         </div>
