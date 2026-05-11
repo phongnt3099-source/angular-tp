@@ -22,9 +22,10 @@ export class CustomerComponentsComponent extends AppComponentBase implements OnI
     constructor(
       injector: Injector,
       private _customerService: CustomerServiceProxy,
-      private _router: Router
+      private _router: Router,
     ) {
         super(injector);
+      console.log(this);
     }
     ngOnInit(): void {
       console.log('Thêm');

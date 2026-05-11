@@ -71,7 +71,6 @@
                                             </span>
                                             <div class="d-flex gap-2">
                                                 <span class="badge bg-success" style="font-size: 9px;">Trống</span>
-                                                <span class="badge bg-danger" style="font-size: 9px;">Bận</span>
                                             </div>
                                         </div>
 
@@ -236,6 +235,14 @@
                 </div>
 
                 <div class="modal-footer border-0 bg-white p-4">
+                    <div>
+                        @if (appointmentForm.apP_ID) {
+                            <button type="button" class="btn btn-outline-danger me-auto d-flex align-items-center" (click)="onDelete()">
+                                <i class="fas fa-trash-alt me-2"></i>
+                                Xóa lịch hẹn
+                            </button>
+                        }
+                    </div>
                     <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" (click)="close()">HỦY BỎ</button>
                     <!-- [disabled]="!appointmentForm.valid || saving" -->
                     <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow" >

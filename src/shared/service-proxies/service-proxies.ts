@@ -17839,6 +17839,12 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
     sn!: number;
     debtAmount!: number;
     totalPayment!: number;
+    apP_ID!: string | undefined;
+    sloT_NAME!: string | undefined;
+    timE_DISTANCE!: string | undefined;
+    formatteD_DATE!: string | undefined;
+    statuS_COLOR!: string | undefined;
+    onlY_TIME!: string | undefined;
 
     constructor(data?: ICM_CUSTOMER_ENTITY) {
         if (data) {
@@ -17894,6 +17900,12 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
             this.sn = _data["sn"];
             this.debtAmount = _data["debtAmount"];
             this.totalPayment = _data["totalPayment"];
+            this.apP_ID = _data["apP_ID"];
+            this.sloT_NAME = _data["sloT_NAME"];
+            this.timE_DISTANCE = _data["timE_DISTANCE"];
+            this.formatteD_DATE = _data["formatteD_DATE"];
+            this.statuS_COLOR = _data["statuS_COLOR"];
+            this.onlY_TIME = _data["onlY_TIME"];
         }
     }
 
@@ -17949,6 +17961,12 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
         data["sn"] = this.sn;
         data["debtAmount"] = this.debtAmount;
         data["totalPayment"] = this.totalPayment;
+        data["apP_ID"] = this.apP_ID;
+        data["sloT_NAME"] = this.sloT_NAME;
+        data["timE_DISTANCE"] = this.timE_DISTANCE;
+        data["formatteD_DATE"] = this.formatteD_DATE;
+        data["statuS_COLOR"] = this.statuS_COLOR;
+        data["onlY_TIME"] = this.onlY_TIME;
         return data;
     }
 }
@@ -17997,6 +18015,12 @@ export interface ICM_CUSTOMER_ENTITY {
     sn: number;
     debtAmount: number;
     totalPayment: number;
+    apP_ID: string | undefined;
+    sloT_NAME: string | undefined;
+    timE_DISTANCE: string | undefined;
+    formatteD_DATE: string | undefined;
+    statuS_COLOR: string | undefined;
+    onlY_TIME: string | undefined;
 }
 
 export class CM_EMPLOYEE_ENTITY implements ICM_EMPLOYEE_ENTITY {
@@ -26458,7 +26482,7 @@ export class MED_APPOINTMENT_ENTITY implements IMED_APPOINTMENT_ENTITY {
     skipCount!: number;
     top!: number | undefined;
     sorting!: string | undefined;
-    apP_ID!: number;
+    apP_ID!: string | undefined;
     apP_DATE!: string | undefined;
     rangE_TIME!: number;
     hour!: string | undefined;
@@ -26473,7 +26497,7 @@ export class MED_APPOINTMENT_ENTITY implements IMED_APPOINTMENT_ENTITY {
     apP_CONTENT!: string | undefined;
     recorD_STATUS!: string | undefined;
     makeR_ID!: string | undefined;
-    creatE_DT!: DateTime | undefined;
+    creatE_DT!: string | undefined;
 
     constructor(data?: IMED_APPOINTMENT_ENTITY) {
         if (data) {
@@ -26505,7 +26529,7 @@ export class MED_APPOINTMENT_ENTITY implements IMED_APPOINTMENT_ENTITY {
             this.apP_CONTENT = _data["apP_CONTENT"];
             this.recorD_STATUS = _data["recorD_STATUS"];
             this.makeR_ID = _data["makeR_ID"];
-            this.creatE_DT = _data["creatE_DT"] ? DateTime.fromISO(_data["creatE_DT"].toString()) : <any>undefined;
+            this.creatE_DT = _data["creatE_DT"];
         }
     }
 
@@ -26537,7 +26561,7 @@ export class MED_APPOINTMENT_ENTITY implements IMED_APPOINTMENT_ENTITY {
         data["apP_CONTENT"] = this.apP_CONTENT;
         data["recorD_STATUS"] = this.recorD_STATUS;
         data["makeR_ID"] = this.makeR_ID;
-        data["creatE_DT"] = this.creatE_DT ? this.creatE_DT.toString() : <any>undefined;
+        data["creatE_DT"] = this.creatE_DT;
         return data;
     }
 }
@@ -26547,7 +26571,7 @@ export interface IMED_APPOINTMENT_ENTITY {
     skipCount: number;
     top: number | undefined;
     sorting: string | undefined;
-    apP_ID: number;
+    apP_ID: string | undefined;
     apP_DATE: string | undefined;
     rangE_TIME: number;
     hour: string | undefined;
@@ -26562,7 +26586,7 @@ export interface IMED_APPOINTMENT_ENTITY {
     apP_CONTENT: string | undefined;
     recorD_STATUS: string | undefined;
     makeR_ID: string | undefined;
-    creatE_DT: DateTime | undefined;
+    creatE_DT: string | undefined;
 }
 
 export class MarkAllUnreadMessagesOfUserAsReadInput implements IMarkAllUnreadMessagesOfUserAsReadInput {

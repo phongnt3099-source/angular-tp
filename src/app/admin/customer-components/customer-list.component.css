@@ -132,3 +132,169 @@ th {
     height: 50px !important;
     font-size: 14px !important;
 }
+
+/* Style chung cho Pill */
+.status-pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+/* 1. Trạng thái TRỄ (Nền xám nhạt, chữ đen/xám đậm) */
+.pill-late {
+    background-color: #f3f4f6; /* Gray 100 */
+    color: #1f2937; /* Gray 800 */
+    border: 1px solid #e5e7eb;
+}
+
+/* 2. Trạng thái SẮP ĐẾN (Nền đỏ nhạt, chữ đỏ đậm) */
+.pill-soon {
+    background-color: #fef2f2; /* Red 50 */
+    color: #dc2626; /* Red 600 */
+    border: 1px solid #fee2e2;
+}
+
+/* 3. Trạng thái TƯƠNG LAI (Nền xanh nhạt, chữ xanh đậm) */
+.pill-future {
+    background-color: #ecfdf5; /* Emerald 50 */
+    color: #059669; /* Emerald 600 */
+    border: 1px solid #d1fae5;
+}
+
+/* Hiệu ứng nhấp nháy nhẹ cho ca đang TRỄ */
+.pill-late {
+    animation: pulse-gray 2s infinite;
+}
+
+@keyframes pulse-gray {
+    0% { background-color: #f3f4f6; }
+    50% { background-color: #e5e7eb; }
+    100% { background-color: #f3f4f6; }
+}
+/* Container chính chống lệch */
+.appointment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Căn giữa theo trục ngang */
+    justify-content: center; /* Căn giữa theo trục dọc */
+    gap: 2px; /* Khoảng cách giữa 3 hàng */
+    width: 100%;
+}
+
+.time-main {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.date-sub {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+/* Tùy chỉnh Badge trạng thái dạng chữ màu có nền nhạt */
+.status-text {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px; /* Bo tròn pill */
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* 1. Ca trễ (Xám đen) */
+.late-mode {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+/* 2. Ca sắp đến (Đỏ nhạt) */
+.soon-mode {
+    background-color: #fff1f2;
+    color: #e11d48;
+    border: 1px solid #fecdd3;
+}
+
+/* 3. Ca tương lai (Xanh nhạt) */
+.future-mode {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #d1fae5;
+}
+
+/* Căn chỉnh lại cho table cell */
+td.align-middle {
+    vertical-align: middle !important;
+}
+/* Khung bao chung cho 3 dòng */
+.appointment-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 12px; /* Bo góc cực đẹp */
+    margin: 4px auto;
+    width: 90%;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* Kiểu chữ cho từng dòng */
+.time-row {
+    font-size: 13.5px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+
+.date-row {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-bottom: 4px;
+}
+
+.status-badge {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* --- MÀU SẮC CHO TỪNG TRẠNG THÁI --- */
+
+/* 1. Ca TRỄ (Nền xám tối, chữ trắng hoặc xám đậm) */
+.card-late {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #343a40;
+}
+.card-late .time-row { color: #212529; }
+
+/* 2. Ca SẮP TỚI (Nền đỏ nhạt, chữ đỏ đậm) - Ưu tiên nhìn thấy */
+.card-soon {
+    background-color: #fff5f5;
+    border-color: #ffc9c9;
+    color: #e03131;
+}
+.card-soon .time-row { color: #c92a2a; }
+
+/* 3. Ca TƯƠNG LAI (Nền xanh nhạt, chữ xanh đậm) */
+.card-future {
+    background-color: #ebfbee;
+    border-color: #b2f2bb;
+    color: #2b8a3e;
+}
+.card-future .time-row { color: #099268; }
+
+/* Hiệu ứng bóng đổ nhẹ khi di chuột qua */
+.appointment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}

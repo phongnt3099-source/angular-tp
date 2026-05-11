@@ -76,9 +76,8 @@
                                         {{ 'Đang khám' | localize }}
                                         <p-sortIcon field="cuS_PHONE"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="cuS_PHONE">
+                                    <th style="text-align: center;">
                                         {{ 'Lịch hẹn tới' | localize }}
-                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="cuS_PHONE">
                                         {{ 'Hoạt động gần đây' | localize }}
@@ -134,9 +133,32 @@
                                         <span class="p-column-title">{{ 'Đang khám' | localize }}</span>
                                         {{ record.cuS_MEDICAL_HISTORY_NOTES }}
                                     </td>
-                                    <td>
-                                        <span class="p-column-title">{{ 'Lịch hẹn tới' | localize }}</span>
-                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
+                                   <td class="text-center align-middle" style="width: 180px;">
+                                        <div *ngIf="record.timE_DISTANCE" 
+                                            class="appointment-card"
+                                            [ngClass]="{
+                                                'card-late': record.timE_DISTANCE.includes('Trễ'),
+                                                'card-soon': record.timE_DISTANCE.includes('phút tới') || (record.timE_DISTANCE.includes('giờ tới') && !record.timE_DISTANCE.includes('Trễ')),
+                                                'card-future': record.timE_DISTANCE.includes('ngày tới')
+                                            }">
+                                            
+                                            <div class="time-row fw-bold">
+                                            {{ record.onlY_TIME }}
+                                            </div>
+
+                                            <div class="date-row">
+                                            {{ record.formatteD_DATE }}
+                                            </div>
+
+                                            <div class="status-row">
+                                            <span class="status-badge">
+                                                <i class="fas fa-clock me-1"></i>
+                                                {{ record.timE_DISTANCE }}
+                                            </span>
+                                            </div>
+
+                                        </div>
+                                        <span *ngIf="!record.timE_DISTANCE" class="text-muted small">-</span>
                                     </td>
                                     <td>
                                         <span class="p-column-title">{{ 'Hoạt động gần đây' | localize }}</span>

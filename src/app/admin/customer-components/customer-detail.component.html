@@ -92,10 +92,21 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="stat-card p-3 shadow-sm bg-primary-gradient text-white rounded-3 border-0">
-                        <div class="small fw-bold opacity-75">LỊCH HẸN TỚI</div>
-                        <div class="fw-bold fs-5 mt-1">08/05/2026</div>
-                        <div class="small fw-medium">19:30 - 20:15</div>
+                    <div class="stat-card p-3 shadow-sm bg-primary-gradient text-white rounded-3 border-0 cursor-pointer" (click)="addAppointment(inputModel.apP_ID)">
+                        <div class="fw-bold fs-5 mt-1">
+                            <div *ngIf="inputModel.sloT_NAME; else noAppointment">
+                                <div class="small fw-bold opacity-75">LỊCH HẸN TỚI</div>
+                                {{ inputModel.sloT_NAME.split(' ')[0] }}
+                            </div>
+
+                            <ng-template #noAppointment>
+                                <div class="text-white d-flex align-items-center">
+                                    <i class="fas fa-calendar-plus text-white me-2" style="width: 20px;"></i>
+                                    Thêm lịch hẹn
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="small fw-medium">{{inputModel.sloT_NAME?.split(' ').slice(1).join(' ')||''}}</div>
                     </div>
                 </div>
         </div>

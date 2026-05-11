@@ -8,6 +8,7 @@ import { Paginator } from 'primeng/paginator';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@node_modules/@angular/router';
 import { CreateAppointmentModalComponent } from '../appointment-components/create-appointment-modal.component';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
     templateUrl: './customer-detail.component.html',
@@ -25,20 +26,29 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
       injector: Injector,
       private _customerService: CustomerServiceProxy,
       private activeRoute: ActivatedRoute,
-      private _router: Router
+      private _router: Router,
+      private _modalService: BsModalService
     ) {
         super(injector);
         this.inputModel.cuS_ID = this.getRouteParam('customerId');
-        console.log(this);
     }
     ngOnInit(): void {
         this.getCustomer();
     }
     deleteCustomer(): void {
-        this._customerService.cM_CUSTOMER_Del(this.inputModel.cuS_ID).subscribe(() => {
-            this.notify.success(this.l('Xóa khách hàng thành công'));
-            this.goBack();
-            });
+    this.message.confirm(
+                'Bạn có chắc chắn muốn xóa lịch hẹn này không?',
+                'Xác nhận xóa',
+                (isConfirmed) => {
+                    if (isConfirmed) {
+                        this._customerService.cM_CUSTOMER_Del(this.inputModel.cuS_ID).subscribe(() => {
+                        this.notify.success(this.l('Xóa khách hàng thành công'));
+                        this.goBack();
+                        });
+                    }
+                }
+            );
+        
     }
     getDisplayName(fullName: string): string {
     if (!fullName) return '';
@@ -97,8 +107,8 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
     addTreatment(): void {
         // Logic to add treatment
     }
-    addAppointment(): void {
-        this.createAppointmentModal.show(this.inputModel.cuS_ID);
+    addAppointment(Id?: string): void {
+        this.createAppointmentModal.show(this.inputModel.cuS_ID,Id)
     }
     editCustomer(): void{
       this.createCustomerModal.show(this.inputModel.cuS_ID);
