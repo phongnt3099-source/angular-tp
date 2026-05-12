@@ -1,13 +1,15 @@
 <div [@routerTransition]>
-    <sub-header [title]="'Khách Hàng' | localize">
-        <div role="actions">
-            <button *ngIf="'Pages.Tenants.Create' | permission" class="btn btn-primary" (click)="createCustomer()">
-                <i class="fa fa-plus btn-md-icon"></i>
-                <span class="d-none d-md-inline-block">
-                    {{ 'Thêm ' | localize }}
-                </span>
-            </button>
-        </div>
-    </sub-header>
-    
+  <app-header 
+  [activeView]="currentView" 
+  [title]="'Lịch hẹn'"
+  [permission]="'Pages.Tenants.Create' | permission"
+  (viewChanged)="changeView($event)"
+  (addClicked)="openAddModal()">
+</app-header>
+
+<div class="container-fluid px-4 mt-4">
+  <div class="main-calendar-card shadow-sm">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+</div>
 </div>

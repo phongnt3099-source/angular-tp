@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "declaration": false,
     "experimentalDecorators": true,
     "lib": ["es6", "dom"],

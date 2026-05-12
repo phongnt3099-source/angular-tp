@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-    <sub-header [title]="'Khách Hàng' | localize">
+    <!-- <sub-header [title]="'Khách Hàng' | localize">
         <div role="actions">
             <button *ngIf="'Pages.Tenants.Create' | permission" class="btn btn-primary" (click)="createCustomer()">
                 <i class="fa fa-plus btn-md-icon"></i>
@@ -8,7 +8,14 @@
                 </span>
             </button>
         </div>
-    </sub-header>
+    </sub-header> -->
+    
+  <app-header 
+    [title]= "'Danh Sách Bệnh Nhân'"
+    [buttonText] = "'Thêm mới'"
+    [permission]="'Pages.Tenants.Create' | permission"
+    (addClicked)="createCustomer()">
+</app-header>
     <div [class]="containerClass">
         <div class="card card-custom gutter-b">
             <div class="card-body">
@@ -46,72 +53,61 @@
                         >
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <!-- <th class="center">
-                                        <span style="width: 40px">{{l("No")}}</span>
-                                    </th> -->
-                                    <th pSortableColumn="cuS_CODE">
+                                    <th class="center">
+                                        <span style="width: 40px">{{l("STT")}}</span>
+                                    </th>
+                                    <th style="text-align: center; width: 100px;">
                                         {{ 'Mã KH' | localize }}
-                                        <p-sortIcon field="cuS_CODE"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="cuS_NAME">
-                                        {{ 'Tên khách hàng' | localize }}
-                                        <p-sortIcon field="cuS_NAME"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="SN">
-                                        {{ 'SN' | localize }}
-                                        <p-sortIcon field="SN"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="age">
-                                        {{ 'Tuổi' | localize }}
-                                        <p-sortIcon field="age"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="cuS_GENDER">
-                                        {{ 'GT' | localize }}
-                                    </th>
-                                    <th pSortableColumn="cuS_PHONE">
-                                        {{ 'Điện thoại' | localize }}
-                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="cuS_PHONE">
-                                        {{ 'Đang khám' | localize }}
-                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
                                     </th>
                                     <th style="text-align: center;">
+                                        {{ 'Tên khách hàng' | localize }}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{ 'SN' | localize }}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{ 'Tuổi' | localize }}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{ 'GT' | localize }}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{ 'Điện thoại' | localize }}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        {{ 'Đang khám' | localize }}
+                                    </th>
+                                    <th style="text-align: center;width: 190px;">
                                         {{ 'Lịch hẹn tới' | localize }}
                                     </th>
-                                    <th pSortableColumn="cuS_PHONE">
+                                    <th style="text-align: center;">
                                         {{ 'Hoạt động gần đây' | localize }}
-                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="cuS_PHONE">
+                                    <th style="text-align: center;">
                                         {{ 'Còn nợ' | localize }}
-                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="cuS_PHONE">
+                                    <th style="text-align: center;">
                                         {{ 'Thanh toán' | localize }}
-                                        <p-sortIcon field="cuS_PHONE"></p-sortIcon>
                                     </th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-record="$implicit">
+                            <ng-template pTemplate="body" let-record="$implicit" let-recordIndex="index">
                                 <tr (click)="viewDetail(record)" class="cursor-pointer-row">
-                                    <!-- <td class="center">
-                                        {{ primengTableHelper.getRecordIndex(record) }}
-                                    </td> -->
-                                    <td>
+                                    <td class="center"><span class="mo-header"></span>{{(filterInput.skipCount + primengTableHelper.records.indexOf(record)) + 1}}</td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'Mã KH' | localize }}</span>
                                         {{ record.cuS_CODE }}
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'Tên khách hàng' | localize }}</span>
                                         <!-- {{ record.cuS_NAME }} -->
                                         <div class="fw-bold text-primary">{{ record.cuS_NAME }}</div>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'SN' | localize }}</span>
                                         {{ record.sn }}
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'Age' | localize }}</span>
                                         {{ record.age }}
                                     </td>
@@ -125,15 +121,15 @@
                                             </i>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'Điện thoại' | localize }}</span>
                                         {{ record.cuS_PHONE }}
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'Đang khám' | localize }}</span>
                                         {{ record.cuS_MEDICAL_HISTORY_NOTES }}
                                     </td>
-                                   <td class="text-center align-middle" style="width: 180px;">
+                                   <td class="text-center align-middle">
                                         <div *ngIf="record.timE_DISTANCE" 
                                             class="appointment-card"
                                             [ngClass]="{
@@ -160,17 +156,17 @@
                                         </div>
                                         <span *ngIf="!record.timE_DISTANCE" class="text-muted small">-</span>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'Hoạt động gần đây' | localize }}</span>
                                         {{ record.cuS_MEDICAL_HISTORY_NOTES }}
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'Còn nợ' | localize }}</span>
                                         <span class="badge bg-danger-subtle text-danger fw-bold px-3">
                                             {{ record.debtAmount | number }}đ
                                         </span>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <span class="p-column-title">{{ 'Thanh toán' | localize }}</span>
                                         <span class="text-success fw-bold">
                                             {{ record.totalPayment | number }}đ
@@ -190,9 +186,7 @@
                                 [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                 [showCurrentPageReport]="true"
-                                [currentPageReportTemplate]="
-                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount
-                                "
+                                [currentPageReportTemplate]="'Tổng số dòng: {totalRecords}'"
                             ></p-paginator>
                         </div>
                     </div>

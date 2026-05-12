@@ -1,0 +1,25 @@
+<div class="dental-header-v3">
+  <div class="container-fluid px-4 py-4">
+    <div class="glass-master-card d-flex justify-content-between align-items-center p-3">
+      
+      <div class="brand-group">
+        <h2 class="brand-text m-0">Thiên Phúc Dental</h2>
+        <div class="d-flex align-items-center mt-1">
+          <span class="badge-system">v{{ appVersion }}</span>
+          <p class="brand-desc mb-0 ms-2">{{ title }}</p>
+        </div>
+      </div>
+
+      <div class="view-pill-switcher" [hidden]="!showSwitcher">
+        <button (click)="onViewChange('timeGridDay')" [class.active]="activeView === 'timeGridDay'">Ngày</button>
+        <button (click)="clickChangeView('timeGridWeek')" [class.active]="activeView === 'timeGridWeek'">Tuần</button>
+        <button (click)="clickChangeView('dayGridMonth')" [class.active]="activeView === 'dayGridMonth'">Tháng</button>
+      </div>
+
+      <button class="btn-prime-add shadow" [hidden]="!permission" (click)="onAddClick()" >
+        <i class="fas fa-plus-circle me-2"></i>{{ buttonText }}
+      </button>
+
+    </div>
+  </div>
+</div>

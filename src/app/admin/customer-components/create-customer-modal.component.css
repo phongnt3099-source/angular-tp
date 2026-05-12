@@ -108,3 +108,81 @@
 .custom-radio-large:hover .form-check-label {
     color: #4f46e5 !important;
 }
+
+/* Container tiêu đề */
+.modal-header-custom {
+    padding: 20px 25px;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Icon box nổi bật */
+.icon-box-header {
+    width: 42px;
+    height: 42px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.25) !important; /* Trắng mờ sáng hơn */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+
+/* Container tiêu đề (Dùng gradient xanh cho sang) */
+.modal-header-custom {
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #4361ee 0%, #2a4acb 100%);
+    border-radius: 15px 15px 0 0; /* Bo góc trên modal */
+}
+
+/* Vòng tròn bọc icon nổi bật */
+.icon-header-circle {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.2); /* Nền vòng tròn trắng mờ */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+}
+
+
+.modal-header-custom {
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #4361ee 0%, #2a4acb 100%);
+    border-radius: 5px 5px 0 0;
+    /* Đảm bảo nội dung không bị dính sát mép */
+}
+
+
+
+/* Tùy chỉnh nút X cho đẹp hơn */
+.btn-close-white {
+    opacity: 0.8;
+    transition: all 0.2s;
+    font-size: 0.8rem; /* Chỉnh kích thước X vừa vặn */
+}
+
+.btn-close-white:hover {
+    opacity: 1;
+    transform: rotate(90deg); /* Hiệu ứng xoay khi di chuột vào */
+}
+
+.modal-title-custom {
+    color: #ffffff !important;         /* Trắng tinh khiết */
+    font-size: 1.2rem;                 /* Tăng nhẹ kích thước */
+    letter-spacing: 1px;               /* Tạo độ thoáng giúp chữ rõ hơn */
+    text-transform: uppercase;
+    
+    /* Hiệu ứng phát sáng nhẹ giúp chữ nổi khỏi nền xanh */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 
+                 0 2px 4px rgba(0, 0, 0, 0.2);
+    
+    opacity: 1 !important;             /* Đảm bảo không bị mờ */
+}

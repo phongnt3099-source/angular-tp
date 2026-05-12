@@ -8,13 +8,15 @@ import { AppointmentComponentsComponent } from './appointment-list.component';
 import { AppointmentComponentsRoutingModule } from './appointment-components-routing.module';
 import { CreateAppointmentModalComponent } from './create-appointment-modal.component';
 import { SimpleDropdownComponent } from '@app/components/shared-dropdown/simple-dropdown.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { HeaderComponent } from '@shared/components/header/header.component';
 
 @NgModule({
     declarations: [
         AppointmentComponentsComponent,
         CreateAppointmentModalComponent
     ],
-    imports: [AppSharedModule, AdminSharedModule, AppointmentComponentsRoutingModule,SharedDropdownComponent,SimpleDropdownComponent,SharedDropdownComponent, CommonModule],
+    imports: [AppSharedModule, AdminSharedModule, AppointmentComponentsRoutingModule,SharedDropdownComponent,SimpleDropdownComponent,SharedDropdownComponent, CommonModule,FullCalendarModule,HeaderComponent,],
     providers: [
         AppointmentServiceProxy,
         CustomerServiceProxy,

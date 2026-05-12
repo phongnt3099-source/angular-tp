@@ -10,6 +10,7 @@ import { CommonModule } from '@node_modules/@angular/common';
 import { CustomerDetailComponent } from './customer-detail.component';
 import { CreateAppointmentModalComponent } from '../appointment-components/create-appointment-modal.component';
 import { AppointmentComponentsModule } from '../appointment-components/appointment-components.module';
+import { HeaderComponent } from '@shared/components/header/header.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,7 @@ import { AppointmentComponentsModule } from '../appointment-components/appointme
         CreateCustomerModalComponent,
         CustomerDetailComponent,
     ],
-    imports: [AppSharedModule, AdminSharedModule, CustomerComponentsRoutingModule,SharedDropdownComponent,CommonModule,AppointmentComponentsModule],
+    imports: [AppSharedModule, AdminSharedModule, CustomerComponentsRoutingModule,SharedDropdownComponent,CommonModule,AppointmentComponentsModule,HeaderComponent],
     providers: [
         CustomerServiceProxy
     ]

@@ -22,6 +22,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { AppCommonModule } from './common/app-common.module';
 import { ThemesLayoutBaseComponent } from './layout/themes/themes-layout-base.component';
+import { HeaderComponent } from '@shared/components/header/header.component';
 
 const imports = [
     CommonModule,

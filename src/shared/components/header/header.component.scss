@@ -1,0 +1,124 @@
+/* 1. KHỐI NỀN GRADIENT CỦA HEADER */
+.dental-header-v3 {
+  background: linear-gradient(135deg, #4f46e5, #0ea5e9) !important;
+  border-radius: 0 0 40px 40px;
+  /* Tạo bóng đổ hướng xuống để phân tách với nội dung bên dưới */
+  box-shadow: 0 20px 40px rgba(0, 131, 176, 0.2); 
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+/* 2. HIỆU ỨNG MẶT GƯƠNG (GLASSMORPHISM CARD) */
+.glass-master-card {
+  background: rgba(255, 255, 255, 0.12); /* Trắng mờ */
+  backdrop-filter: blur(15px); /* Làm mờ nền sau kính */
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Viền mảnh giả lập cạnh kính */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* 3. THÔNG TIN THƯƠNG HIỆU */
+.brand-text {
+  color: #ffffff !important;
+  font-weight: 900;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Chống tàng hình chữ trắng */
+}
+
+.brand-desc {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  font-size: 13px;
+  margin: 0;
+}
+
+.badge-system {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 4. BỘ CHUYỂN ĐỔI NGÀY/TUẦN/THÁNG (SWITCHER) */
+.view-pill-switcher {
+  background: rgba(0, 0, 0, 0.1); /* Nền tối nhẹ để làm nổi khối */
+  border-radius: 50px;
+  padding: 4px;
+  display: flex;
+  gap: 4px;
+
+  button {
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 8px 22px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+
+    /* Trạng thái nút đang chọn */
+    &.active {
+      background: #ffffff !important;
+      color: #0083B0 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transform: scale(1.05);
+    }
+
+    &:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+  }
+}
+
+/* 5. NÚT ĐẶT LỊCH MỚI (ACTION BUTTON) */
+.btn-prime-add {
+  background: #ffffff !important;
+  color: #0083B0 !important;
+  border: none !important;
+  padding: 11px 25px !important;
+  border-radius: 14px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+  i {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2) !important;
+    background: #f8f9fa !important;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+/* 6. RESPONSIVE (DÀNH CHO ĐIỆN THOẠI) */
+@media (max-width: 768px) {
+  .glass-master-card {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .view-pill-switcher {
+    width: 100%;
+    justify-content: center;
+  }
+}
