@@ -10,11 +10,8 @@
         </div>
       </div>
 
-      <div class="view-pill-switcher" [hidden]="!showSwitcher">
-        <button (click)="onViewChange('timeGridDay')" [class.active]="activeView === 'timeGridDay'">Ngày</button>
-        <button (click)="clickChangeView('timeGridWeek')" [class.active]="activeView === 'timeGridWeek'">Tuần</button>
-        <button (click)="clickChangeView('dayGridMonth')" [class.active]="activeView === 'dayGridMonth'">Tháng</button>
-      </div>
+      
+      
 
       <button class="btn-prime-add shadow" [hidden]="!permission" (click)="onAddClick()" >
         <i class="fas fa-plus-circle me-2"></i>{{ buttonText }}

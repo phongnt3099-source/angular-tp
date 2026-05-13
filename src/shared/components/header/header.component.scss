@@ -9,16 +9,16 @@
   width: 100%;
 }
 
-/* 2. HIỆU ỨNG MẶT GƯƠNG (GLASSMORPHISM CARD) */
+/* Điều chỉnh lại mặt gương để bắt sáng từ màu Indigo tốt hơn */
 .glass-master-card {
-  background: rgba(255, 255, 255, 0.12); /* Trắng mờ */
-  backdrop-filter: blur(15px); /* Làm mờ nền sau kính */
+  background: rgba(255, 255, 255, 0.1); 
+  backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Viền mảnh giả lập cạnh kính */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  /* Viền trắng mờ mảnh giúp nổi bật trên nền Indigo/Sky */
+  border: 1px solid rgba(255, 255, 255, 0.2); 
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
-
 /* 3. THÔNG TIN THƯƠNG HIỆU */
 .brand-text {
   color: #ffffff !important;
@@ -46,7 +46,7 @@
 
 /* 4. BỘ CHUYỂN ĐỔI NGÀY/TUẦN/THÁNG (SWITCHER) */
 .view-pill-switcher {
-  background: rgba(0, 0, 0, 0.1); /* Nền tối nhẹ để làm nổi khối */
+  background: rgba(0, 0, 0, 0.15); /* Đậm hơn chút để nổi bật nút trắng */
   border-radius: 50px;
   padding: 4px;
   display: flex;
@@ -62,17 +62,11 @@
     font-weight: 700;
     transition: all 0.3s ease;
 
-    /* Trạng thái nút đang chọn */
     &.active {
       background: #ffffff !important;
-      color: #0083B0 !important;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      transform: scale(1.05);
-    }
-
-    &:hover:not(.active) {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
+      /* Đổi màu chữ nút Active sang Indigo để đồng bộ */
+      color: #4f46e5 !important; 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
   }
 }
@@ -80,32 +74,18 @@
 /* 5. NÚT ĐẶT LỊCH MỚI (ACTION BUTTON) */
 .btn-prime-add {
   background: #ffffff !important;
-  color: #0083B0 !important;
+  /* Đổi chữ sang Indigo */
+  color: #4f46e5 !important; 
   border: none !important;
   padding: 11px 25px !important;
   border-radius: 14px !important;
   font-weight: 800 !important;
-  text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-
-  i {
-    font-size: 16px;
-    margin-right: 8px;
-  }
-
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2) !important;
+  
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2) !important;
     background: #f8f9fa !important;
-  }
-
-  &:active {
-    transform: translateY(-1px);
+    box-shadow: 0 12px 25px rgba(79, 70, 229, 0.3) !important;
   }
 }
 

@@ -1,15 +1,81 @@
 <div [@routerTransition]>
-  <app-header 
-  [activeView]="currentView" 
-  [title]="'Lịch hẹn'"
-  [permission]="'Pages.Tenants.Create' | permission"
-  (viewChanged)="changeView($event)"
-  (addClicked)="openAddModal()">
-</app-header>
+  <div class="dental-header-v3">
+  <div class="container-fluid px-4 py-4">
+    <div class="glass-master-card d-flex justify-content-between align-items-center p-3">
+      
+      <div class="brand-group">
+        <h2 class="brand-text m-0">Thiên Phúc Dental</h2>
+        <div class="d-flex align-items-center mt-1">
+          <p class="brand-desc mb-0 ms-2">{{ 'LỊCH HẸN' }}</p>
+        </div>
+      </div>
+
+      <div class="view-pill-switcher">
+        <button (click)="changeView('dayGridMonth')" [class.active]="currentView === 'dayGridMonth'">Tháng</button>
+        <button (click)="changeView('timeGridWeek')" [class.active]="currentView === 'timeGridWeek'">Tuần</button>
+        <button (click)="changeView('timeGridDay')" [class.active]="currentView === 'timeGridDay'">Ngày</button>
+      </div>
+      <div class="today-special-corner">
+        <button (click)="goToday()" class="today-fancy-btn">
+            <i class="fas fa-calendar-check me-2"></i>Hôm nay
+        </button>
+    </div>
+      
+      
+
+      <button class="btn-prime-add shadow" [hidden]="!permission" (click)="openAddModal()" >
+        <i class="fas fa-plus-circle me-2"></i>{{ 'Đặt lịch mới' }}
+      </button>
+
+    </div>
+  </div>
+</div>
 
 <div class="container-fluid px-4 mt-4">
-  <div class="main-calendar-card shadow-sm">
-    <full-calendar [options]="calendarOptions"></full-calendar>
+  <div class="calendar-card shadow-sm" [hidden]="displayMode !== 'calendar'">
+      <div class="calendar-wrapper">
+          
+          <div class="cursor-area area-prev" (click)="goPrev()" title="Bấm để quay lại"></div>
+
+          <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+
+          <div class="cursor-area area-next" (click)="goNext()" title="Bấm để xem tiếp"></div>
+
+      </div>
+  </div>
+
+  <div *ngIf="displayMode === 'library'" class="library-grid animate__animated animate__fadeIn">
+    <div class="row g-4">
+      <div class="col-md-4 col-lg-3" *ngFor="let item of appointments">
+        <div class="patient-card shadow-sm border-0">
+          <div *ngIf="item.note" class="note-tooltip" [title]="item.note">
+            <i class="fas fa-exclamation-circle text-warning"></i>
+          </div>
+          <div class="card-header-status" [style.background-color]="getStatusColor(item.status)"></div>
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between">
+              <h5 class="fw-bold mb-1">{{ item.customerName }}</h5>
+              <button class="btn-quick-edit" (click)="initTippy($event, item)">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+            </div>
+            <p class="text-muted small mb-3"><i class="fas fa-phone-alt me-2"></i>{{ item.phone }}</p>
+            
+            <div class="service-info p-2 rounded mb-3">
+              <small class="d-block text-muted">Dịch vụ:</small>
+              <span class="fw-600 text-indigo">{{ item.service }}</span>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="time-badge"><i class="far fa-clock me-1"></i>{{ item.time }}</span>
+              <span class="status-text" [style.color]="getStatusColor(item.status)">
+                {{ getStatusLabel(item.status) }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </div>

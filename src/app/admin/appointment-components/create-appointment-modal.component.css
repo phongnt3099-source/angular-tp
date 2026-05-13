@@ -481,3 +481,22 @@ app-dropdown {
     font-weight: 500;
     font-size: 14px;
 }
+.view-pill-switcher {
+  button {
+    padding: 8px 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &.active {
+      background: white; 
+      color: #4f46e5;   
+      font-weight: 700;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
