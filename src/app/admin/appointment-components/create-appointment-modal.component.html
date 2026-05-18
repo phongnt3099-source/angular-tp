@@ -30,7 +30,7 @@
                                     <button type="button" 
                                             class="btn-nav-month" 
                                             (click)="prevMonth()" 
-                                            [disabled]="!canPrevMonth">
+                                            [disabled]="!canPrevMonth || isDisabled">
                                         <i class="fas fa-chevron-left"></i>
                                     </button>
 
@@ -39,6 +39,7 @@
                                     </h5>
 
                                     <button type="button" 
+                                            [disabled]="isDisabled"
                                             class="btn-nav-month" 
                                             (click)="nextMonth()">
                                         <i class="fas fa-chevron-right"></i>
@@ -53,7 +54,7 @@
                                         class="day-num"
                                         [class.empty]="!day.value"
                                         [class.active]="day.isActive"
-                                        [class.disabled]="day.isDisable"
+                                        [class.disabled]="day.isDisable || isDisabled"
                                         (click)="selectDate(day)">
                                         {{ day.value }}
                                     </div>
@@ -82,7 +83,7 @@
                                                         @for (min of ['00', '15', '30', '45']; track min) {
                                                             <div 
                                                                 (click)="!isTimeDisabled(hour, min) && selectTime(hour, min)"
-                                                                [class]="isTimeDisabled(hour, min) ? 'slot-disabled' : 'slot-free'"
+                                                                [class]="(isTimeDisabled(hour, min) ? 'slot-disabled' : 'slot-free')"
                                                                 [title]="hour + ':' + min + (isTimeDisabled(hour, min) ? ' - Không thể chọn' : ' - Trống')">
                                                             </div>
                                                         }
@@ -102,6 +103,7 @@
                                         <app-simple-dropdown 
                                             [dataList]="hours" 
                                             (change)="appointmentForm.hour = selectedHour"
+                                            [ariaDisabled]="isDisabled"
                                             [(selectedValue)]="selectedHour">
                                         </app-simple-dropdown>
                                         
@@ -110,6 +112,7 @@
                                         <app-simple-dropdown 
                                             [dataList]="minutes" 
                                             (change)="appointmentForm.minute = selectedMinute"
+                                            [ariaDisabled]="isDisabled"
                                             [(selectedValue)]="selectedMinute">
                                         </app-simple-dropdown>
                                     </div>
@@ -136,35 +139,55 @@
                                                     name="rangeTimeInput"
                                                     class="form-control text-center fw-bold" 
                                                     min="5" step="5"
+                                                    [disabled]="isDisabled"
                                                     [ngClass]="{ edited: appointmentForm.rangE_TIME}"
                                                     [(ngModel)]="appointmentForm.rangE_TIME"
                                                 >
                                         </div>
 
                                         <div class="d-flex gap-2 time-chip-group">
-                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" (click)="setDuration(30)">
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" 
+                                                    [disabled]="isDisabled" (click)="setDuration(30)">
                                                 30p
                                             </button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" (click)="setDuration(60)">
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3"
+                                                    [disabled]="isDisabled" (click)="setDuration(60)">
                                                 60p
                                             </button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" (click)="setDuration(90)">
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3"
+                                                    [disabled]="isDisabled" (click)="setDuration(90)">
                                                 90p
                                             </button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3" (click)="setDuration(120)">
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3"
+                                                    [disabled]="isDisabled" (click)="setDuration(120)">
                                                 120p
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-12">
+                                <!-- <div class="col-12">
                                     <label class="form-label small fw-bold text-muted">Khách hàng</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-white border-end-0"><i class="far fa-user"></i></span>
                                         <div class="form-control border-start-0 shadow-none">{{
                                             customer.cuS_NAME 
                                         }}</div>
+                                    </div>
+                                </div> -->
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-muted">Khách hàng</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0"><i class="far fa-user"></i></span>
+                                        <app-dropdown 
+                                            [dataList]="customers" 
+                                            labelField="cuS_CODE|cuS_NAME" 
+                                            valueField="cuS_ID" 
+                                            class="form-control border-start-0 shadow-none"
+                                            [disable]="appointmentForm.apP_ID || isDisabled"
+                                            [(selectedValue)]="selectedCusId"
+                                            >
+                                        </app-dropdown> 
                                     </div>
                                 </div>
 
@@ -177,6 +200,7 @@
                                             labelField="emP_NAME" 
                                             valueField="emP_ID" 
                                             class="form-select border-start-0 shadow-none"
+                                            [disable]="isDisabled"
                                             [(selectedValue)]="selectedDoctor"
                                             (selectedValueChange)="loadExistingAppointments($event)">
                                         </app-dropdown> 
@@ -201,6 +225,7 @@
                                                                 labelField="emP_NAME" 
                                                                 valueField="emP_ID" 
                                                                 placeholder="-- Chọn phụ tá --"
+                                                                [disable]="isDisabled"
                                                                 [(selectedValue)]="selectedAssistant1"
                                                                 >
                                                             </app-dropdown> 
@@ -215,6 +240,7 @@
                                                                 labelField="emP_NAME" 
                                                                 valueField="emP_ID" 
                                                                 placeholder="-- Chọn phụ tá --"
+                                                                [disable]="isDisabled"
                                                                 [(selectedValue)]="selectedAssistant2">
                                                             </app-dropdown> 
                                                         </div>
@@ -227,7 +253,7 @@
 
                                 <div class="col-12">
                                     <label class="form-label small fw-bold text-muted">Nội dung</label>
-                                    <textarea #ContentInput="ngModel" name="Content" id="ContentInput" type="text" [ngClass]="{ edited: appointmentForm.apP_CONTENT}" [(ngModel)]="appointmentForm.apP_CONTENT" rows="10" class="form-control shadow-none" placeholder="Ghi chú..."></textarea>
+                                    <textarea #ContentInput="ngModel" name="Content" id="ContentInput" type="text" [disabled]="isDisabled" [ngClass]="{ edited: appointmentForm.apP_CONTENT}"  [(ngModel)]="appointmentForm.apP_CONTENT" rows="10" class="form-control shadow-none" placeholder="Ghi chú..."></textarea>
                                 </div>
                             </div>
                         </div>
@@ -245,7 +271,7 @@
                     </div>
                     <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" (click)="close()">HỦY BỎ</button>
                     <!-- [disabled]="!appointmentForm.valid || saving" -->
-                    <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow" >
+                    <button type="submit" [disabled]="isDisabled" class="btn btn-primary rounded-pill px-5 fw-bold shadow" >
                         XÁC NHẬN ĐẶT LỊCH
                     </button>
                 </div>

@@ -11,6 +11,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import * as tippy from 'tippy.js';
+import Swal from 'sweetalert2';
+import { CreateAppointmentModalComponent } from './create-appointment-modal.component';
+import { AppointmentServiceProxy, MED_APPOINTMENT_ENTITY } from '@shared/service-proxies/service-proxies';
 const tippyDefault = (tippy as any).default || tippy;
 @Component({
     templateUrl: './appointment-list.component.html',
@@ -21,9 +24,15 @@ const tippyDefault = (tippy as any).default || tippy;
 export class AppointmentComponentsComponent extends AppComponentBase implements OnInit {
     @ViewChild('paginator', { static: true }) paginator!: Paginator;
     @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
+    @ViewChild('createAppointmentModal', { static: true }) createAppointmentModal!: CreateAppointmentModalComponent;
+        
 
     currentView = 'timeGridWeek';
     displayMode: 'calendar' | 'library' = 'calendar'; // Mặc định xem lịch
+    isLoading = false;
+    filterInput: MED_APPOINTMENT_ENTITY = new MED_APPOINTMENT_ENTITY();
+    appointments: MED_APPOINTMENT_ENTITY[]=[];
+    disable = false;
 
   // Danh sách trạng thái chuẩn 6 bước
     statusConfigs: any = {
@@ -34,74 +43,7 @@ export class AppointmentComponentsComponent extends AppComponentBase implements 
       'da-ve':      { label: 'Đã về',     color: '#6366f1', icon: 'fa-door-open' },
       'huy':        { label: 'Hủy lịch',  color: '#ef4444', icon: 'fa-trash-alt' }
     };
-    appointments = [
-  {
-    id: '1',
-    customerName: 'Nguyễn Anh Tuấn',
-    phone: '0901 234 567',
-    time: '08:00',
-    date: '2026-05-13',
-    service: 'Nhổ răng khôn (Piezotome)',
-    doctor: 'BS. Quang',
-    status: 'da-den', // Indigo
-    note: 'Bệnh nhân có tiền sử dị ứng thuốc tê.'
-  },
-  {
-    id: '2',
-    customerName: 'Lê Thị Mỹ Linh',
-    phone: '0988 777 666',
-    time: '09:30',
-    date: '2026-05-13',
-    service: 'Chỉnh nha (Niềng răng)',
-    doctor: 'BS. Lan',
-    status: 'chua-den', // Xám
-    note: 'Tái khám định kỳ, thay dây cung.'
-  },
-  {
-    id: '3',
-    customerName: 'Trần Minh Hoàng',
-    phone: '0912 333 444',
-    time: '10:45',
-    date: '2026-05-13',
-    service: 'Cắm Implant (Straumann)',
-    doctor: 'BS. Quang',
-    status: 'done-pay', // Xanh lá
-    note: 'Đã hoàn tất thanh toán đợt 1.'
-  },
-  {
-    id: '4',
-    customerName: 'Phạm Thanh Thảo',
-    phone: '0933 111 222',
-    time: '14:00',
-    date: '2026-05-13',
-    service: 'Tẩy trắng răng (Laser)',
-    doctor: 'BS. Lan',
-    status: 'khong-den', // Vàng
-    note: 'Gọi điện không nghe máy.'
-  },
-  {
-    id: '5',
-    customerName: 'Hoàng Văn Đức',
-    phone: '0944 555 888',
-    time: '15:30',
-    date: '2026-05-13',
-    service: 'Bọc răng sứ (Zirconia)',
-    doctor: 'BS. Hùng',
-    status: 'da-ve', // Indigo nhạt
-    note: 'Hẹn tái khám sau 3 ngày.'
-  },
-  {
-    id: '6',
-    customerName: 'Đặng Bảo Ngọc',
-    phone: '0977 444 111',
-    time: '17:00',
-    date: '2026-05-13',
-    service: 'Lấy cao răng',
-    doctor: 'BS. Hùng',
-    status: 'huy', // Đỏ
-    note: 'Khách đổi lịch sang tuần sau.'
-  }
-];
+    
 
     // 1. Logic cho VIEW LỊCH
   calendarOptions: CalendarOptions = {
@@ -111,7 +53,7 @@ export class AppointmentComponentsComponent extends AppComponentBase implements 
     locale: 'vi',                // Tiếng Việt
     firstDay: 1,                 // Bắt đầu tuần từ Thứ 2
     slotMinTime: '08:00:00',     // Thời gian bắt đầu phòng khám
-    slotMaxTime: '22:00:00',     // Thời gian đóng cửa
+    slotMaxTime: '23:00:00',     // Thời gian đóng cửa
     height: 'auto',
     allDaySlot: false,           // Ẩn hàng "Cả ngày" để lịch gọn hơn
 
@@ -124,16 +66,18 @@ export class AppointmentComponentsComponent extends AppComponentBase implements 
     selectable: true,             // Cho phép click vào ô trống để đặt lịch
     selectMirror: true,
     dragScroll: true, // Tự động cuộn lịch khi kéo event tới mép trên/dưới hoặc trái/phải
-    eventLongPressDelay: 50, // Thời gian trễ (ms) để bắt đầu hành động kéo - giúp tránh việc lỡ tay chạm nhẹ
+    longPressDelay: 0,         // Giảm trễ để bắt đầu kéo nhanh hơn
+    eventLongPressDelay: 0, // Thời gian trễ (ms) để bắt đầu hành động kéo - giúp tránh việc lỡ tay chạm nhẹ
     dayMaxEvents: true,
     nowIndicator: true,           // Vạch đỏ chỉ thời gian hiện tại
-    slotDuration: '00:15:00', // Mỗi ô là 30 phút
+    slotDuration: '00:30:00', // Mỗi ô là 30 phút
+    snapDuration: '00:01:00', // Bước nhảy là 1 phút thay vì 30 phút
     slotLabelInterval: '01:00',
     slotEventOverlap: false,
     contentHeight: 'auto',    // Để lịch tự co giãn theo nội dung
     expandRows: true,
     // Điều chỉnh tốc độ cuộn khi kéo sát mép
-  dragRevertDuration: 500, 
+    dragRevertDuration: 0, 
   
   
     
@@ -161,57 +105,77 @@ export class AppointmentComponentsComponent extends AppComponentBase implements 
 
     // 5. Xử lý khi kéo thả (Cập nhật giờ hẹn)
     eventDrop: (info) => {
-      this.handleEventUpdate(info.event);
+      this.handleEventUpdate(info);
     },
     
 
     // 6. Xử lý khi thay đổi thời lượng (Kéo dài/thu ngắn ca khám)
     eventResize: (info) => {
-      this.handleEventUpdate(info.event);
+      this.handleEventUpdate(info);
     },
     // Tùy chọn: Khi đang kéo, làm mờ các ca khám khác để dễ tập trung
     
     eventContent: (arg) => {
-      let arrayOfDomNodes = [];
-      
-      // Nội dung text
-      let titleEl = document.createElement('div');
-      titleEl.innerHTML = `<b>${arg.timeText}</b><br/>${arg.event.title}`;
-      titleEl.className = 'fc-event-title-custom';
-      
-      // Nút edit nhỏ ở góc
-      let editBtn = document.createElement('i');
-      editBtn.className = 'fas fa-pen-square event-edit-icon';
-      editBtn.onclick = (e) => {
-        e.stopPropagation();
-        this.openEditModal(arg.event);
-      };
+        const status = arg.event.extendedProps['status'];
+        const doctor = arg.event.extendedProps['doctor'] || 'Chưa phân công';
+        
+        const startDate = arg.event.start;
+        const dateDisplay = startDate ? `${startDate.getDate()}/${startDate.getMonth() + 1}` : '';
+        const appDate = arg.event.startStr.split('T')[0];
+        const appTime = arg.event.startStr.split('T')[1].substring(0, 5);
 
-      arrayOfDomNodes = [ titleEl, editBtn ];
-      return { domNodes: arrayOfDomNodes };
+        let timeDiffHtml = '';
+        if (status === 'chua-den') {
+            timeDiffHtml = `<span class="time-diff-tag"> | ${this.getTimeStatusDiff(appDate, appTime)}</span>`;
+        }
+
+        let container = document.createElement('div');
+        container.className = 'fc-event-custom-container';
+        container.setAttribute('data-event-id', arg.event.id);
+        container.innerHTML = `
+            <div class="fc-event-time-row">
+                <span class="date-badge">${dateDisplay}</span>
+                ${arg.timeText}${timeDiffHtml}
+            </div>
+            <div class="fc-event-title-row">${arg.event.title.replace('\n', '<br/>')}</div>
+            
+            <div class="doctor-badge-container">
+                <div class="doctor-glass-effect">
+                    <i class="fas fa-user-md doctor-icon"></i>
+                    <span class="doctor-name-text">${doctor.toUpperCase()}</span>
+                </div>
+            </div>
+        `;
+        return { domNodes: [container] };
     }
 };
 
 
     constructor(
       injector: Injector,
-      private _router: Router
+      private _router: Router,
+      private _appointmentService: AppointmentServiceProxy,
     ) {
         super(injector);
+        console.log(this);
+        setInterval(() => {
+        const calendarApi = this.calendarComponent.getApi();
+          calendarApi?.render();
+    }, 60000);
     }
     get calendarEvents() {
       return this.appointments.map(app => ({
-        id: app.id,
-        title: `${app.customerName.toUpperCase()}\n${app.service}`,
-        start: `${app.date}T${app.time}:00`,
+        id: app.apP_ID,
+        title: `${app.cuS_NAME?.toUpperCase()}\n${app.apP_CONTENT}`,
+        start: `${app.apP_DATE}T${app.starT_TIME}:00`,
         // Mặc định mỗi ca khám khoảng 45 phút nếu không có giờ kết thúc
-        end: `${app.date}T${this.calculateEndTime(app.date, app.time)}:00`,
-        backgroundColor: this.getStatusColor(app.status),
-        borderColor: this.getStatusColor(app.status),
+        end: `${app.apP_DATE}T${this.calculateEndTime(app.apP_DATE, app.starT_TIME,app.rangE_TIME)}:00`,
+        backgroundColor: this.getStatusColor(app.apP_CONTENT),
+        borderColor: this.getStatusColor(app.apP_CONTENT),
         extendedProps: {
-          phone: app.phone,
-          status: app.status,
-          doctor: app.doctor
+          phone: app.cuS_PHONE,
+          status: app.apP_CONTENT,
+          doctor: app.doC_NAME
         }
       }));
     }
@@ -252,70 +216,103 @@ export class AppointmentComponentsComponent extends AppComponentBase implements 
     });
     return container;
   }
+  getTimeStatusDiff(appDate: string, appTime: string): string {
+      const now = new Date();
+      const appointmentDate = new Date(`${appDate}T${appTime}:00`);
+      
+      // Reset giờ về 00:00 để tính chuẩn số ngày chênh lệch
+      const d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const d2 = new Date(appointmentDate.getFullYear(), appointmentDate.getMonth(), appointmentDate.getDate());
+      
+      const diffInTime = d2.getTime() - d1.getTime();
+      const diffInDays = Math.round(diffInTime / (1000 * 3600 * 24));
+
+      // 1. XỬ LÝ CHO CÁC NGÀY KHÁC (CÒN XA)
+      if (diffInDays > 0) {
+          return `${diffInDays} ngày tới`;
+      } else if (diffInDays < 0) {
+          return `Đã qua`;
+      }
+
+      // 2. XỬ LÝ RIÊNG CHO NGÀY HÔM NAY (Realtime từng phút)
+      const diffInMinutes = Math.floor((appointmentDate.getTime() - now.getTime()) / 60000);
+      const absMinutes = Math.abs(diffInMinutes);
+      const hours = Math.floor(absMinutes / 60);
+      const mins = absMinutes % 60;
+
+      if (diffInMinutes < 0) {
+          // TRỄ HẸN
+          return absMinutes >= 60 ? `Trễ ${hours}h ${mins}p` : `Trễ ${absMinutes}p`;
+      } else {
+          // SẮP TỚI TRONG NGÀY
+          return diffInMinutes <= 60 ? `${diffInMinutes}p tới` : `${hours}h tới`;
+      }
+  }
   createQuickStatusMenu(event: any): HTMLElement {
-  const container = document.createElement('div');
-  container.className = 'quick-status-dropdown-3d';
+    const container = document.createElement('div');
+    container.className = 'quick-status-dropdown-3d';
 
-  // --- PHẦN MỚI: NÚT EDIT CHÍNH ---
-  const editAction = document.createElement('div');
-  editAction.className = 'edit-action-header';
-  editAction.innerHTML = `
-    <button class="btn-full-edit">
-      <i class="fas fa-edit"></i>
-      <span>Chỉnh sửa chi tiết</span>
-    </button>
-  `;
-  editAction.onclick = () => {
-    this.closeAllMenus();
-    this.openEditModal(event); // Hàm mở modal chỉnh sửa của bạn
-  };
-  container.appendChild(editAction);
-
-  // Dòng kẻ phân cách
-  const divider = document.createElement('div');
-  divider.className = 'menu-divider';
-  container.appendChild(divider);
-
-  const title = document.createElement('div');
-  title.className = 'menu-title';
-  title.innerText = 'Đổi nhanh trạng thái';
-  container.appendChild(title);
-
-  // --- PHẦN CŨ: 6 TRẠNG THÁI ---
-  const statuses = [
-    { id: 'chua-den',  label: 'Chưa đến',  color: '#94a3b8', icon: 'fa-user-clock' },
-    { id: 'da-den',    label: 'Đã đến',    color: '#4f46e5', icon: 'fa-user-check' },
-    { id: 'khong-den', label: 'Không đến', color: '#f59e0b', icon: 'fa-user-times' },
-    { id: 'done-pay',  label: 'Hoàn tất',  color: '#10b981', icon: 'fa-file-invoice-dollar' },
-    { id: 'da-ve',     label: 'Đã về',     color: '#6366f1', icon: 'fa-door-open' },
-    { id: 'huy',       label: 'Hủy lịch',  color: '#ef4444', icon: 'fa-trash-alt' }
-  ];
-
-  statuses.forEach(s => {
-    const btn = document.createElement('div');
-    btn.className = 'status-btn-item';
-    btn.innerHTML = `
-      <div class="status-icon-wrapper" style="background: ${s.color}15">
-        <i class="fas ${s.icon}" style="color: ${s.color}"></i>
-      </div>
-      <div class="status-label">${s.label}</div>
+    // --- PHẦN MỚI: NÚT EDIT CHÍNH ---
+    const editAction = document.createElement('div');
+    editAction.className = 'edit-action-header';
+    editAction.innerHTML = `
+      <button class="btn-full-edit">
+        <i class="fas fa-edit"></i>
+        <span>Chỉnh sửa chi tiết</span>
+      </button>
     `;
-    btn.onclick = (e) => {
-      e.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
-      this.updateStatus(event, s.id);
+    editAction.onclick = () => {
       this.closeAllMenus();
+      this.openEditModal(event); // Hàm mở modal chỉnh sửa của bạn
     };
-    container.appendChild(btn);
-  });
+    container.appendChild(editAction);
 
-  return container;
+    // Dòng kẻ phân cách
+    const divider = document.createElement('div');
+    divider.className = 'menu-divider';
+    container.appendChild(divider);
+
+    const title = document.createElement('div');
+    title.className = 'menu-title';
+    title.innerText = 'Đổi nhanh trạng thái';
+    container.appendChild(title);
+
+    // --- PHẦN CŨ: 6 TRẠNG THÁI ---
+    const statuses = [
+      { id: 'chua-den',  label: 'Chưa đến',  color: '#94a3b8', icon: 'fa-user-clock' },
+      { id: 'da-den',    label: 'Đã đến',    color: '#4f46e5', icon: 'fa-user-check' },
+      { id: 'khong-den', label: 'Không đến', color: '#f59e0b', icon: 'fa-user-times' },
+      { id: 'done-pay',  label: 'Hoàn tất',  color: '#10b981', icon: 'fa-file-invoice-dollar' },
+      { id: 'da-ve',     label: 'Đã về',     color: '#6366f1', icon: 'fa-door-open' },
+      { id: 'huy',       label: 'Hủy lịch',  color: '#ef4444', icon: 'fa-trash-alt' }
+    ];
+
+    statuses.forEach(s => {
+      const btn = document.createElement('div');
+      btn.className = 'status-btn-item';
+      btn.innerHTML = `
+        <div class="status-icon-wrapper" style="background: ${s.color}15">
+          <i class="fas ${s.icon}" style="color: ${s.color}"></i>
+        </div>
+        <div class="status-label">${s.label}</div>
+      `;
+      btn.onclick = (e) => {
+        e.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
+        this.updateStatus(event, s.id);
+        this.closeAllMenus();
+      };
+      container.appendChild(btn);
+    });
+
+    return container;
 }
 
 // Hàm xử lý mở Modal
-openEditModal(event: any) {
-  console.log("Đang mở chỉnh sửa ca khám ID:", event.id);
-  // Code mở dialog/modal của bạn ở đây
-}
+  openEditModal(event: any) {
+    console.log(event);
+    this.createAppointmentModal.show('' ,event.id??event.apP_ID)
+  }
+  
   closeAllMenus() {
   const tippyInstances = document.querySelectorAll('[data-tippy-root]');
   tippyInstances.forEach((element: any) => {
@@ -328,22 +325,42 @@ openEditModal(event: any) {
 
   updateStatus(item: any, statusKey: string) {
     // Nếu là FullCalendar event dùng setProp, nếu là object thường dùng gán trực tiếp
-    if (item.setProp) {
-      item.setProp('backgroundColor', this.statusConfigs[statusKey].color);
-      item.setProp('borderColor', this.statusConfigs[statusKey].color);
-    } else {
-      item.status = statusKey;
-    }
-    // Tìm cuộc hẹn trong mảng và cập nhật trạng thái mới
-    const appIndex = this.appointments.findIndex(a => a.id == item.id);
-    if (appIndex > -1) {
-      this.appointments[appIndex].status = statusKey as any;
-    
-    // Nạp lại để lịch đổi màu ngay lập tức
-    this.loadAppointmentsToCalendar();
-  }
-    // API Call...
-    console.log("Cập nhật trạng thái thành công!");
+    this.message.confirm(
+        'Bạn có chắc chắn muốn cập nhật trạng thái mới lịch hẹn này không?',
+        'Xác nhận cập nhật',
+        (isConfirmed) => {
+            if (isConfirmed) {
+                const appIndex = this.appointments.findIndex(a => a.apP_ID == (item.id??item.apP_ID));
+                
+                if (appIndex > -1) {
+                  let data = this.appointments[appIndex];
+                  data.apP_STATUS = statusKey;
+                  this._appointmentService.mED_APPOINTMENT_Upd(data).subscribe(() => {
+                    this.notify.success(this.l('Cập nhật trạng thái thành công'));
+                    const calendarApi = this.calendarComponent.getApi();
+                    const event = calendarApi.getEventById(data.apP_ID);
+                      if (item.setProp) {
+                        item.setProp('backgroundColor', this.statusConfigs[statusKey].color);
+                        item.setProp('borderColor', this.statusConfigs[statusKey].color);
+                      } else if (event) {
+                          // 1. Cập nhật màu sắc mới dựa trên status mới
+                          event.setProp('backgroundColor', this.statusConfigs[statusKey].color);
+                          event.setProp('borderColor', this.statusConfigs[statusKey].color);
+                      } {
+                        item.status = statusKey;
+                      }
+                        
+                      this.appointments[appIndex].apP_STATUS = statusKey as any;
+                      this.appointments[appIndex].iWarn = false;
+                      if(this.appointments.some(x=>x.iWarn == true)){
+                        this.checkLateAppointments();
+                      }
+                  });
+                }
+            }
+        }
+    );
+     
     this.closeAllMenus();
   }
   getStatusLabel(statusId: string): string {
@@ -354,80 +371,281 @@ openEditModal(event: any) {
   }
   // Gọi hàm này trong ngOnInit hoặc sau khi nhận dữ liệu từ API
   loadAppointmentsToCalendar() {
-  const calendarEvents = this.appointments.map(app => {
-    // Kết hợp date và time thành định dạng ISO (YYYY-MM-DDTHH:mm:ss)
-    const startDateTime = `${app.date}T${app.time}:00`;
+    this.isLoading = true; 
     
-    // Tính toán thời gian kết thúc (mặc định 45 phút cho mỗi ca khám tại Thiên Phúc Dental)
-    const endDateTime = this.calculateEndTime(app.date, app.time);
-    const isLocked = app.status === 'da-den' || app.status === 'done-pay';
+    this.filterInput.skipCount = 0;
+    this.filterInput.maxResultCount = 1000;
 
-    return {
-      id: app.id.toString(),
-      title: `${app.customerName.toUpperCase()}\n${app.service}`,
-      start: `${app.date}T${app.time}:00`,
-      end: this.calculateEndTime(app.date, app.time),
-      // Đổ màu theo trạng thái đã thiết lập
-      backgroundColor: this.getStatusColor(app.status),
-      borderColor: 'transparent',
-      editable: !isLocked, 
-      startEditable: !isLocked, 
-      durationEditable: !isLocked,
-      // Lưu thêm thông tin phụ để dùng cho Tippy hoặc Modal
-      extendedProps: {
-        status: app.status,
-        phone: app.phone,
-        doctor: app.doctor
-      }
-    };
-  });
+    this._appointmentService
+        .mED_APPOINTMENT_Search(this.filterInput)
+        .pipe(
+            finalize(() => this.isLoading = false) 
+        )
+        .subscribe({
+            next: (result) => {
+                // SỬA TẠI ĐÂY: Dùng phép gán để RESET hoàn toàn mảng cũ, tránh lặp dữ liệu
+                this.appointments = result.items || [];
 
-  // Gán mảng đã xử lý vào lịch
-  this.calendarOptions.events = calendarEvents;
+                const calendarEvents = this.appointments.map(app => {
+                    const isLocked = ['da-den', 'done-pay'].includes(app.apP_STATUS);
+                    let formattedDate = '';
+    
+                    if (app.apP_DATE) {
+                        const datePart = app.apP_DATE.split(' ')[0]; 
+                        const parts = datePart.split('/');
+                        
+                        if (parts.length === 3) {
+                            const [m, d, y] = parts;
+                            const mm = (m || '').padStart(2, '0');
+                            const dd = (d || '').padStart(2, '0');
+                            // Đảm bảo năm có đủ cấu trúc yyyy
+                            formattedDate = y && y.length === 4 ? `${y}-${mm}-${dd}` : '';
+                        }
+                    }
+                    
+                    if (!formattedDate) {
+                        formattedDate = new Date().toISOString().split('T')[0];
+                    }
+
+                    const startTimeStr = `${formattedDate}T${app.starT_TIME || '00:00'}:00`;
+                    const endTimeStr = this.calculateEndTime(formattedDate, app.starT_TIME, app.rangE_TIME);
+                    
+                    return {
+                        id: app.apP_ID,
+                        doc_id: app.doC_ID,
+                        title: `${(app.cuS_NAME || '').toUpperCase()} - ${app.apP_CONTENT || ''}`,
+                        start: startTimeStr,
+                        end: endTimeStr,
+                        backgroundColor: this.getStatusColor(app.apP_STATUS),
+                        borderColor: 'transparent',
+                        editable: !isLocked,
+                        startEditable: !isLocked,
+                        durationEditable: !isLocked,
+                        extendedProps: {
+                            status: app.apP_STATUS,
+                            phone: app.cuS_PHONE,
+                            doctor: app.doC_NAME
+                        }
+                    };
+                });
+
+                // Cập nhật lịch (Immutable update)
+                this.calendarOptions = {
+                    ...this.calendarOptions,
+                    events: calendarEvents
+                };
+
+                // Kiểm tra trễ hẹn (Nên lưu ref nếu cần clear khi ngOnDestroy)
+                setTimeout(() => {
+                    if (typeof this.checkLateAppointments === 'function') {
+                        this.checkLateAppointments();
+                    }
+                }, 500);
+            },
+            error: (err) => {
+                this.notify.error("Không thể tải danh sách lịch hẹn");
+                console.error(err); // Nên log lỗi ra console để dễ debug
+            }
+        });
+}
+checkLateAppointments() {
+    const now = new Date();
+    
+    this.appointments.forEach(app => {
+        // Chỉ quét những ca ở trạng thái "Chưa đến"
+        if (app.apP_STATUS === 'chua-den') {
+            // Tạo mốc thời gian của ca khám (Giả sử app.apP_DATE là "2026-05-13" và app.time là "14:30")
+            let formattedDate = '';
+    
+                    if (app.apP_DATE) {
+                        const datePart = app.apP_DATE.split(' ')[0]; 
+                        const parts = datePart.split('/');
+                        
+                        if (parts.length === 3) {
+                            const [m, d, y] = parts;
+                            const mm = (m || '').padStart(2, '0');
+                            const dd = (d || '').padStart(2, '0');
+                            // Đảm bảo năm có đủ cấu trúc yyyy
+                            formattedDate = y && y.length === 4 ? `${y}-${mm}-${dd}` : '';
+                        }
+                    }
+            const appointmentTime = new Date(`${formattedDate}T${app.starT_TIME}:00`);
+            
+            // Tính số phút chênh lệch
+            const diffInMinutes = Math.floor((now.getTime() - appointmentTime.getTime()) / 60000);
+
+            // Nếu trễ từ 15 phút trở lên
+            if (diffInMinutes >= 15) {
+                const title = 'CẢNH BÁO TRỄ HẸN - ' + app.cuS_PHONE
+                Swal.fire({
+                    title: title,
+                    text: `Bệnh nhân ${app.cuS_NAME} đã trễ ${diffInMinutes} phút! Bạn có muốn xử lý ngay?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xử lý ngay',
+                    cancelButtonText: 'Để sau',
+                    confirmButtonColor: '#4f46e5',
+                    // Giữ thông báo không tự đóng nếu cần
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.focusAndOpenStatusMenu(app);
+                    }
+                });
+
+                app.iWarn = true;
+            }
+        }
+    });
+}
+focusAndOpenStatusMenu(app: any) {
+   const calendarApi = this.calendarComponent.getApi();
+   const normalizedApp = this.normalizeAppData(app);
+    
+    let formattedDate = '';
+    
+    if (app.apP_DATE) {
+        const datePart = app.apP_DATE.split(' ')[0]; 
+        const parts = datePart.split('/');
+        
+        if (parts.length === 3) {
+            const [m, d, y] = parts;
+            const mm = (m || '').padStart(2, '0');
+            const dd = (d || '').padStart(2, '0');
+            // Đảm bảo năm có đủ cấu trúc yyyy
+            formattedDate = y && y.length === 4 ? `${y}-${mm}-${dd}` : '';
+        }
+    }
+    // 1. Chuyển đến ngày của ca trễ trước
+    calendarApi.gotoDate(formattedDate);
+
+    // 2. Đợi một khoảng thời gian ngắn để lịch render xong ngày mới
+      setTimeout(() => {
+        // CUỘN LỊCH XUỐNG GIỜ CẦN XỬ LÝ (Sau khi đã render ngày)
+        // Lưu ý: app.time phải là định dạng '08:30:00'
+        calendarApi.scrollToTime(app.time);
+
+        // 3. Tìm thẻ và bật Tippy
+        const eventEl = document.querySelector(`[data-event-id="${app.apP_ID}"]`);
+        if (eventEl) {
+            const htmlEl = eventEl as HTMLElement;
+            const tippyInstance = (htmlEl as any)._tippy;
+
+            if (tippyInstance) {
+                tippyInstance.destroy();
+            }
+
+            this.bindTippyManually(htmlEl, normalizedApp); 
+
+            const newTippy = (htmlEl as any)._tippy;
+            if (newTippy) {
+                newTippy.show();
+            }
+
+            // Highlight thẻ
+            htmlEl.style.outline = "3px solid #fbbf24";
+            setTimeout(() => htmlEl.style.outline = "none", 5000);
+        }
+    }, 500); // Khoảng 500ms là đủ để lịch vẽ lại scroller
 }
 
+bindTippyManually(el: HTMLElement, app: any) {
+    tippyDefault(el, {
+        content: () => this.createQuickStatusMenu(app), 
+        allowHTML: true,
+        interactive: true,
+        trigger: 'click',
+        theme: 'light-border',
+        showOnCreate: true, // Tự động bật menu ngay khi tạo xong
+        appendTo: document.body
+    });
+}
 
-calculateEndTime(date: string, time: string): string {
+calculateEndTime(date: string, time: string,range: number): string {
   // Logic xử lý bên trong giữ nguyên
   const [hour, minute] = time.split(':').map(Number);
   const endDate = new Date(`${date}T${time}:00`);
   
   // Tăng 45 phút cho ca khám tại Thiên Phúc Dental
-  endDate.setMinutes(endDate.getMinutes() + 45); 
+  endDate.setMinutes(endDate.getMinutes()+range);
   
   const h = endDate.getHours().toString().padStart(2, '0');
   const m = endDate.getMinutes().toString().padStart(2, '0');
   
   return `${date}T${h}:${m}:00`;
 }
-  // Cập nhật trạng thái cuộc hẹn
-  // updateStatus(event: any, statusKey: string) {
-  //   const selectedStatus = this.statusConfigs[statusKey];
-    
-  //   // Đổi màu ngay lập tức trên giao diện
-  //   event.setProp('backgroundColor', selectedStatus.color);
-  //   event.setProp('borderColor', selectedStatus.color);
-    
-  //   // Lưu vào database
-  //   // this.appointmentService.update(event.id, { status: statusKey }).subscribe(() => {
-  //   //   console.log('Đã cập nhật trạng thái Thiên Phúc Dental thành công!');
-  //   // });
-  // }
+
 
   // Xử lý khi đổi giờ (Kéo thả trên lịch)
   handleEventUpdate(info: any) {
-    setTimeout(() => {
-      const calendarApi = this.calendarComponent.getApi();
-      // Lấy ID từ event cũ (vẫn tồn tại trong info)
-      const eventId = info.event.id; 
-      const event = calendarApi.getEventById(eventId);
+    if(info){
+      const newStart = info.event.start;
+      const now = new Date();
 
-      if (event) {
-        console.log("Đã sang ngày mới:", event.startStr);
-        // Gọi API cập nhật Database của Thiên Phúc Dental
-        // this.updateAppointmentOnServer(event);
-      }
-    }, 2000);
+      const today = new Date().setHours(0, 0, 0, 0);
+      const selectedDate = new Date(newStart).setHours(0, 0, 0, 0);
+      if (selectedDate < today) {
+        // Thông báo lỗi cho người dùng
+        this.notify.error(
+            'Không được phép chuyển lịch hẹn về quá khứ!',
+            'LỖI CẬP NHẬT'
+        );
+
+        info.revert();
+        return; 
+    }
+    this.message.confirm(
+        'Bạn có chắc chắn muốn cập nhật thời gian hẹn mới cho lịch hẹn này không?',
+        'Xác nhận cập nhật',
+        (isConfirmed) => {
+            if (isConfirmed) {
+                const index =this.appointments.findIndex(x=>x.apP_ID == info.event.id);
+                if (index > -1) {
+                  const newStart = new Date(info.event.start).toLocaleString('sv-SE').replace(' ', 'T');
+                  const newEnd = new Date(info.event.end).toLocaleString('sv-SE').replace(' ', 'T');
+
+                  const datePart = newStart.split('T')[0];
+                  const startTimePart = newStart.split('T')[1].substring(0, 5); 
+                  const endTimePart = newEnd ? newEnd.split('T')[1].substring(0, 5) : '';
+
+                  const [startH, startM] = startTimePart.split(':').map(Number);
+                  const [endH, endM] = endTimePart.split(':').map(Number);
+
+                  const totalStartMinutes = (startH * 60) + startM;
+                  const totalEndMinutes = (endH * 60) + endM;
+
+                  const durationInMinutes = totalEndMinutes - totalStartMinutes;
+
+
+                  // 4. Gán giá trị mới vào mảng appointments
+                  this.appointments[index].apP_DATE = datePart;
+                  this.appointments[index].starT_TIME = startTimePart;
+                  this.appointments[index].rangE_TIME = durationInMinutes;
+
+                  const data = this.appointments[index];
+                  this._appointmentService.mED_APPOINTMENT_Upd(data).subscribe((response) => {
+                    if(response.result == '0'){
+                      this.notify.success(this.l('Thay đổi thời gian hẹn thành công'));
+                      
+                    }
+                    else{
+                        this.notify.error(this.l('Cập Nhật Thất Bại! ') + ': ' + response.errorDesc);
+                        info.revert();
+                    }
+                  });
+
+                  
+              } else {
+                  this.notify.error("Không tìm thấy ca khám trong danh sách local để cập nhật!");
+                  info.revert();
+              }
+            }
+            else{
+                info.revert();
+            }
+        }
+    );
+        
+    }
   }
   changeView(viewType: string) {
     this.currentView = viewType;
@@ -449,7 +667,7 @@ calculateEndTime(date: string, time: string): string {
     this.calendarComponent.getApi().next();
   }
   openAddModal(): void{
-    
+    this.createAppointmentModal.show('','');
   }
   handleEventDrop(info: any) {
   console.log('Đã thả cuộc hẹn tại:', info.event.start);
@@ -458,4 +676,16 @@ calculateEndTime(date: string, time: string): string {
 handleEventResize(info: any) {
   console.log('Đã đổi thời lượng cuộc hẹn');
 }
+private normalizeAppData(app: any) {
+    return {
+        ...app,
+        // Ưu tiên lấy từ JSON thô (doC_ID), nếu không có thì lấy từ extendedProps (doc_id)
+        doC_ID: app.doC_ID || app.apP_DOC_ID || (app.extendedProps ? app.extendedProps.doc_id : null),
+        apP_ID: app.apP_ID || app.id,
+        cuS_NAME: app.cuS_NAME || app.title?.split(' - ')[0],
+        apP_STATUS: app.apP_STATUS || (app.extendedProps ? app.extendedProps.status : null)
+    };
 }
+}
+
+

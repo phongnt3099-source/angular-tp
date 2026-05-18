@@ -50,6 +50,107 @@
 ::ng-deep .nav-controls button:nth-child(2):hover {
     background: #f1f5f9 !important;
 } */
+ /*Nút Tootip trạng thái*/
+ 
+::ng-deep .quick-status-dropdown-3d {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 12px;
+  width: 280px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 8px;
+
+  .menu-title {
+    width: 100%;
+    font-size: 11px;
+    font-weight: 800;
+    color: #4f46e5;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .status-btn-item {
+    flex: 1 1 calc(50% - 8px); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    border: 1px solid #f1f5f9;
+    background: #ffffff;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    .status-icon-wrapper {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .status-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      text-align: center;
+    }
+
+    &:hover {
+      background: #f8fafc;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1);
+      border-color: #4f46e5;
+    }
+  }
+  .edit-action-header {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+
+    .btn-full-edit {
+      width: 100%;
+      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+        filter: brightness(1.1);
+      }
+    }
+  }
+
+  .menu-divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 10px 5px;
+    width: calc(100% - 10px);
+  }
+}
+/*next*/
 ::ng-deep .custom-calendar-nav {
     position: absolute !important;
     top: 20px !important;
@@ -392,7 +493,7 @@
 }
 /* Mặc định ẩn vạch biên */
 ::ng-deep .fc-timegrid-col {
-    transition: background 0.2s ease !important;
+  position: relative !important;
 }
 /* Khi đang kéo (is-dragging-appointment được thêm từ TS) */
 ::ng-deep body.is-dragging-appointment .fc-col-header-cell:first-child,
@@ -407,111 +508,215 @@
 }
 /* Tăng tốc độ phản hồi của vùng cuộn */
 ::ng-deep .fc-scroller {
-    scroll-behavior: smooth !important;
+    overflow: visible !important; 
+    -webkit-overflow-scrolling: touch;
 }
 /* Làm cho event đang kéo trông mờ và nổi bật hơn */
 ::ng-deep .fc-event-dragging {
-    opacity: 0.8 !important;
-    transform: scale(1.02) !important;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
-    z-index: 9999 !important;
+  pointer-events: none !important; 
+    z-index: 999999 !important;
 }
 
-::ng-deep .quick-status-dropdown-3d {
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
-  padding: 12px;
-  width: 280px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  display: flex;
-  flex-wrap: wrap; 
-  gap: 8px;
+/* ÉP FULLCALENDAR NHẬN DIỆN VÙNG BIÊN */
+::ng-deep .fc-scroller {
+    overflow: visible !important; /* Cho phép sự kiện kéo thoát ra ngoài khung cuộn */
+}
 
-  .menu-title {
-    width: 100%;
-    font-size: 11px;
-    font-weight: 800;
-    color: #4f46e5;
-    letter-spacing: 1.5px;
-    margin-bottom: 10px;
-    text-align: center;
-    text-transform: uppercase;
-  }
+::ng-deep .fc-view-harness {
+    overflow: visible !important;
+}
 
-  .status-btn-item {
-    flex: 1 1 calc(50% - 8px); 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 8px;
-    border: 1px solid #f1f5f9;
+/* LÀM CHO EVENT ĐANG KÉO "XUYÊN THẤU" */
+::ng-deep .fc-event-dragging {
+    pointer-events: none !important; /* Để chuột xuyên qua thẻ đang kéo, chạm thẳng vào nền lịch */
+    z-index: 999999 !important;
+    opacity: 0.7 !important;
+}
+
+/* TẠO VÙNG ĐỆM BIÊN (MẸO) */
+::ng-deep body.is-dragging-appointment .fc-timegrid-col:first-child {
+    border-left: 10px solid rgba(79, 70, 229, 0.2) !important;
+}
+::ng-deep body.is-dragging-appointment .fc-timegrid-col:last-child {
+    border-right: 10px solid rgba(79, 70, 229, 0.2) !important;
+}
+
+::ng-deep .fc-timegrid-cols {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+::ng-deep .icon-status-gray {
+    color: #94a3b8 !important;
+}
+
+/* Tinh chỉnh lại Tag bác sĩ để nhìn rành mạch hơn */
+::ng-deep .event-doctor-tag {
+    margin-top: auto;
     background: #ffffff;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #4f46e5; /* Màu chữ bác sĩ vẫn để đậm cho dễ đọc */
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0; /* Thêm viền mảnh để tách biệt với nền trắng */
+}
 
-    .status-icon-wrapper {
-      width: 36px;
-      height: 36px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 6px;
-      font-size: 16px;
-    }
+::ng-deep .time-diff-tag {
+    color: #ffd700 !important; /* Màu vàng nổi bật */
+    font-weight: 700;
+    font-size: 10px;
+    white-space: nowrap;
+}
 
-    .status-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: #334155;
-      text-align: center;
-    }
+::ng-deep .date-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-right: 4px;
+    border: 0.5px solid rgba(255,255,255,0.4);
+}
+::ng-deep .doctor-badge-container {
+    margin-top: auto; /* Đẩy xuống đáy thẻ */
+    padding-top: 4px;
+}
 
-    &:hover {
-      background: #f8fafc;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1);
-      border-color: #4f46e5;
-    }
-  }
-  .edit-action-header {
+::ng-deep .doctor-glass-effect {
+    background: rgba(255, 255, 255, 0.95) !important; /* Nền trắng gần như đặc để không tiệp màu */
+    color: #1e293b !important; /* Chữ màu xanh đen đậm để tương phản cực cao */
+    padding: 5px 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng tạo độ nổi */
+    border-left: 4px solid #4f46e5; /* Vạch màu chỉ định bên trái cho chuyên nghiệp */
+}
+
+/* Icon bác sĩ */
+::ng-deep .doctor-icon {
+    font-size: 13px;
+    color: #4f46e5; /* Icon tiệp màu với vạch kẻ */
+}
+
+/* Tên bác sĩ in đậm rành mạch */
+::ng-deep .doctor-name-text {
+    font-size: 11px;
+    font-weight: 900 !important; /* Siêu đậm */
+    letter-spacing: 0.5px;
+}
+
+/* --- ĐIỀU CHỈNH LẠI CÁC THÀNH PHẦN KHÁC --- */
+::ng-deep .fc-event-custom-container {
+    padding: 8px !important;
+}
+
+::ng-deep .date-badge {
+    background: #ffffff !important;
+    color: #4f46e5 !important;
+    font-weight: 800;
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-right: 5px;
+}
+
+/* Fix tiêu đề ca khám không bị đè */
+::ng-deep .fc-event-title-row {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+::ng-deep .fc-scroller {
+    scroll-behavior: smooth !important; /* Tạo hiệu ứng cuộn trượt mượt mà */
+}
+/* Container bao ngoài */
+.calendar-wrapper {
+    position: relative;
+    min-height: 500px;
+    transition: all 0.3s ease;
+}
+
+/* Hiệu ứng khi đang load: Làm mờ lịch và chặn tương tác chuột */
+.calendar-wrapper.is-loading full-calendar {
+    filter: blur(2px) brightness(0.8);
+    pointer-events: none; /* Ngăn người dùng kéo thả khi đang load */
+    user-select: none;
+}
+
+/* Lớp phủ Overlay */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 5px;
-    margin-bottom: 5px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.4); /* Làm tối nhẹ bề mặt */
+    z-index: 100; /* Nằm trên cùng */
+    border-radius: 12px;
+}
 
-    .btn-full-edit {
-      width: 100%;
-      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+.spinner-container {
+    background: white;
+    padding: 20px 40px;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+}
 
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
-        filter: brightness(1.1);
-      }
-    }
-  }
+.text-indigo {
+    color: #4f46e5 !important; /* Màu chủ đạo của bạn */
+}
 
-  .menu-divider {
-    height: 1px;
-    background: #f1f5f9;
-    margin: 10px 5px;
-    width: calc(100% - 10px);
-  }
+/* --- FIX TRIỆT ĐỂ CỘT 61PX VÀ LỆCH CỘT --- */
+
+/* 1. Ép chiều rộng cho tất cả các thẻ <td>, <th> và <col> liên quan đến trục thời gian */
+::ng-deep .fc-timegrid-axis,
+::ng-deep .fc-col-header-cell.fc-timegrid-axis,
+::ng-deep .fc-scrollgrid-section-body td:first-child,
+::ng-deep col[style*="width: 61px"], 
+::ng-deep col[style*="width: 60px"] {
+    width: 55px !important;
+    min-width: 55px !important;
+    max-width: 55px !important;
+}
+
+/* 2. Ép khung chứa nội dung giờ (axis-frame) không được giãn nở */
+::ng-deep .fc-timegrid-axis-frame,
+::ng-deep .fc-timegrid-axis-cushion {
+    width: 55px !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+/* 3. San phẳng Header và Body để không bị lệch 1px */
+::ng-deep .fc-col-header,
+::ng-deep .fc-timegrid-body,
+::ng-deep .fc-timegrid-cols table {
+    width: 100% !important;
+    margin-left: 0 !important;
+    table-layout: fixed !important; /* Quan trọng nhất: Chia đều các cột ngày còn lại */
+}
+
+/* 4. Căn chỉnh chữ 08:00 nằm chính giữa cột 55px */
+::ng-deep .fc-timegrid-slot-label-cushion {
+    display: block !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+/* 5. Khử bỏ vạch trắng dư thừa ở góc trên cùng bên trái */
+::ng-deep .fc .fc-timegrid-axis-frame {
+    justify-content: center !important;
+    background-color: transparent !important;
 }

@@ -31,12 +31,15 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     selectedAssistant1: string | null = null;
     selectedAssistant2: string | null = null;
     customer: CM_CUSTOMER_ENTITY = new CM_CUSTOMER_ENTITY;
+    customers: CM_CUSTOMER_ENTITY[] = [];
     isHidenAssistant = false;
     hour = '';
     minute = '';
     selectedHour = '';
     selectedMinute = '';
+    selectedCusId='';
     listExistingAppointments: MED_APPOINTMENT_ENTITY[] = [];
+    isDisabled = false;
 
     constructor(injector: Injector,
         private _appointmentService: AppointmentServiceProxy,
@@ -49,6 +52,8 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     }
 
     get rangeTimeDisplay(): string {
+        if(!this.appointmentForm.apP_DATE) return;
+
         const dateVal = this.appointmentForm.apP_DATE;
         const hour = parseInt(this.appointmentForm.hour|| '0');
         const minute = parseInt(this.appointmentForm.minute || '0');
@@ -114,11 +119,16 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
             this._appointmentService.mED_APPOINTMENT_GetById(apP_ID).subscribe((result) => {
                 this.appointmentForm = result;
                 (this.appointmentForm as any).apP_DATE = new Date(result['apP_DATE']);
-                    this.selectedHour = this.appointmentForm.hour = this.appointmentForm.starT_TIME?.split(':')[0]||'';
-                    this.selectedMinute = this.appointmentForm.minute = this.appointmentForm.starT_TIME?.split(':')[1]||'';
+                this.selectedHour = this.appointmentForm.hour = this.appointmentForm.starT_TIME?.split(':')[0]||'';
+                this.selectedMinute = this.appointmentForm.minute = this.appointmentForm.starT_TIME?.split(':')[1]||'';
+                this.selectedCusId = this.appointmentForm.apP_CUST_ID||'';
                 this.selectedDoctor = this.appointmentForm.apP_DOC_ID||'';
                 this.selectedAssistant1 =this.appointmentForm.apP_ASSISTANT_ID_1 ||'';
                 this.selectedAssistant2 =this.appointmentForm.apP_ASSISTANT_ID_2 ||'';
+                if(this.appointmentForm.apP_STATUS != 'chua-den'){
+                    this.isDisabled = false;
+                }
+                this.rangeTimeDisplay;
             });
         }
         else{
@@ -181,14 +191,27 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         this.appointmentForm.makeR_ID = this.appSession.user.userName?.toString() || undefined;
         this.appointmentForm.starT_TIME = `${this.appointmentForm.hour}:${this.appointmentForm.minute}`;
         this.appointmentForm.sloT_NAME = this.rangeTimeDisplay;
-        this._appointmentService.mED_APPOINTMENT_Ins(this.appointmentForm).subscribe(() => {
-            this.notify.info(this.l('SavedSuccessfully'));
-            this.close();
-            this.modalSave.emit(null);
-         }, () => {
-            this.notify.error(this.l('AnErrorOccurredWhileSaving'));
-            this.saving = false;
-        });
+        this.appointmentForm.apP_CUST_ID = this.selectedCusId;
+        if(!this.appointmentForm.apP_ID){
+                this._appointmentService.mED_APPOINTMENT_Ins(this.appointmentForm).subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.close();
+                this.modalSave.emit(null);
+            }, () => {
+                this.notify.error(this.l('AnErrorOccurredWhileSaving'));
+                this.saving = false;
+            });
+        }
+        else{
+                this._appointmentService.mED_APPOINTMENT_Upd(this.appointmentForm).subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.close();
+                this.modalSave.emit(null);
+            }, () => {
+                this.notify.error(this.l('AnErrorOccurredWhileSaving'));
+                this.saving = false;
+            });
+        }
     }
 
     onShown(): void { }
@@ -213,6 +236,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
             const searchParam = new MED_APPOINTMENT_ENTITY();
             searchParam.apP_DATE = formattedDate;
             searchParam.apP_DOC_ID = medDocId;
+            searchParam.apP_STATUS = 'chua-den,da-den';
 
             this._appointmentService.mED_APPOINTMENT_Search(searchParam)
                 .subscribe(res => {
@@ -229,7 +253,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
 
     generateTimeOptions() {
         // Tạo mảng 24 giờ (00 - 23)
-        for (let i = 6; i < 23; i++) {
+        for (let i = 7; i < 23; i++) {
             this.hours.push(i < 10 ? '0' + i : i.toString());
         }
 
@@ -423,7 +447,15 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         return 'Giờ còn trống';
     }
     private loadDropdowns(id?: string): void {
-        this._customerService.cM_CUSTOMER_GetById(id).subscribe(res => this.customer = res);
+        if(id){
+            this._customerService.cM_CUSTOMER_GetById(id).subscribe(res => {
+                this.customers[0] = res;
+                this.selectedCusId = this.customers[0].cuS_ID;
+            });
+        }
+        else{
+            this._customerService.cM_CUSTOMER_DROPDOWNLIST().subscribe(res => this.customers = res);
+        }
         this._employeeService.cM_EMPLOYEE_DROPDOWNLIST('BS').subscribe(res => {
             this.listDoctors = res;
             if(!this.selectedDoctor){

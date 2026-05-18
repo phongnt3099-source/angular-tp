@@ -15,11 +15,11 @@
         <button (click)="changeView('timeGridWeek')" [class.active]="currentView === 'timeGridWeek'">Tuần</button>
         <button (click)="changeView('timeGridDay')" [class.active]="currentView === 'timeGridDay'">Ngày</button>
       </div>
-      <div class="today-special-corner">
+      <!-- <div class="today-special-corner">
         <button (click)="goToday()" class="today-fancy-btn">
             <i class="fas fa-calendar-check me-2"></i>Hôm nay
         </button>
-    </div>
+    </div> -->
       
       
 
@@ -33,15 +33,22 @@
 
 <div class="container-fluid px-4 mt-4">
   <div class="calendar-card shadow-sm" [hidden]="displayMode !== 'calendar'">
-      <div class="calendar-wrapper">
-          
-          <div class="cursor-area area-prev" (click)="goPrev()" title="Bấm để quay lại"></div>
+      <div class="calendar-wrapper" [class.is-loading]="isLoading">
+        
+        <div class="loading-overlay" *ngIf="isLoading">
+            <div class="spinner-container">
+                <div class="spinner-border text-indigo" role="status"></div>
+                <span class="ms-3 fw-bold text-indigo">Đang tải lịch hẹn...</span>
+            </div>
+        </div>
 
-          <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+        <div class="cursor-area area-prev" (click)="goPrev()" title="Bấm để quay lại"></div>
 
-          <div class="cursor-area area-next" (click)="goNext()" title="Bấm để xem tiếp"></div>
+        <full-calendar #calendar [options]="calendarOptions"></full-calendar>
 
-      </div>
+        <div class="cursor-area area-next" (click)="goNext()" title="Bấm để xem tiếp"></div>
+
+    </div>
   </div>
 
   <div *ngIf="displayMode === 'library'" class="library-grid animate__animated animate__fadeIn">
@@ -79,3 +86,5 @@
   </div>
 </div>
 </div>
+
+<createAppointmentModal #createAppointmentModal (modalSave)="loadAppointmentsToCalendar()"></createAppointmentModal>
