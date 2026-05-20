@@ -1,0 +1,1200 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;600;700&display=swap');
+/* --- BIẾN MÀU SẮC CHỦ ĐẠO --- */
+$primary-color: #4f46e5;       /* Màu Indigo đơn sắc phẳng cho tiêu đề */
+$primary-gradient: linear-gradient(135deg, #4f46e5, #0ea5e9);
+$indigo-color: #4f46e5;
+$sky-color: #0ea5e9;
+$dark-slate: #1e293b;
+$text-muted: #64748b;
+$border-color: #e2e8f0;
+$bg-light: #f8fafc;
+
+/* --- LAYOUT CORE DASHBOARD --- */
+.clinical-dashboard {
+  display: grid;
+  grid-template-columns: 1fr 340px; 
+  gap: 24px;
+  padding: 24px;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+//   font-family: 'Lato', 'Poppins', sans-serif; 
+  box-sizing: border-box;
+
+  *, *::before, *::after { box-sizing: border-box; }
+}
+
+/* --- UTILITIES & TYPO EFFECTS --- */
+.main-color { background-color: $primary-color !important; }
+.text-indigo { color: $indigo-color !important; }
+.btn-outline-indigo {
+  color: $indigo-color;
+  border-color: #cbd5e1;
+  background-color: #fff;
+  &:hover {
+    background-color: #f5f3ff;
+    color: $indigo-color;
+    border-color: $indigo-color;
+  }
+}
+.text-gradient {
+  background: $primary-gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.btn-gradient {
+  background: $primary-gradient;
+  border: none;
+  transition: opacity 0.2s ease;
+  &:hover {
+    opacity: 0.9;
+    color: #fff;
+  }
+}
+.border-bottom-2 { border-bottom: 2px solid $border-color; }
+.border-end-2 { border-right: 2px solid #cbd5e1; }
+.border-dashed { border-top: 1px dashed #cbd5e1; }
+
+/* --- KHỐI NHẬP LIỆU FORM TRÁI --- */
+.card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff; /* Đổi màu nền chính card thành trắng sạch */
+}
+.card-header {
+  padding: 16px 24px;
+  
+  h5 { 
+    // font-family: 'Poppins', Arial, sans-serif !important; 
+    font-weight: 700 !important; 
+    font-size: 18px !important;
+  }
+}
+.form-style {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 15px;
+  color: $dark-slate;
+  background-color: #fff;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  &:focus {
+    border-color: $indigo-color;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    outline: 0;
+  }
+}
+.table th {
+//   font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: $dark-slate;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+/* Chỗ nổi bật tên dịch vụ data mờ cũ */
+.clickable-row {
+  cursor: pointer;
+  &:hover { background-color: #f8fafc !important; }
+  .text-secondary { font-weight: 700; color: #475569 !important; } /* Làm nổi bật data tên dịch vụ */
+}
+
+/* --- KHỐI SIDEBAR THÈ BỆNH NHÂN PHẢI (PERSISTENT & NO-IMAGE) --- */
+.patient-sidebar {
+  position: sticky;
+  top: 24px;
+  height: calc(100vh - 48px);
+}
+.patient-card {
+  background: #ffffff;
+  border-radius: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  
+  .patient-card-header {
+    padding: 30px 24px 20px;
+    background: linear-gradient(180deg, rgba(238, 242, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+    border-bottom: 1px solid #f1f5f9;
+    .bg-indigo-light { background-color: #e0e7ff; font-size: 13px; }
+  }
+  .info-group {
+    .info-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: $text-muted;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+    }
+    .info-value { font-size: 15px; color: $dark-slate; }
+  }
+  .alert-danger-custom {
+    background-color: #fef2f2;
+    border-left: 4px solid #ef4444;
+    border-radius: 8px;
+    padding: 12px 16px;
+    .text-secondary-danger { color: #991b1b; font-weight: 600; }
+  }
+}
+
+/* --- CẤU TRÚC MODAL NỀN CHUNG --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+.modal-header-custom {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- MODAL 1: CHUYÊN DỤNG CHO DANH MỤC DỊCH VỤ DỮ LIỆU LỚN --- */
+.modal-dialog-service {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 1020px; /* Tăng chiều rộng để hiển thị bảng dữ liệu thoải mái */
+  max-width: 95vw;
+  height: 82vh; /* Khóa chiều cao cố định để nội dung cuộn bên trong */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal-body-service {
+  display: flex;
+  flex: 1;
+  overflow: hidden; 
+}
+.modal-sidebar-categories {
+  width: 240px;
+  background-color: $bg-light;
+  border-right: 1px solid $border-color;
+  overflow-y: auto;
+  padding: 12px 0;
+
+  .category-item {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-muted;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+
+    &:hover { background-color: #e2e8f0; color: $dark-slate; }
+    &.active {
+      background-color: #fff;
+      color: $indigo-color;
+      border-left: 4px solid $indigo-color;
+    }
+  }
+}
+.modal-sidebar-categories::-webkit-scrollbar { width: 4px; }
+.modal-sidebar-categories::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+
+.modal-main-services {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .modal-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: $text-muted; }
+  .modal-search-input {
+    padding-left: 40px;
+    border-radius: 8px;
+    border: 1px solid $border-color;
+    height: 40px;
+    &:focus { border-color: $indigo-color; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+  }
+  .modal-table-scroll { flex: 1; overflow-y: auto; border-radius: 8px; }
+}
+.modal-table-scroll::-webkit-scrollbar { width: 6px; }
+.modal-table-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+
+.select-srv-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  &:checked { background-color: $indigo-color; border-color: $indigo-color; }
+}
+
+/* --- MODAL 2: SƠ ĐỒ CHỌN RĂNG FDI VỚI HÌNH ẢNH TRỰC QUAN --- */
+.modal-dialog-custom {
+  background: #fff;
+  border-radius: 16px;
+  width: 860px;
+  max-width: 95vw;
+  overflow: hidden;
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-group-toggle {
+  background-color: #f1f5f9;
+  padding: 4px;
+  border-radius: 30px;
+  display: inline-flex;
+
+  .toggle-btn {
+    border: none;
+    background: transparent;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-muted;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.active {
+      background-color: #ffffff;
+      color: $indigo-color;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+.tooth-chart-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 10px;
+
+  .jaw-row { display: flex; width: 100%; justify-content: center; }
+  .quadrant { display: flex; flex: 1; gap: 10px; align-items: center; }
+}
+.tooth-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+
+  .tooth-element {
+    width: 40px;
+    height: 52px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-weight: 700;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 14px;
+
+    /* Thêm style để hiển thị hình ảnh răng thay cho nút số mờ cũ */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover { background-color: #e0e7ff; border-color: $indigo-color; color: $indigo-color; }
+    &.selected {
+      background-color: $indigo-color; /* Màu Indigo phẳng cho trạng thái được chọn */
+      border-color: $indigo-color;
+      color: #ffffff;
+      box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25);
+    }
+
+    /* Style cho răng FDI sữa tròn */
+    &.child {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #f0fdfa;
+      border-color: #99f6e4;
+      color: #0f766e;
+
+      &:hover { background: #ccfbf1; border-color: #0f766e; }
+      &.selected {
+        background: #0f766e;
+        border-color: #0f766e;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(15, 118, 110, 0.25);
+      }
+    }
+  }
+  .tooth-label { font-size: 11px; font-weight: bold; color: $text-muted; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.table {
+  td.text-dark {
+    color: #1e293b !important; /* Màu xanh đen đậm, cực kỳ dễ đọc */
+    opacity: 1 !important;
+  }
+}
+
+
+
+/* --- SƠ ĐỒ RĂNG HÌNH ẢNH ĐỒ HỌA TRỰC QUAN (VISUAL DENTAL CHART) --- */
+.tooth-chart-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 15px 10px;
+
+  .jaw-row { 
+    display: flex; 
+    width: 100%; 
+    justify-content: center; 
+  }
+  .quadrant { 
+    display: flex; 
+    flex: 1; 
+    gap: 8px; 
+    align-items: center; 
+  }
+}
+
+.tooth-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  /* Button chứa ảnh chân thực của từng chiếc răng lẻ */
+ .tooth-img-element {
+  width: 40px;
+  height: 68px;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: contain;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  padding: 0;
+
+  /* Vòng lặp map ảnh cho răng người lớn */
+  @for $i from 11 through 48 {
+    &.tooth-adult-#{$i} {
+      background-image: url('/assets/images/teeth/adult/#{$i}.png');
+    }
+  }
+  
+  /* Vòng lặp map ảnh cho răng trẻ em */
+  @for $i from 51 through 85 {
+    &.tooth-child-#{$i} {
+      background-image: url('/assets/images/teeth/child/#{$i}.png');
+    }
+  }
+
+  &:hover {
+    background-color: rgba(79, 70, 229, 0.08);
+    border-radius: 6px;
+  }
+
+  &.selected {
+    background-color: rgba(79, 70, 229, 0.18) !important;
+    border: 1px solid #4f46e5 !important;
+    box-shadow: 0 0 8px rgba(79, 70, 229, 0.35);
+    border-radius: 6px;
+  }
+}
+
+  .tooth-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    margin-top: 2px;
+  }
+}
+
+.status-select {
+  font-size: 13px !important;
+  border-radius: 6px;
+  padding-left: 8px !important;
+  transition: all 0.2s ease-in-out;
+
+  /* Màu xám nhẹ - Chưa điều trị */
+  &.status-yet {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+    border-color: #cbd5e1;
+  }
+
+  /* Màu cam ấm - Đang điều trị */
+  &.status-doing {
+    background-color: #fff7ed !important;
+    color: #ea580c !important;
+    border-color: #ffedd5;
+  }
+
+  /* Màu xanh lá - Hoàn tất */
+  &.status-done {
+    background-color: #f0fdf4 !important;
+    color: #16a34a !important;
+    border-color: #dcfce7;
+  }
+
+  /* Màu đỏ nhạt - Ngưng điều trị */
+  &.status-stop {
+    background-color: #fef2f2 !important;
+    color: #dc2626 !important;
+    border-color: #fee2e2;
+  }
+}
+.badge.bg-indigo-light {
+  background-color: #e0e7ff;
+  color: #4f46e5;
+  font-size: 13px;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  transition: all 0.15s ease;
+  
+  /* CẬP NHẬT: Cho phép chuỗi chữ tự động ngắt và xuống hàng khi đụng vách */
+  white-space: normal !important;   
+  word-break: break-word !important; 
+  display: inline-block !important;  
+  max-width: 100%;                  /* Không vượt quá độ rộng của cột */
+  text-align: left;
+  line-height: 1.5;                 /* Giúp các hàng không bị dính chặt vào nhau */
+  padding: 6px 12px !important;     /* Tăng nhẹ padding cho dễ nhìn khi xuống hàng */
+
+  &:hover {
+    background-color: #c7d2fe;
+    color: #3730a3;
+  }
+}
+.table {
+  tbody {
+    tr {
+      td {
+        /* Cấu hình cho khối tên dịch vụ */
+        .fs-6.text-dark.fw-bold {
+          white-space: normal !important;    /* Cho phép chữ xuống hàng tự nhiên */
+          word-break: break-word !important;  /* Ngắt từ thông minh khi chạm biên */
+          line-height: 1.4 !important;       /* Tạo khoảng cách dòng thông thoáng */
+          max-width: 100%;                   /* Giới hạn tuyệt đối theo chiều rộng cột */
+          display: block;
+        }
+      }
+    }
+  }
+}
+/* --- HIỆU ỨNG DISABLE CHO DÒNG CHƯA ĐIỀU TRỊ --- */
+input:disabled, 
+select:disabled, 
+button:disabled {
+  background-color: #f8fafc !important;
+  color: #94a3b8 !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+
+/* Badge răng khi bị khóa */
+.badge.disabled-badge {
+  background-color: #f1f5f9 !important;
+  color: #94a3b8 !important;
+  border: 1px solid #e2e8f0 !important;
+  cursor: not-allowed !important;
+}
+
+/* Định hình văn bản bao quanh tên dịch vụ */
+.text-wrap-service {
+  white-space: normal !important;
+  word-break: break-word !important;
+  line-height: 1.4 !important;
+  max-width: 100%;
+  display: block;
+}
+/* --- SỬA LẠI: CHỈ DISABLE KHI DÒNG CÓ CLASS .row-disabled --- */
+.row-disabled {
+  /* Làm mờ các text thành tiền và đơn giá của dòng bị khóa */
+  .text-dark, .fw-semibold, .text-end {
+    color: #94a3b8 !important;
+    opacity: 0.8;
+  }
+
+  /* Chỉ khóa nền xám và đổi con trỏ chuột cho input/button nằm trong dòng này */
+  input:disabled,
+  button:disabled {
+    background-color: #f8fafc !important;
+    color: #94a3b8 !important;
+    border-color: #e2e8f0 !important;
+    cursor: not-allowed !important;
+    opacity: 0.65;
+    box-shadow: none !important;
+  }
+
+  /* Khóa badge răng */
+  .badge.disabled-badge {
+    background-color: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    border: 1px solid #e2e8f0 !important;
+    cursor: not-allowed !important;
+  }
+}
+
+/* Gốc tự do: Khi ở trạng thái "Chưa điều trị" (không có class .row-disabled), 
+   mọi input phải giữ nguyên màu trắng, chữ đen rực rỡ */
+input.form-control:not(:disabled) {
+  background-color: #ffffff !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+  cursor: text !important;
+  opacity: 1 !important;
+}
+.discount-trigger-wrapper {
+  position: relative; /* Gốc tọa độ cho panel absolute */
+}
+
+.discount-popover-panel {
+  position: absolute;
+  top: 100%; /* Hiển thị ngay dưới nút bấm */
+  left: 0;
+  margin-top: 8px;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  z-index: 9999 !important; /* Đảm bảo nổi lên trên tất cả các dòng khác */
+  width: 200px;
+  display: block !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;
+
+  /* Mũi tên trỏ lên */
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 20px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #cbd5e1 transparent;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 20px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+  }
+}
+
+/* Quan trọng: Ngăn bảng cắt mất Popover */
+.table-responsive {
+  overflow: visible !important; 
+  padding-bottom: 50px; /* Tạo khoảng trống dự phòng ở cuối bảng cho Popover dòng cuối */
+}
+
+/* ================================================================= */
+/* TRỌN BỘ CSS PHÂN BỔ KHÔNG GIAN VÀ THANH CUỘN CHO MODAL DỊCH VỤ   */
+/* ================================================================= */
+
+// Khung chứa lớn nhất của Modal
+.modal-dialog-service {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 85% !important;
+  max-width: 1200px !important;
+  
+  // Khống chế chiều cao tổng thể theo view màn hình thiết bị
+  height: 85vh !important; 
+  min-height: 550px !important;
+  max-height: 800px !important;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+// Khối thân Modal (Chứa Sidebar trái và Danh mục phải)
+.modal-body-service {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-grow: 1 !important; /* Chiếm toàn bộ không gian giữa Header và Footer */
+  overflow: hidden !important; /* Chặn việc nứt vỡ vách khung lớn */
+  height: 0 !important; /* Kỹ thuật kích hoạt tính năng cuộn nội con */
+}
+
+// Thanh danh mục bên trái (Sidebar)
+.modal-sidebar-categories {
+  width: 240px !important;
+  flex-shrink: 0 !important;
+  border-right: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  
+  // Kích hoạt thanh cuộn dọc độc lập cho nhóm dịch vụ
+  overflow-y: auto !important; 
+  padding: 1rem 0;
+}
+
+// Vùng xử lý hiển thị bảng dịch vụ thực tế ở bên phải
+.modal-main-services {
+  flex-grow: 1 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+// ENGINE ĐÓNG BĂNG TIÊU ĐỀ VÀ TẠO SCROLL DỌC ĐIỀN ĐẦY KHOẢNG TRỐNG
+.table-responsive.modal-table-scroll {
+  flex-grow: 1 !important;          /* Điền đầy không gian trống phía dưới */
+  height: 0 !important;              /* Trick Flexbox: Bắt buộc nội dung tự cuộn */
+  overflow-y: auto !important;       /* Bật thanh cuộn dọc */
+  overflow-x: hidden !important;     /* Triệt tiêu cuộn ngang */
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+
+  table {
+    border-collapse: separate !important; /* Bắt buộc để không mất đường kẻ border-bottom khi cuộn */
+    border-spacing: 0 !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+
+  // Khóa chết thanh tiêu đề của bảng đứng im ở đỉnh
+  thead.sticky-top th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1060 !important; /* Nổi lên trên tất cả dữ liệu text trượt bên dưới */
+    background-color: #f1f5f9 !important; /* Tạo nền đục che khuyết điểm chữ trượt lên */
+    box-shadow: inset 0 -1px 0 #dee2e6;   /* Giữ nguyên đường kẻ dưới tiêu đề */
+    padding: 12px 8px !important;
+  }
+}
+
+/* TÙY CHỈNH THANH CUỘN MODERN CHO CẢ SIDEBAR VÀ TABLE */
+.modal-table-scroll::-webkit-scrollbar,
+.modal-sidebar-categories::-webkit-scrollbar {
+  width: 6px !important;
+}
+.modal-table-scroll::-webkit-scrollbar-track,
+.modal-sidebar-categories::-webkit-scrollbar-track {
+  background: #f8fafc !important;
+}
+.modal-table-scroll::-webkit-scrollbar-thumb,
+.modal-sidebar-categories::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+  border-radius: 4px !important;
+}
+.modal-table-scroll::-webkit-scrollbar-thumb:hover,
+.modal-sidebar-categories::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8 !important;
+}
+/* --- STYLE BADGE MÃ PHIẾU KHÁM NỔI BẬT HI-TECH --- */
+.clinic-exam-code-badge-wrapper {
+  .exam-code-badge {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+    .code-text {
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    // Chấm tròn nhấp nháy động hiệu ứng y tế lâm sàng
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-right: 8px;
+      display: inline-block;
+      animation: badgePulse 2s infinite;
+      
+      &.bg-indigo { background-color: #6366f1; }
+      &.bg-emerald { background-color: #10b981; }
+    }
+
+    // Kiểu dáng dành cho phiếu đã lưu có mã thực tế
+    &.is-saved {
+      background: #e0e7ff !important;
+      border: 1px solid #c7d2fe !important;
+      color: #3730a3 !important;
+      
+      .label-title {
+        font-weight: 600;
+        color: #4f46e5;
+        margin-right: 4px;
+        font-size: 0.75rem;
+      }
+    }
+
+    // Kiểu dáng dành cho phiếu đang trong trạng thái tạo mới
+    &.is-new {
+      background: #d1fae5 !important;
+      border: 1px solid #a7f3d0 !important;
+      color: #065f46 !important;
+      
+      .code-text {
+        color: #047857 !important;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+      }
+    }
+  }
+}
+
+// Animation tạo độ loang nhấp nháy cho chấm tròn
+@keyframes badgePulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+/* Các thuộc tính CSS cũ của .clinic-date-card giữ nguyên như cũ */
+.clinic-date-card {
+  position: relative;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(248, 250, 252, 0.75) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow: hidden;
+
+  // Hiệu ứng phát sáng nhẹ khi hover chuột vào (chỉ chạy khi không bị khóa)
+  &:hover:not(.is-disabled) {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.08) !important;
+    background: #ffffff !important;
+
+    .clinic-date-icon-box {
+      background: #4f46e5 !important;
+      border-color: #4338ca !important;
+      i { color: #ffffff !important; }
+    }
+  }
+
+  // 2. Khối chứa Icon lịch trang trí bên trái
+  .clinic-date-icon-box {
+    width: 48px;
+    height: 48px;
+    background: #eff6ff !important;
+    border-radius: 10px !important;
+    border: 1px solid #dbeafe !important;
+    transition: all 0.25s ease !important;
+
+    i {
+      color: #3b82f6 !important;
+      transition: color 0.25s ease !important;
+    }
+  }
+
+  // 3. Khối thông tin chữ hiển thị ngày lớn
+  .clinic-date-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .clinic-date-display {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0f172a !important;
+    line-height: 1.2;
+  }
+
+  .clinic-date-subtext {
+    font-size: 0.75rem;
+    color: #94a3b8 !important;
+    font-weight: 500;
+  }
+
+  // 4. Khối vùng nút bấm thao tác bên phải
+  .target-actions-zone {
+    z-index: 10;
+  }
+
+  .btn-sm {
+    border-radius: 8px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    color: #334155 !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.15s ease !important;
+
+    &:hover:not(:disabled) {
+      background-color: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  // 5. Ô Input Date gốc của trình duyệt được ẩn tàng hình đè lên nút "Tạo lùi ngày"
+  .invisible-absolute-date-picker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 125px; // Chiều ngang bao trọn lấy diện tích của nút "Tạo lùi ngày"
+    height: 100%;
+    opacity: 0 !important; // Ẩn hoàn toàn giao diện phèn nguyên bản
+    cursor: pointer;
+    z-index: 15;
+
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer !important;
+    }
+  }
+
+  // 6. Trạng thái khi Card bị khóa (Disabled) do phiếu đã có mã chốt dữ liệu
+  &.is-disabled {
+    background: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    
+    .clinic-date-icon-box {
+      background: #e2e8f0 !important;
+      border-color: #cbd5e1 !important;
+      i { color: #94a3b8 !important; }
+    }
+    
+    .clinic-date-display { 
+      color: #64748b !important; 
+    }
+
+    .btn-sm {
+      background-color: #e2e8f0 !important;
+      border-color: #e2e8f0 !important;
+      color: #94a3b8 !important;
+      cursor: not-allowed !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+  }
+
+  // 7. Lớp phủ thông báo khóa mờ đục bảo vệ tính toàn vẹn của dữ liệu kế toán
+  .disabled-lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(241, 245, 249, 0.88);
+    z-index: 25;
+    cursor: not-allowed;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    animation: fadeInOverlay 0.2s ease-in-out;
+  }
+}
+
+// Hiệu ứng xuất hiện mượt mà cho lớp phủ khóa
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.patient-card-header {
+  width: 100%;
+  display: d-flex !important;
+  justify-content: center !important; /* Căn giữa theo chiều ngang */
+  align-items: center !important;     /* Căn giữa theo chiều dọc */
+}
+
+.clinic-exam-code-badge-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto;
+
+  .exam-code-badge {
+    display: inline-flex !important;
+    align-items: center !important;  /* Bắt buộc icon và chữ không bị lệch dòng */
+    justify-content: center !important;
+    padding: 6px 16px;
+    border-radius: 30px;
+    
+    // Đảm bảo khoảng cách giữa chấm, icon và chữ đều nhau
+    gap: 6px !important; 
+
+    .pulse-dot {
+      margin-right: 0 !important; /* Xóa margin cũ để gap quản lý tự động */
+    }
+  }
+}
+.clinic-doctor-container {
+  .clinic-doctor-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: #475569 !important;
+  }
+}
+
+.clinic-doctor-card {
+  background: rgba(248, 250, 252, 0.75) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+  &:hover {
+    border-color: #cbd5e1 !important;
+    background: #ffffff !important;
+  }
+
+  // Bật sáng toàn bộ khối Card khi Dropdown bên trong được kích hoạt mở panel
+  &.is-focused {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1), 0 6px 20px rgba(79, 70, 229, 0.05) !important;
+    background: #ffffff !important;
+
+    .clinic-doctor-icon-avatar {
+      background: #4f46e5 !important;
+      border-color: #4338ca !important;
+      i { color: #ffffff !important; }
+    }
+
+    .doctor-prefix-text {
+      color: #4f46e5 !important;
+    }
+  }
+
+  .clinic-doctor-icon-avatar {
+    width: 48px;
+    height: 48px;
+    background: #eff6ff !important;
+    border-radius: 12px !important;
+    border: 1px solid #dbeafe !important;
+    transition: all 0.25s ease !important;
+    flex-shrink: 0;
+    position: relative;
+
+    i {
+      color: #3b82f6 !important;
+      transition: color 0.25s ease !important;
+    }
+
+    .active-status-dot {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 10px;
+      height: 10px;
+      background-color: #10b981;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+    }
+  }
+
+  // Xử lý khối căn chỉnh text tiền tố và component dropdown
+  .doctor-input-wrapper-inner {
+    width: 100%;
+    
+    .doctor-prefix-text {
+      font-size: 1.25rem;
+      font-style: italic;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+  }
+
+  // CAN THIỆP SÂU VÀO ĐÈ PHẲNG NỘI BỘ SHARRED COMPONENT
+  app-dropdown {
+    display: block;
+    width: 100%;
+
+    .tp-dropdown {
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
+
+    .tp-select-trigger {
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important; /* Giải phóng padding để chữ ăn sát về bên trái gần chữ BS. */
+      font-size: 1.3rem !important; /* Tăng kích thước font chữ tên bác sĩ to rõ, sang trọng */
+      font-weight: 700 !important;
+      color: #0f172a !important;
+      box-shadow: none !important;
+      height: auto !important;
+      display: flex !important;
+      align-items: center !important;
+
+      .arrow {
+        font-size: 0.85rem !important;
+        color: #94a3b8 !important;
+        margin-left: 8px;
+      }
+    }
+  }
+
+  .clinic-doctor-subtext {
+    font-size: 0.75rem;
+    color: #94a3b8 !important;
+    font-weight: 500;
+  }
+}
+.clinic-grid-price-input-wrapper {
+  display: inline-block;
+  
+  .grid-price-input {
+    width: 100px; /* Độ rộng vừa vặn cho trường tiền tệ */
+    border: 1px dashed transparent !important; /* Ẩn viền mặc định dạng phẳng */
+    background: transparent !important;
+    padding: 2px 4px !important;
+    font-size: 0.9rem;
+    height: 28px;
+    transition: all 0.15s ease;
+
+    // Loại bỏ nút tăng giảm mũi tên mặc định của input type="number"
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    appearance: none;
+    -moz-appearance: textfield;
+
+    // Khi di chuột qua dòng thì hiện viền nét đứt mờ nhắc nhở có thể sửa
+    &:hover:not(:disabled) {
+      border-color: #cbd5e1 !important;
+      background-color: #f8fafc !important;
+    }
+
+    // Khi click trực tiếp vào để nhập số tiền mới
+    &:focus:not(:disabled) {
+      border: 1px solid #3b82f6 !important;
+      background-color: #ffffff !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+    }
+
+    // Khi dòng đã thực hiện/thanh toán (Trạng thái khác 0) -> Khóa cứng mờ
+    &:disabled {
+      color: #94a3b8 !important;
+      background: transparent !important;
+      border-color: transparent !important;
+      cursor: not-allowed;
+    }
+  }
+
+  .currency-unit {
+    user-select: none;
+  }
+
+  .price-to-text {
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+}
+.saving-global-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.45) !important; /* Màu nền tối mờ sang trọng */
+  backdrop-filter: blur(4px); /* Làm mờ nhẹ các thành phần phía dưới */
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 99999 !important; /* Đảm bảo đè lên tuyệt đối tất cả các modal và sidebar */
+  animation: fadeInOverlay 0.25s ease-out forwards;
+
+  h5 {
+    letter-spacing: -0.01em;
+    animation: textSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  p {
+    letter-spacing: 0.02em;
+    opacity: 0.8;
+  }
+}
+
+// Khối bọc vòng xoay và icon nha khoa
+.spinner-progress-wrapper {
+  width: 70px;
+  height: 70px;
+
+  .dynamic-pulse {
+    animation: toothPulse 1.5s ease-in-out infinite;
+  }
+}
+
+// Vòng xoay tròn nét mảnh công nghệ cao
+.clinic-loading-spinner {
+  width: 100%;
+  height: 100%;
+  border: 3.5px solid rgba(99, 102, 241, 0.15); /* Đường viền nền mờ */
+  border-top-color: #4f46e5; /* Đường viền chạy màu xanh Indigo */
+  border-right-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin360 0.8s linear infinite; /* Xoay tròn liên tục */
+}
+
+/* KỊCH BẢN CHUYỂN ĐỘNG (ANIMATIONS) */
+
+@keyframes spin360 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes textSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toothPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 1;
+  }
+}

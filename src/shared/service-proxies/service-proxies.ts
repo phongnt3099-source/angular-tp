@@ -11554,8 +11554,8 @@ export class ServiceServiceProxy {
      * @param sT_ID (optional) 
      * @return Success
      */
-    mED_SERVICES_GetByType(keyword: string | undefined, sT_ID: string | undefined): Observable<MED_SERVICES_ENTITY[]> {
-        let url_ = this.baseUrl + "/api/services/app/Service/MED_SERVICES_GetByType?";
+    cM_SERVICES_GetByType(keyword: string | undefined, sT_ID: string | undefined): Observable<CM_SERVICES_ENTITY[]> {
+        let url_ = this.baseUrl + "/api/services/app/Service/CM_SERVICES_GetByType?";
         if (keyword === null)
             throw new Error("The parameter 'keyword' cannot be null.");
         else if (keyword !== undefined)
@@ -11575,20 +11575,20 @@ export class ServiceServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMED_SERVICES_GetByType(response_);
+            return this.processCM_SERVICES_GetByType(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMED_SERVICES_GetByType(response_ as any);
+                    return this.processCM_SERVICES_GetByType(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<MED_SERVICES_ENTITY[]>;
+                    return _observableThrow(e) as any as Observable<CM_SERVICES_ENTITY[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<MED_SERVICES_ENTITY[]>;
+                return _observableThrow(response_) as any as Observable<CM_SERVICES_ENTITY[]>;
         }));
     }
 
-    protected processMED_SERVICES_GetByType(response: HttpResponseBase): Observable<MED_SERVICES_ENTITY[]> {
+    protected processCM_SERVICES_GetByType(response: HttpResponseBase): Observable<CM_SERVICES_ENTITY[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -11602,7 +11602,7 @@ export class ServiceServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(MED_SERVICES_ENTITY.fromJS(item));
+                    result200!.push(CM_SERVICES_ENTITY.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -11632,8 +11632,8 @@ export class ServiceTypeServiceProxy {
     /**
      * @return Success
      */
-    mED_SERVICES_GetAll(): Observable<MED_SERVICE_TYPE_ENTITY[]> {
-        let url_ = this.baseUrl + "/api/services/app/ServiceType/MED_SERVICES_GetAll";
+    cM_SERVICES_GetAll(): Observable<CM_SERVICE_TYPE_ENTITY[]> {
+        let url_ = this.baseUrl + "/api/services/app/ServiceType/CM_SERVICES_GetAll";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -11645,20 +11645,20 @@ export class ServiceTypeServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMED_SERVICES_GetAll(response_);
+            return this.processCM_SERVICES_GetAll(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMED_SERVICES_GetAll(response_ as any);
+                    return this.processCM_SERVICES_GetAll(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<MED_SERVICE_TYPE_ENTITY[]>;
+                    return _observableThrow(e) as any as Observable<CM_SERVICE_TYPE_ENTITY[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<MED_SERVICE_TYPE_ENTITY[]>;
+                return _observableThrow(response_) as any as Observable<CM_SERVICE_TYPE_ENTITY[]>;
         }));
     }
 
-    protected processMED_SERVICES_GetAll(response: HttpResponseBase): Observable<MED_SERVICE_TYPE_ENTITY[]> {
+    protected processCM_SERVICES_GetAll(response: HttpResponseBase): Observable<CM_SERVICE_TYPE_ENTITY[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -11672,7 +11672,7 @@ export class ServiceTypeServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(MED_SERVICE_TYPE_ENTITY.fromJS(item));
+                    result200!.push(CM_SERVICE_TYPE_ENTITY.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -18633,6 +18633,178 @@ export interface ICM_EMPLOYEE_ENTITY {
     isactive: string | undefined;
     makeR_ID: string | undefined;
     creatE_DT: DateTime | undefined;
+}
+
+export class CM_SERVICES_ENTITY implements ICM_SERVICES_ENTITY {
+    maxResultCount!: number;
+    skipCount!: number;
+    top!: number | undefined;
+    sorting!: string | undefined;
+    srV_ID!: string;
+    srV_TYPEID!: string;
+    srV_CODE!: string | undefined;
+    srV_NAME!: string | undefined;
+    srV_UNIT!: string | undefined;
+    srV_PRICE!: number | undefined;
+    srV_PRICE_TO!: number | undefined;
+    srV_TAX_RATE!: number | undefined;
+    srV_PRICE_INCLUDES_VAT!: boolean | undefined;
+    srV_VAT_NAME!: string | undefined;
+    srV_VAT_UNIT!: string | undefined;
+    srV_HAS_WARRANTY!: boolean | undefined;
+    srV_WARRANTY_PERIOD!: string | undefined;
+    srV_NOTE!: string | undefined;
+    srV_ISACTIVE!: boolean | undefined;
+
+    constructor(data?: ICM_SERVICES_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.top = _data["top"];
+            this.sorting = _data["sorting"];
+            this.srV_ID = _data["srV_ID"];
+            this.srV_TYPEID = _data["srV_TYPEID"];
+            this.srV_CODE = _data["srV_CODE"];
+            this.srV_NAME = _data["srV_NAME"];
+            this.srV_UNIT = _data["srV_UNIT"];
+            this.srV_PRICE = _data["srV_PRICE"];
+            this.srV_PRICE_TO = _data["srV_PRICE_TO"];
+            this.srV_TAX_RATE = _data["srV_TAX_RATE"];
+            this.srV_PRICE_INCLUDES_VAT = _data["srV_PRICE_INCLUDES_VAT"];
+            this.srV_VAT_NAME = _data["srV_VAT_NAME"];
+            this.srV_VAT_UNIT = _data["srV_VAT_UNIT"];
+            this.srV_HAS_WARRANTY = _data["srV_HAS_WARRANTY"];
+            this.srV_WARRANTY_PERIOD = _data["srV_WARRANTY_PERIOD"];
+            this.srV_NOTE = _data["srV_NOTE"];
+            this.srV_ISACTIVE = _data["srV_ISACTIVE"];
+        }
+    }
+
+    static fromJS(data: any): CM_SERVICES_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new CM_SERVICES_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["top"] = this.top;
+        data["sorting"] = this.sorting;
+        data["srV_ID"] = this.srV_ID;
+        data["srV_TYPEID"] = this.srV_TYPEID;
+        data["srV_CODE"] = this.srV_CODE;
+        data["srV_NAME"] = this.srV_NAME;
+        data["srV_UNIT"] = this.srV_UNIT;
+        data["srV_PRICE"] = this.srV_PRICE;
+        data["srV_PRICE_TO"] = this.srV_PRICE_TO;
+        data["srV_TAX_RATE"] = this.srV_TAX_RATE;
+        data["srV_PRICE_INCLUDES_VAT"] = this.srV_PRICE_INCLUDES_VAT;
+        data["srV_VAT_NAME"] = this.srV_VAT_NAME;
+        data["srV_VAT_UNIT"] = this.srV_VAT_UNIT;
+        data["srV_HAS_WARRANTY"] = this.srV_HAS_WARRANTY;
+        data["srV_WARRANTY_PERIOD"] = this.srV_WARRANTY_PERIOD;
+        data["srV_NOTE"] = this.srV_NOTE;
+        data["srV_ISACTIVE"] = this.srV_ISACTIVE;
+        return data;
+    }
+}
+
+export interface ICM_SERVICES_ENTITY {
+    maxResultCount: number;
+    skipCount: number;
+    top: number | undefined;
+    sorting: string | undefined;
+    srV_ID: string;
+    srV_TYPEID: string;
+    srV_CODE: string | undefined;
+    srV_NAME: string | undefined;
+    srV_UNIT: string | undefined;
+    srV_PRICE: number | undefined;
+    srV_PRICE_TO: number | undefined;
+    srV_TAX_RATE: number | undefined;
+    srV_PRICE_INCLUDES_VAT: boolean | undefined;
+    srV_VAT_NAME: string | undefined;
+    srV_VAT_UNIT: string | undefined;
+    srV_HAS_WARRANTY: boolean | undefined;
+    srV_WARRANTY_PERIOD: string | undefined;
+    srV_NOTE: string | undefined;
+    srV_ISACTIVE: boolean | undefined;
+}
+
+export class CM_SERVICE_TYPE_ENTITY implements ICM_SERVICE_TYPE_ENTITY {
+    maxResultCount!: number;
+    skipCount!: number;
+    top!: number | undefined;
+    sorting!: string | undefined;
+    sT_ID!: string;
+    sT_NAME!: string | undefined;
+    sT_DESCRIPTION!: string | undefined;
+    sT_ISACTIVE!: boolean | undefined;
+
+    constructor(data?: ICM_SERVICE_TYPE_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxResultCount = _data["maxResultCount"];
+            this.skipCount = _data["skipCount"];
+            this.top = _data["top"];
+            this.sorting = _data["sorting"];
+            this.sT_ID = _data["sT_ID"];
+            this.sT_NAME = _data["sT_NAME"];
+            this.sT_DESCRIPTION = _data["sT_DESCRIPTION"];
+            this.sT_ISACTIVE = _data["sT_ISACTIVE"];
+        }
+    }
+
+    static fromJS(data: any): CM_SERVICE_TYPE_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new CM_SERVICE_TYPE_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["top"] = this.top;
+        data["sorting"] = this.sorting;
+        data["sT_ID"] = this.sT_ID;
+        data["sT_NAME"] = this.sT_NAME;
+        data["sT_DESCRIPTION"] = this.sT_DESCRIPTION;
+        data["sT_ISACTIVE"] = this.sT_ISACTIVE;
+        return data;
+    }
+}
+
+export interface ICM_SERVICE_TYPE_ENTITY {
+    maxResultCount: number;
+    skipCount: number;
+    top: number | undefined;
+    sorting: string | undefined;
+    sT_ID: string;
+    sT_NAME: string | undefined;
+    sT_DESCRIPTION: string | undefined;
+    sT_ISACTIVE: boolean | undefined;
 }
 
 export class CacheDto implements ICacheDto {
@@ -27115,6 +27287,7 @@ export class MED_EXAMINATION_ENTITY implements IMED_EXAMINATION_ENTITY {
     top!: number | undefined;
     sorting!: string | undefined;
     exM_ID!: string | undefined;
+    exM_CODE!: string | undefined;
     exM_PATIENT_ID!: string | undefined;
     exM_DOCTOR_ID!: string | undefined;
     exM_DATE!: string | undefined;
@@ -27124,9 +27297,13 @@ export class MED_EXAMINATION_ENTITY implements IMED_EXAMINATION_ENTITY {
     exM_PULSE!: number | undefined;
     exM_BLOOD_PRESSURE!: string | undefined;
     exM_NOTE!: string | undefined;
+    exM_CREATE!: string | undefined;
     exM_STATUS!: number | undefined;
     exM_TOTAL_DISCOUNT!: number | undefined;
     exM_FINAL_AMOUNT!: number | undefined;
+    exM_TOTAL_RAW!: number | undefined;
+    exM_SUB_TOTAL!: number | undefined;
+    makeR_ID!: string | undefined;
     treatmentDetails!: MED_TREATMENT_DETAIL_ENTITY[] | undefined;
 
     constructor(data?: IMED_EXAMINATION_ENTITY) {
@@ -27145,6 +27322,7 @@ export class MED_EXAMINATION_ENTITY implements IMED_EXAMINATION_ENTITY {
             this.top = _data["top"];
             this.sorting = _data["sorting"];
             this.exM_ID = _data["exM_ID"];
+            this.exM_CODE = _data["exM_CODE"];
             this.exM_PATIENT_ID = _data["exM_PATIENT_ID"];
             this.exM_DOCTOR_ID = _data["exM_DOCTOR_ID"];
             this.exM_DATE = _data["exM_DATE"];
@@ -27154,9 +27332,13 @@ export class MED_EXAMINATION_ENTITY implements IMED_EXAMINATION_ENTITY {
             this.exM_PULSE = _data["exM_PULSE"];
             this.exM_BLOOD_PRESSURE = _data["exM_BLOOD_PRESSURE"];
             this.exM_NOTE = _data["exM_NOTE"];
+            this.exM_CREATE = _data["exM_CREATE"];
             this.exM_STATUS = _data["exM_STATUS"];
             this.exM_TOTAL_DISCOUNT = _data["exM_TOTAL_DISCOUNT"];
             this.exM_FINAL_AMOUNT = _data["exM_FINAL_AMOUNT"];
+            this.exM_TOTAL_RAW = _data["exM_TOTAL_RAW"];
+            this.exM_SUB_TOTAL = _data["exM_SUB_TOTAL"];
+            this.makeR_ID = _data["makeR_ID"];
             if (Array.isArray(_data["treatmentDetails"])) {
                 this.treatmentDetails = [] as any;
                 for (let item of _data["treatmentDetails"])
@@ -27179,6 +27361,7 @@ export class MED_EXAMINATION_ENTITY implements IMED_EXAMINATION_ENTITY {
         data["top"] = this.top;
         data["sorting"] = this.sorting;
         data["exM_ID"] = this.exM_ID;
+        data["exM_CODE"] = this.exM_CODE;
         data["exM_PATIENT_ID"] = this.exM_PATIENT_ID;
         data["exM_DOCTOR_ID"] = this.exM_DOCTOR_ID;
         data["exM_DATE"] = this.exM_DATE;
@@ -27188,9 +27371,13 @@ export class MED_EXAMINATION_ENTITY implements IMED_EXAMINATION_ENTITY {
         data["exM_PULSE"] = this.exM_PULSE;
         data["exM_BLOOD_PRESSURE"] = this.exM_BLOOD_PRESSURE;
         data["exM_NOTE"] = this.exM_NOTE;
+        data["exM_CREATE"] = this.exM_CREATE;
         data["exM_STATUS"] = this.exM_STATUS;
         data["exM_TOTAL_DISCOUNT"] = this.exM_TOTAL_DISCOUNT;
         data["exM_FINAL_AMOUNT"] = this.exM_FINAL_AMOUNT;
+        data["exM_TOTAL_RAW"] = this.exM_TOTAL_RAW;
+        data["exM_SUB_TOTAL"] = this.exM_SUB_TOTAL;
+        data["makeR_ID"] = this.makeR_ID;
         if (Array.isArray(this.treatmentDetails)) {
             data["treatmentDetails"] = [];
             for (let item of this.treatmentDetails)
@@ -27206,6 +27393,7 @@ export interface IMED_EXAMINATION_ENTITY {
     top: number | undefined;
     sorting: string | undefined;
     exM_ID: string | undefined;
+    exM_CODE: string | undefined;
     exM_PATIENT_ID: string | undefined;
     exM_DOCTOR_ID: string | undefined;
     exM_DATE: string | undefined;
@@ -27215,182 +27403,14 @@ export interface IMED_EXAMINATION_ENTITY {
     exM_PULSE: number | undefined;
     exM_BLOOD_PRESSURE: string | undefined;
     exM_NOTE: string | undefined;
+    exM_CREATE: string | undefined;
     exM_STATUS: number | undefined;
     exM_TOTAL_DISCOUNT: number | undefined;
     exM_FINAL_AMOUNT: number | undefined;
+    exM_TOTAL_RAW: number | undefined;
+    exM_SUB_TOTAL: number | undefined;
+    makeR_ID: string | undefined;
     treatmentDetails: MED_TREATMENT_DETAIL_ENTITY[] | undefined;
-}
-
-export class MED_SERVICES_ENTITY implements IMED_SERVICES_ENTITY {
-    maxResultCount!: number;
-    skipCount!: number;
-    top!: number | undefined;
-    sorting!: string | undefined;
-    srV_ID!: string | undefined;
-    srV_TYPEID!: string | undefined;
-    srV_PROCEDURE_CODE!: string | undefined;
-    srV_NAME!: string | undefined;
-    srV_UNIT!: string | undefined;
-    srV_PRICE!: number | undefined;
-    srV_PRICE_TO!: number | undefined;
-    srV_TAX_RATE!: number | undefined;
-    srV_PRICE_INCLUDES_VAT!: boolean | undefined;
-    srV_VAT_NAME!: string | undefined;
-    srV_VAT_UNIT!: string | undefined;
-    srV_HAS_WARRANTY!: boolean | undefined;
-    srV_WARRANTY_PERIOD!: string | undefined;
-    srV_NOTE!: string | undefined;
-    srV_ISACTIVE!: boolean | undefined;
-
-    constructor(data?: IMED_SERVICES_ENTITY) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.maxResultCount = _data["maxResultCount"];
-            this.skipCount = _data["skipCount"];
-            this.top = _data["top"];
-            this.sorting = _data["sorting"];
-            this.srV_ID = _data["srV_ID"];
-            this.srV_TYPEID = _data["srV_TYPEID"];
-            this.srV_PROCEDURE_CODE = _data["srV_PROCEDURE_CODE"];
-            this.srV_NAME = _data["srV_NAME"];
-            this.srV_UNIT = _data["srV_UNIT"];
-            this.srV_PRICE = _data["srV_PRICE"];
-            this.srV_PRICE_TO = _data["srV_PRICE_TO"];
-            this.srV_TAX_RATE = _data["srV_TAX_RATE"];
-            this.srV_PRICE_INCLUDES_VAT = _data["srV_PRICE_INCLUDES_VAT"];
-            this.srV_VAT_NAME = _data["srV_VAT_NAME"];
-            this.srV_VAT_UNIT = _data["srV_VAT_UNIT"];
-            this.srV_HAS_WARRANTY = _data["srV_HAS_WARRANTY"];
-            this.srV_WARRANTY_PERIOD = _data["srV_WARRANTY_PERIOD"];
-            this.srV_NOTE = _data["srV_NOTE"];
-            this.srV_ISACTIVE = _data["srV_ISACTIVE"];
-        }
-    }
-
-    static fromJS(data: any): MED_SERVICES_ENTITY {
-        data = typeof data === 'object' ? data : {};
-        let result = new MED_SERVICES_ENTITY();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["maxResultCount"] = this.maxResultCount;
-        data["skipCount"] = this.skipCount;
-        data["top"] = this.top;
-        data["sorting"] = this.sorting;
-        data["srV_ID"] = this.srV_ID;
-        data["srV_TYPEID"] = this.srV_TYPEID;
-        data["srV_PROCEDURE_CODE"] = this.srV_PROCEDURE_CODE;
-        data["srV_NAME"] = this.srV_NAME;
-        data["srV_UNIT"] = this.srV_UNIT;
-        data["srV_PRICE"] = this.srV_PRICE;
-        data["srV_PRICE_TO"] = this.srV_PRICE_TO;
-        data["srV_TAX_RATE"] = this.srV_TAX_RATE;
-        data["srV_PRICE_INCLUDES_VAT"] = this.srV_PRICE_INCLUDES_VAT;
-        data["srV_VAT_NAME"] = this.srV_VAT_NAME;
-        data["srV_VAT_UNIT"] = this.srV_VAT_UNIT;
-        data["srV_HAS_WARRANTY"] = this.srV_HAS_WARRANTY;
-        data["srV_WARRANTY_PERIOD"] = this.srV_WARRANTY_PERIOD;
-        data["srV_NOTE"] = this.srV_NOTE;
-        data["srV_ISACTIVE"] = this.srV_ISACTIVE;
-        return data;
-    }
-}
-
-export interface IMED_SERVICES_ENTITY {
-    maxResultCount: number;
-    skipCount: number;
-    top: number | undefined;
-    sorting: string | undefined;
-    srV_ID: string | undefined;
-    srV_TYPEID: string | undefined;
-    srV_PROCEDURE_CODE: string | undefined;
-    srV_NAME: string | undefined;
-    srV_UNIT: string | undefined;
-    srV_PRICE: number | undefined;
-    srV_PRICE_TO: number | undefined;
-    srV_TAX_RATE: number | undefined;
-    srV_PRICE_INCLUDES_VAT: boolean | undefined;
-    srV_VAT_NAME: string | undefined;
-    srV_VAT_UNIT: string | undefined;
-    srV_HAS_WARRANTY: boolean | undefined;
-    srV_WARRANTY_PERIOD: string | undefined;
-    srV_NOTE: string | undefined;
-    srV_ISACTIVE: boolean | undefined;
-}
-
-export class MED_SERVICE_TYPE_ENTITY implements IMED_SERVICE_TYPE_ENTITY {
-    maxResultCount!: number;
-    skipCount!: number;
-    top!: number | undefined;
-    sorting!: string | undefined;
-    sT_ID!: string | undefined;
-    sT_NAME!: string | undefined;
-    sT_DESCRIPTION!: string | undefined;
-    sT_ISACTIVE!: boolean | undefined;
-
-    constructor(data?: IMED_SERVICE_TYPE_ENTITY) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.maxResultCount = _data["maxResultCount"];
-            this.skipCount = _data["skipCount"];
-            this.top = _data["top"];
-            this.sorting = _data["sorting"];
-            this.sT_ID = _data["sT_ID"];
-            this.sT_NAME = _data["sT_NAME"];
-            this.sT_DESCRIPTION = _data["sT_DESCRIPTION"];
-            this.sT_ISACTIVE = _data["sT_ISACTIVE"];
-        }
-    }
-
-    static fromJS(data: any): MED_SERVICE_TYPE_ENTITY {
-        data = typeof data === 'object' ? data : {};
-        let result = new MED_SERVICE_TYPE_ENTITY();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["maxResultCount"] = this.maxResultCount;
-        data["skipCount"] = this.skipCount;
-        data["top"] = this.top;
-        data["sorting"] = this.sorting;
-        data["sT_ID"] = this.sT_ID;
-        data["sT_NAME"] = this.sT_NAME;
-        data["sT_DESCRIPTION"] = this.sT_DESCRIPTION;
-        data["sT_ISACTIVE"] = this.sT_ISACTIVE;
-        return data;
-    }
-}
-
-export interface IMED_SERVICE_TYPE_ENTITY {
-    maxResultCount: number;
-    skipCount: number;
-    top: number | undefined;
-    sorting: string | undefined;
-    sT_ID: string | undefined;
-    sT_NAME: string | undefined;
-    sT_DESCRIPTION: string | undefined;
-    sT_ISACTIVE: boolean | undefined;
 }
 
 export class MED_TREATMENT_DETAIL_ENTITY implements IMED_TREATMENT_DETAIL_ENTITY {
@@ -27401,6 +27421,7 @@ export class MED_TREATMENT_DETAIL_ENTITY implements IMED_TREATMENT_DETAIL_ENTITY
     tD_ID!: string | undefined;
     tD_EXM_ID!: string | undefined;
     tD_SRV_ID!: string | undefined;
+    srV_NAME!: string | undefined;
     tD_TOOTH_NUMBER!: string | undefined;
     tD_QUANTITY!: number | undefined;
     tD_UNIT_PRICE!: number | undefined;
@@ -27408,6 +27429,9 @@ export class MED_TREATMENT_DETAIL_ENTITY implements IMED_TREATMENT_DETAIL_ENTITY
     tD_FINAL_PRICE!: number | undefined;
     tD_ASSIGNED_DOCTOR_ID!: string | undefined;
     tD_STATUS!: number | undefined;
+    tD_FINAL_PRICE_PER_UNIT!: number | undefined;
+    discountType!: string | undefined;
+    discountValue!: number | undefined;
 
     constructor(data?: IMED_TREATMENT_DETAIL_ENTITY) {
         if (data) {
@@ -27427,6 +27451,7 @@ export class MED_TREATMENT_DETAIL_ENTITY implements IMED_TREATMENT_DETAIL_ENTITY
             this.tD_ID = _data["tD_ID"];
             this.tD_EXM_ID = _data["tD_EXM_ID"];
             this.tD_SRV_ID = _data["tD_SRV_ID"];
+            this.srV_NAME = _data["srV_NAME"];
             this.tD_TOOTH_NUMBER = _data["tD_TOOTH_NUMBER"];
             this.tD_QUANTITY = _data["tD_QUANTITY"];
             this.tD_UNIT_PRICE = _data["tD_UNIT_PRICE"];
@@ -27434,6 +27459,9 @@ export class MED_TREATMENT_DETAIL_ENTITY implements IMED_TREATMENT_DETAIL_ENTITY
             this.tD_FINAL_PRICE = _data["tD_FINAL_PRICE"];
             this.tD_ASSIGNED_DOCTOR_ID = _data["tD_ASSIGNED_DOCTOR_ID"];
             this.tD_STATUS = _data["tD_STATUS"];
+            this.tD_FINAL_PRICE_PER_UNIT = _data["tD_FINAL_PRICE_PER_UNIT"];
+            this.discountType = _data["discountType"];
+            this.discountValue = _data["discountValue"];
         }
     }
 
@@ -27453,6 +27481,7 @@ export class MED_TREATMENT_DETAIL_ENTITY implements IMED_TREATMENT_DETAIL_ENTITY
         data["tD_ID"] = this.tD_ID;
         data["tD_EXM_ID"] = this.tD_EXM_ID;
         data["tD_SRV_ID"] = this.tD_SRV_ID;
+        data["srV_NAME"] = this.srV_NAME;
         data["tD_TOOTH_NUMBER"] = this.tD_TOOTH_NUMBER;
         data["tD_QUANTITY"] = this.tD_QUANTITY;
         data["tD_UNIT_PRICE"] = this.tD_UNIT_PRICE;
@@ -27460,6 +27489,9 @@ export class MED_TREATMENT_DETAIL_ENTITY implements IMED_TREATMENT_DETAIL_ENTITY
         data["tD_FINAL_PRICE"] = this.tD_FINAL_PRICE;
         data["tD_ASSIGNED_DOCTOR_ID"] = this.tD_ASSIGNED_DOCTOR_ID;
         data["tD_STATUS"] = this.tD_STATUS;
+        data["tD_FINAL_PRICE_PER_UNIT"] = this.tD_FINAL_PRICE_PER_UNIT;
+        data["discountType"] = this.discountType;
+        data["discountValue"] = this.discountValue;
         return data;
     }
 }
@@ -27472,6 +27504,7 @@ export interface IMED_TREATMENT_DETAIL_ENTITY {
     tD_ID: string | undefined;
     tD_EXM_ID: string | undefined;
     tD_SRV_ID: string | undefined;
+    srV_NAME: string | undefined;
     tD_TOOTH_NUMBER: string | undefined;
     tD_QUANTITY: number | undefined;
     tD_UNIT_PRICE: number | undefined;
@@ -27479,6 +27512,9 @@ export interface IMED_TREATMENT_DETAIL_ENTITY {
     tD_FINAL_PRICE: number | undefined;
     tD_ASSIGNED_DOCTOR_ID: string | undefined;
     tD_STATUS: number | undefined;
+    tD_FINAL_PRICE_PER_UNIT: number | undefined;
+    discountType: string | undefined;
+    discountValue: number | undefined;
 }
 
 export class MarkAllUnreadMessagesOfUserAsReadInput implements IMarkAllUnreadMessagesOfUserAsReadInput {

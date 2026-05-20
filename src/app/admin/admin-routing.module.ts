@@ -120,6 +120,14 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         data: { permission: '' },
                     },
                     {
+                        path: 'examination-edit',
+                        loadChildren: () =>
+                            import('./examination-component/examination-components.module').then(
+                                (m) => m.CustomerComponentsModule
+                            ),
+                        data: { permission: '' },
+                    },
+                    {
                         path: 'install',
                         loadChildren: () => import('./install/install.module').then((m) => m.InstallModule),
                     },

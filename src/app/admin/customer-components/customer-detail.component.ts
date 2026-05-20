@@ -105,7 +105,7 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
         //     });
     }
     addTreatment(): void {
-        // Logic to add treatment
+        this._router.navigate(['/app/admin/examination-edit/', this.inputModel.cuS_ID]);
     }
     addAppointment(Id?: string): void {
         this.createAppointmentModal.show(this.inputModel.cuS_ID,Id)
