@@ -1,0 +1,473 @@
+$indigo: #4f46e5;
+$indigo-light: #eff6ff;
+$slate-dark: #1e293b;
+$slate-light: #64748b;
+$border-color: #f1f5f9;
+$bg-body: #f8fafc;
+
+.treatment-list-wrapper {
+    background-color: $bg-body;
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+/* Khung bộ lọc tìm kiếm */
+.premium-filter-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.12);
+}
+
+.premium-input-group {
+    position: relative;
+    .input-icon {
+        position: absolute; left: 14px; top: 50%;
+        transform: translateY(-50%);
+        color: $slate-light;
+        font-size: 0.9rem;
+    }
+    .form-control-premium-sm {
+        padding-left: 40px;
+    }
+}
+
+.form-control-premium-sm, .form-select-premium {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background-color: #fff;
+    color: $slate-dark;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0 14px;
+    transition: all 0.2s ease;
+    
+    &:focus {
+        border-color: $indigo;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        outline: none;
+    }
+}
+
+/* Bảng danh sách Premium */
+.premium-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px -5px rgba(148, 163, 184, 0.15);
+    border: 1px solid #e2e8f0;
+}
+
+.table-premium {
+    width: 100%;
+    border-collapse: collapse;
+    
+    thead th {
+        background-color: #f8fafc;
+        color: $slate-light;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 16px 20px;
+        border-bottom: 2px solid #edf2f7;
+    }
+    
+    tbody tr {
+        border-bottom: 1px solid $border-color;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        
+        &:hover {
+            background-color: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: inset 4px 0 0 $indigo;
+        }
+    }
+    
+    td {
+        padding: 16px 20px;
+    }
+}
+
+/* Các Badge & Element con */
+.badge-code {
+    background-color: $indigo-light;
+    color: $indigo;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.patient-profile-cell {
+    .patient-name {
+        font-weight: 700;
+        color: $slate-dark;
+        font-size: 0.9rem;
+        margin-bottom: 2px;
+    }
+    .patient-phone {
+        font-size: 0.8rem;
+        color: $slate-light;
+        font-weight: 500;
+    }
+}
+
+.final-amount-text {
+    font-weight: 800;
+    color: $indigo;
+    font-size: 0.95rem;
+}
+
+/* Nút Thao tác trên Grid */
+.btn-action-table {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: none;
+    background-color: #f1f5f9;
+    color: $slate-light;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        transform: scale(1.08);
+    }
+    &.edit:hover {
+        background-color: $indigo-light;
+        color: $indigo;
+    }
+    &.delete:hover {
+        background-color: #fef2f2;
+        color: #ef4444;
+    }
+}
+
+/* Các Badge Trạng Thái Điều Trị Soft Giao Diện Mới */
+.badge-soft-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 30px; font-weight: 700; font-size: 0.75rem;
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+    
+    &.waiting { background-color: #fef3c7; color: #d97706; .status-dot { background: #d97706; } }
+    &.doing { background-color: #e0f2fe; color: #0284c7; .status-dot { background: #0284c7; } }
+    &.completed { background-color: #dcfce7; color: #15803d; .status-dot { background: #15803d; } }
+    &.cancelled { background-color: #ffeeef; color: #e11d48; .status-dot { background: #e11d48; } }
+}
+
+.btn-premium-indigo {
+    background: linear-gradient(135deg, $indigo, #6366f1);
+    color: #fff; border: none; height: 40px; border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    &:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3); }
+}
+
+.card-footer-premium {
+    background-color: #fff;
+    border-top: 1px solid $border-color;
+}
+
+/* Loading hoạt ảnh Bounce đôi sang trọng */
+.premium-loading-overlay {
+    position: fixed; inset: 0; background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px); z-index: 9999; display: flex; justify-content: center; align-items: center;
+    .spinner-container {
+        width: 50px; height: 50px; position: relative;
+        .double-bounce1, .double-bounce2 {
+            width: 100%; height: 100%; border-radius: 50%; background-color: $indigo; opacity: 0.6; position: absolute; top: 0; left: 0; animation: sk-bounce 2.0s infinite ease-in-out;
+        }
+        .double-bounce2 { animation-delay: -1.0s; }
+    }
+}
+@keyframes sk-bounce { 0%, 100% { transform: scale(0.0); } 50% { transform: scale(1.0); } }
+
+/* THIẾT KẾ CARD THỐNG KÊ THEO PHONG CÁCH PREMIUM Y KHOA CAO CẤP */
+.luxury-kpi-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #ffffff;
+    padding: 24px 22px;
+    border-radius: 20px; /* Bo góc sâu thời thượng */
+    border: 1px solid #eef2f6;
+    box-shadow: 0 10px 25px -15px rgba(15, 23, 42, 0.04), 
+                0 4px 12px -5px rgba(15, 23, 42, 0.02);
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+
+    &:hover {
+        transform: translateY(-4px);
+        background: #ffffff;
+        box-shadow: 0 20px 35px -10px rgba(79, 70, 229, 0.12), 
+                    0 8px 20px -6px rgba(15, 23, 42, 0.04);
+        border-color: rgba(79, 70, 229, 0.2);
+
+        .luxury-kpi-badge-wrapper {
+            transform: scale(1.06);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.8);
+        }
+
+        .luxury-kpi-corner-glow {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+    }
+
+    /* Khung bọc Icon Dual-Tone mờ sương (Glassmorphic Container) */
+    .luxury-kpi-badge-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        font-size: 1.45rem;
+        border: 1px solid transparent;
+        transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 2;
+    }
+
+    .luxury-kpi-body {
+        flex: 1;
+        z-index: 2;
+        
+        .luxury-kpi-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px; /* Giãn chữ phong cách hiện đại */
+            margin-bottom: 5px;
+        }
+        
+        .luxury-kpi-number {
+            font-size: 2.3rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #0f172a; /* Ép về màu Slate đậm cực kỳ có chiều sâu */
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+    }
+
+    /* Hiệu ứng bóng sáng ảo ảnh ẩn ở góc card */
+    .luxury-kpi-corner-glow {
+        position: absolute;
+        top: -40px; right: -40px;
+        width: 120px; height: 120px;
+        border-radius: 50%;
+        filter: blur(25px);
+        opacity: 0;
+        transition: all 0.5s ease;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    /* ================= PHỐI MÀU PHÂN CHIA TRẠNG THÁI CAO CẤP ================= */
+    
+    /* 1. Hồ sơ mới (Màu Vàng Hổ Phách Luxury) */
+    &.waiting {
+        .luxury-kpi-badge-wrapper {
+            background-color: rgba(217, 119, 6, 0.07);
+            border-color: rgba(217, 119, 6, 0.15);
+            color: #d97706;
+        }
+        .luxury-kpi-corner-glow { background: rgba(217, 119, 6, 0.08); }
+        &:hover { border-color: rgba(217, 119, 6, 0.3); box-shadow: 0 20px 35px -10px rgba(217, 119, 6, 0.12); }
+    }
+
+    /* 2. Đang điều trị (Màu Xanh Royal Blue phong cách bác sĩ đại học) */
+    &.doing {
+        .luxury-kpi-badge-wrapper {
+            background-color: rgba(79, 70, 229, 0.07);
+            border-color: rgba(79, 70, 229, 0.15);
+            color: #4f46e5;
+        }
+        .luxury-kpi-corner-glow { background: rgba(79, 70, 229, 0.08); }
+    }
+
+    /* 3. Hoàn thành (Màu Xanh Ngọc Mint dịu mắt quý phái) */
+    &.completed {
+        .luxury-kpi-badge-wrapper {
+            background-color: rgba(16, 185, 129, 0.07);
+            border-color: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+        .luxury-kpi-corner-glow { background: rgba(16, 185, 129, 0.08); }
+        &:hover { border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 20px 35px -10px rgba(16, 185, 129, 0.12); }
+    }
+
+    /* 4. Đã hủy (Màu Slate Khói huyền bí) */
+    &.cancelled {
+        .luxury-kpi-badge-wrapper {
+            background-color: rgba(100, 116, 139, 0.09);
+            border-color: rgba(100, 116, 139, 0.18);
+            color: #64748b;
+        }
+        .luxury-kpi-corner-glow { background: rgba(100, 116, 139, 0.08); }
+        &:hover { border-color: rgba(100, 116, 139, 0.3); box-shadow: 0 20px 35px -10px rgba(100, 116, 139, 0.12); }
+    }
+}
+
+/* Hiệu ứng nhịp tim đập nhẹ cho icon Chờ khám tạo cảm giác sinh động */
+.animate-pulse-soft {
+    animation: pulseSoft 2.5s infinite ease-in-out;
+}
+@keyframes pulseSoft {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.92); opacity: 0.85; }
+}
+.small-label-heading {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #475569;
+}
+
+.text-large-size {
+    font-size: 1.15rem !important; /* To hơn gốc 25%, vừa vặn cho mắt bác sĩ */
+    
+    td {
+        padding: 18px 16px !important; /* Khoảng cách dòng thoáng đạt, cân đối */
+    }
+    
+    /* Mã phiếu */
+    .badge-code {
+        font-size: 1.25rem !important;  
+        padding: 8px 16px !important;    
+        border-radius: 10px !important;  
+        letter-spacing: 0.5px !important;  
+        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.08); 
+        display: inline-block;
+    }
+    
+    /* Cột thông tin bệnh nhân */
+    .patient-profile-cell {
+        .patient-name {
+            font-size: 1.2rem !important; /* Tên bệnh nhân rõ nét */
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .patient-phone {
+            font-size: 0.95rem !important; /* Số điện thoại */
+            i {
+                font-size: 0.85rem !important;
+            }
+        }
+    }
+    
+    /* Cột ngày giờ điều trị */
+    .text-date {
+        font-size: 1.05rem !important;
+        i {
+            font-size: 0.95rem !important;
+        }
+    }
+    
+    /* Các cột số tiền tài chính */
+    .text-end {
+        font-size: 1.15rem !important;
+        font-weight: 700;
+    }
+    .final-amount-text {
+        font-size: 1.25rem !important; /* Giá tiền cuối cùng nổi bật nhẹ */
+        font-weight: 800;
+    }
+    
+    /* Badge trạng thái soft */
+    .badge-soft-status {
+        font-size: 0.9rem !important;
+        padding: 6px 16px !important;
+        gap: 8px !important;
+        
+        .status-dot {
+            width: 8px !important;
+            height: 8px !important;
+        }
+    }
+    
+    /* Nút Thao tác (Sửa / Xóa trực tiếp) */
+    .btn-action-table {
+        width: 38px !important;  /* Tăng kích thước nút bấm để dễ click */
+        height: 38px !important;
+        border-radius: 10px !important;
+        font-size: 1.05rem !important; /* Icon vừa vặn, sắc nét */
+    }
+}
+
+/* Định dạng nhãn hiển thị phía trên từng ô lọc dữ liệu */
+.form-filter-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.text-slate {
+    color: #334155 !important;
+}
+
+/* Đồng bộ tiêu đề bảng head to tỉ lệ với thân lưới */
+.table-premium thead th {
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+    padding: 24px 20px !important;
+}
+::ng-deep {
+    body {
+        .p-dropdown-panel {
+            font-family: inherit !important; /* Thừa kế font chuẩn của dự án */
+            box-shadow: 0 10px 25px -5px rgba(148, 163, 184, 0.25) !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 10px !important;
+            padding: 4px 0 !important;
+            z-index: 999999 !important;
+
+            .p-dropdown-items {
+                padding: 0 !important;
+                
+                .p-dropdown-item {
+                    font-size: 0.95rem !important; /* Chỉnh cỡ chữ to lên cho dễ nhìn */
+                    font-weight: 600 !important;
+                    color: #334155 !important;
+                    padding: 10px 16px !important;
+                    transition: all 0.15s ease;
+
+                    &:hover, &.p-highlight {
+                        background-color: #eff6ff !important; /* Màu Indigo soft khi hover */
+                        color: #4f46e5 !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.clickable-patient-link {
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.2s ease;
+
+    &:hover {
+        .patient-name {
+            color: #4f46e5 !important; /* Đổi sang màu Indigo khi hover */
+            text-decoration: underline; /* Gạch chân nhẹ phong cách sang trọng */
+        }
+        .patient-phone {
+            color: #312e81 !important;
+        }
+    }
+}
+
+.text-danger {
+    color: #dc3545 !important;
+    background-color: #fff5f5; /* Thêm nền nhẹ để nhấn mạnh */
+    padding: 2px 5px;
+    border-radius: 4px;
+}

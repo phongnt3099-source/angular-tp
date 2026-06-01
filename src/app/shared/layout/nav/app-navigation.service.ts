@@ -134,6 +134,12 @@ export class AppNavigationService {
                 'fas fa-users',
                 '/app/admin/customer-list'
             ),
+            new AppMenuItem(
+                'Khám & điều trị',
+                '',
+                'fas fa-notes-medical',
+                '/app/admin/examination'
+            ),
         ]);
     }
 

@@ -1,13 +1,13 @@
 ﻿import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { AppointmentServiceProxy, CM_CUSTOMER_ENTITY,CM_EMPLOYEE_ENTITY, CustomerServiceProxy, EmployeeServiceProxy, MED_APPOINTMENT_ENTITY } from '@shared/service-proxies/service-proxies';
+import { AppointmentServiceProxy, CM_CUSTOMER_ENTITY, CM_EMPLOYEE_ENTITY, CustomerServiceProxy, EmployeeServiceProxy, MED_APPOINTMENT_ENTITY } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
     selector: 'createAppointmentModal',
     templateUrl: './create-appointment-modal.component.html',
-    styleUrls: ['./create-appointment-modal.component.css']
+    styleUrls: ['./create-appointment-modal.component.scss']
 })
 export class CreateAppointmentModalComponent extends AppComponentBase {
     @ViewChild('createModal', { static: true }) modal!: ModalDirective;
@@ -37,7 +37,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     minute = '';
     selectedHour = '';
     selectedMinute = '';
-    selectedCusId='';
+    selectedCusId = '';
     listExistingAppointments: MED_APPOINTMENT_ENTITY[] = [];
     isDisabled = false;
 
@@ -52,12 +52,12 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     }
 
     get rangeTimeDisplay(): string {
-        if(!this.appointmentForm.apP_DATE) return;
+        if (!this.appointmentForm.apP_DATE) return;
 
         const dateVal = this.appointmentForm.apP_DATE;
-        const hour = parseInt(this.appointmentForm.hour|| '0');
+        const hour = parseInt(this.appointmentForm.hour || '0');
         const minute = parseInt(this.appointmentForm.minute || '0');
-        const duration = parseInt(this.appointmentForm.rangE_TIME.toString() ||'0');
+        const duration = parseInt(this.appointmentForm.rangE_TIME.toString() || '0');
 
         if (!dateVal) return '';
 
@@ -80,9 +80,9 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     get freeHours() {
         return this.hours.filter(hour => {
             // Kiểm tra xem giờ này có nằm trong bất kỳ lịch hẹn nào (APPOINTMENT_TIME) của bác sĩ không
-            const isBusy = this.listExistingAppointments.some(app => 
-            app.apP_DOC_ID === this.appointmentForm.apP_DOC_ID&&
-            app.hour.startsWith(hour) // So khớp 2 chữ số đầu của giờ
+            const isBusy = this.listExistingAppointments.some(app =>
+                app.apP_DOC_ID === this.appointmentForm.apP_DOC_ID &&
+                app.hour.startsWith(hour) // So khớp 2 chữ số đầu của giờ
             );
             return !isBusy; // Chỉ giữ lại những giờ không bận
         });
@@ -92,7 +92,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         // Nếu năm hiển thị > năm hiện tại => cho lùi
         if (this.viewDate.getFullYear() > now.getFullYear()) return true;
         // Nếu cùng năm nhưng tháng hiển thị > tháng hiện tại => cho lùi
-        if (this.viewDate.getFullYear() === now.getFullYear() && 
+        if (this.viewDate.getFullYear() === now.getFullYear() &&
             this.viewDate.getMonth() > now.getMonth()) return true;
         return false; // Còn lại là không cho lùi
     }
@@ -113,25 +113,25 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
 
     show(cus_ID: string, apP_ID?: string): void {
         this.active = true;
-        
+
         this.appointmentForm = new MED_APPOINTMENT_ENTITY();
-        if(apP_ID){
+        if (apP_ID) {
             this._appointmentService.mED_APPOINTMENT_GetById(apP_ID).subscribe((result) => {
                 this.appointmentForm = result;
                 (this.appointmentForm as any).apP_DATE = new Date(result['apP_DATE']);
-                this.selectedHour = this.appointmentForm.hour = this.appointmentForm.starT_TIME?.split(':')[0]||'';
-                this.selectedMinute = this.appointmentForm.minute = this.appointmentForm.starT_TIME?.split(':')[1]||'';
-                this.selectedCusId = this.appointmentForm.apP_CUST_ID||'';
-                this.selectedDoctor = this.appointmentForm.apP_DOC_ID||'';
-                this.selectedAssistant1 =this.appointmentForm.apP_ASSISTANT_ID_1 ||'';
-                this.selectedAssistant2 =this.appointmentForm.apP_ASSISTANT_ID_2 ||'';
-                if(this.appointmentForm.apP_STATUS != 'chua-den'){
+                this.selectedHour = this.appointmentForm.hour = this.appointmentForm.starT_TIME?.split(':')[0] || '';
+                this.selectedMinute = this.appointmentForm.minute = this.appointmentForm.starT_TIME?.split(':')[1] || '';
+                this.selectedCusId = this.appointmentForm.apP_CUST_ID || '';
+                this.selectedDoctor = this.appointmentForm.apP_DOC_ID || '';
+                this.selectedAssistant1 = this.appointmentForm.apP_ASSISTANT_ID_1 || '';
+                this.selectedAssistant2 = this.appointmentForm.apP_ASSISTANT_ID_2 || '';
+                if (this.appointmentForm.apP_STATUS != 'chua-den') {
                     this.isDisabled = false;
                 }
                 this.rangeTimeDisplay;
             });
         }
-        else{
+        else {
             this.appointmentForm.apP_DATE = this.today;
             this.appointmentForm.rangE_TIME = 45;
         }
@@ -146,7 +146,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         this.modal.hide();
     }
     onDelete() {
-    this.message.confirm(
+        this.message.confirm(
             'Bạn có chắc chắn muốn xóa lịch hẹn này không?',
             'Xác nhận xóa',
             (isConfirmed) => {
@@ -164,12 +164,12 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     save(): void {
         this.saving = true;
 
-        if(!this.appointmentForm.hour || !this.appointmentForm.minute) {
+        if (!this.appointmentForm.hour || !this.appointmentForm.minute) {
             this.notify.error(this.l('Vui lòng chọn giờ và phút.'));
             this.saving = false;
             return;
         }
-        if(!this.appointmentForm.apP_CONTENT) {
+        if (!this.appointmentForm.apP_CONTENT) {
             this.notify.error(this.l('Vui lòng nhập nội dung lịch hẹn.'));
             this.saving = false;
             return;
@@ -192,8 +192,8 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         this.appointmentForm.starT_TIME = `${this.appointmentForm.hour}:${this.appointmentForm.minute}`;
         this.appointmentForm.sloT_NAME = this.rangeTimeDisplay;
         this.appointmentForm.apP_CUST_ID = this.selectedCusId;
-        if(!this.appointmentForm.apP_ID){
-                this._appointmentService.mED_APPOINTMENT_Ins(this.appointmentForm).subscribe(() => {
+        if (!this.appointmentForm.apP_ID) {
+            this._appointmentService.mED_APPOINTMENT_Ins(this.appointmentForm).subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
                 this.close();
                 this.modalSave.emit(null);
@@ -202,8 +202,8 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
                 this.saving = false;
             });
         }
-        else{
-                this._appointmentService.mED_APPOINTMENT_Upd(this.appointmentForm).subscribe(() => {
+        else {
+            this._appointmentService.mED_APPOINTMENT_Upd(this.appointmentForm).subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
                 this.close();
                 this.modalSave.emit(null);
@@ -220,7 +220,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
 
         const medDate = this.appointmentForm.apP_DATE;
         const medDocId = docID; // Lấy giá trị bác sĩ đã chọn
-        this.appointmentForm.apP_DOC_ID = docID|| undefined;
+        this.appointmentForm.apP_DOC_ID = docID || undefined;
         let formattedDate = '';
 
         if (medDate) {
@@ -241,7 +241,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
             this._appointmentService.mED_APPOINTMENT_Search(searchParam)
                 .subscribe(res => {
                     // Nếu res là null hoặc undefined, gán thành mảng rỗng []
-                    this.listExistingAppointments = res.items??[]; ;
+                    this.listExistingAppointments = res.items ?? [];;
                 }, error => {
                     // Nếu lỗi API, gán mảng rỗng để không bị lỗi filter trên giao diện
                     this.listExistingAppointments = [];
@@ -264,40 +264,79 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     }
 
     generateCalendar() {
-        const year = this.viewDate.getFullYear();
-        const month = this.viewDate.getMonth();
-        // Lấy ngày hiện tại và đặt giờ về 00:00:00 để so sánh chính xác ngày
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+    const year = this.viewDate.getFullYear();
+    const month = this.viewDate.getMonth(); // 0 = Tháng 1, 1 = Tháng 2, ..., 11 = Tháng 12
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-        const selectedDateInForm = this.appointmentForm.apP_DATE;
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const selectedDateInForm = this.appointmentForm.apP_DATE;
+    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPreviousMonth = new Date(year, month, 0).getDate();
+    
+    const dayOfWeek = new Date(year, month, 1).getDay();
+    const startingDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 
-        this.days = [];
-        
-        // ... (logic tính startingDay và daysInMonth giữ nguyên) ...
+    // Mảng 12 màu Gradient phong cách Luxury cho 12 tháng (Duy nhất & Không trùng lặp)
+    const luxuryGradients = [
+        'linear-gradient(135deg, #ff4e50 0%, #f9d423 100%)', // Tháng 1: Hổ phách ấm
+        'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)', // Tháng 2: Cyber Neon
+        'linear-gradient(135deg, #b12a5b 0%, #ff758c 100%)', // Tháng 3: Hồng Ruby
+        'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', // Tháng 4: Xanh Ngọc Lục Bảo
+        'linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%)', // Tháng 5: Tím Hoàng Gia
+        'linear-gradient(135deg, #f12711 0%, #f5af19 100%)', // Tháng 6: Cam Hoàng Hôn
+        'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)', // Tháng 7: Xanh Đại Dương
+        'linear-gradient(135deg, #134e5e 0%, #71b280 100%)', // Tháng 8: Xanh Rừng Già
+        'linear-gradient(135deg, #f857a6 0%, #ff5858 100%)', // Tháng 9: Đỏ San Hô
+        'linear-gradient(135deg, #ad5389 0%, #3c1053 100%)', // Tháng 10: Tím Thạch Anh
+        'linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%)', // Tháng 11: Ngân Hà
+        'linear-gradient(135deg, #1d976c 0%, #93f9b9 100%)'  // Tháng 12: Xanh Bạc Hà
+    ];
 
-        for (let i = 1; i <= daysInMonth; i++) {
-            const dateToCheck = new Date(year, month, i);
-            const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
-            
-            this.days.push({
-                value: i,
-                date: dateToCheck,
-                isActive: dateString === selectedDateInForm,
-                // Vô hiệu hóa nếu ngày nhỏ hơn hôm nay
-                isDisable: dateToCheck < today 
-            });
-        }
+    // Chọn màu gradient dựa trên chỉ số tháng hiện tại (Mỗi tháng 1 màu cố định sang trọng)
+    const currentMonthGradient = luxuryGradients[month];
+
+    this.days = [];
+
+    // Điền các ngày của tháng trước
+    for (let i = startingDay - 1; i >= 0; i--) {
+        const prevDayValue = daysInPreviousMonth - i;
+        const prevDate = new Date(year, month - 1, prevDayValue); 
+
+        this.days.push({
+            value: prevDayValue,
+            date: prevDate,
+            isActive: false,
+            isDisable: true,
+            isFirstDayOfMonth: false,
+            monthGradient: ''
+        });
     }
+
+    // Thêm các ngày trong tháng hiện tại
+    for (let i = 1; i <= daysInMonth; i++) {
+        const dateToCheck = new Date(year, month, i);
+        const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+        
+        this.days.push({
+            value: i,
+            date: dateToCheck,
+            isActive: dateString === selectedDateInForm,
+            isDisable: dateToCheck < today,
+            isFirstDayOfMonth: i === 1,
+            monthGradient: currentMonthGradient // Gán màu vào đây
+        });
+    }
+}
 
     // Cập nhật hàm chọn ngày để chặn click vào ngày đã disable
     selectDate(day: any) {
         if (!day.value || day.isDisable) return; // Nếu bị disable thì thoát luôn, không cho chọn
-        
+
         const d = day.date;
         const formatted = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
-        
+
         this.appointmentForm.apP_DATE = formatted;
         this.generateCalendar();
         this.loadExistingAppointments(this.selectedDoctor);
@@ -337,7 +376,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         // 4. Render lại giao diện lịch
         this.generateCalendar();
     }
-    
+
     setDuration(minutes: number): void {
         this.appointmentForm.rangE_TIME = minutes;
     }
@@ -352,7 +391,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         if (!medDate) return false;
 
         // 1. Kiểm tra nếu giờ đó bác sĩ đã có lịch hẹn (Dữ liệu từ bảng MED_APPOINTMENT)
-        const isBooked = this.listExistingAppointments.some(app => 
+        const isBooked = this.listExistingAppointments.some(app =>
             app.apP_DOC_ID === this.appointmentForm.apP_DOC_ID &&
             app.starT_TIME?.startsWith(hour)
         );
@@ -383,7 +422,7 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
             // 1. Lấy giờ bắt đầu của ca khám hiện có
             const [appH, appM] = (app.starT_TIME?.split(':').map(Number) || [0, 0]);
             const startTime = appH * 60 + appM;
-            
+
             // 2. Tính giờ kết thúc dựa trên DURATION (mặc định 30 nếu không có)
             const endTime = startTime + (app.rangE_TIME || 30);
 
@@ -401,12 +440,12 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         // 2. Kiểm tra nếu là ngày hôm nay và thời gian đã trôi qua
         const today = new Date();
         const selectedDate = new Date(medDate);
-        
+
         const isToday = today.toDateString() === selectedDate.toDateString();
         if (isToday) {
             const checkTime = parseInt(hour) * 60 + parseInt(min);
             const currentTime = today.getHours() * 60 + today.getMinutes();
-            
+
             // Nếu thời gian đang xét nhỏ hơn hoặc bằng thời gian hiện tại
             if (checkTime <= currentTime) return true;
         }
@@ -415,13 +454,13 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     }
 
     selectTime(hour: string, min: string) {
-    if (!this.isTimeSlotBusy(hour, min)) {
-        this.appointmentForm.hour = hour;
-        this.appointmentForm.minute = min;
-        this.selectedHour = hour;
-        this.selectedMinute = min;
+        if (!this.isTimeSlotBusy(hour, min)) {
+            this.appointmentForm.hour = hour;
+            this.appointmentForm.minute = min;
+            this.selectedHour = hour;
+            this.selectedMinute = min;
+        }
     }
-}
 
     selectHour(hour: string) {
         if (!this.isHourBusy(hour)) {
@@ -434,11 +473,11 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
     getHourTooltip(hour: string): string {
         const today = new Date();
         const medDate = this.appointmentForm.apP_DATE;
-        
+
         if (this.listExistingAppointments.some(app => app.starT_TIME?.startsWith(hour))) {
             return 'Bác sĩ đã có lịch hẹn';
         }
-        
+
         if (medDate && new Date(medDate).toDateString() === today.toDateString()) {
             if (parseInt(hour) <= today.getHours()) {
                 return 'Giờ này đã trôi qua';
@@ -447,25 +486,25 @@ export class CreateAppointmentModalComponent extends AppComponentBase {
         return 'Giờ còn trống';
     }
     private loadDropdowns(id?: string): void {
-        if(id){
+        if (id) {
             this._customerService.cM_CUSTOMER_GetById(id).subscribe(res => {
                 this.customers[0] = res;
                 this.selectedCusId = this.customers[0].cuS_ID;
             });
         }
-        else{
+        else {
             this._customerService.cM_CUSTOMER_DROPDOWNLIST().subscribe(res => this.customers = res);
         }
         this._employeeService.cM_EMPLOYEE_DROPDOWNLIST('BS').subscribe(res => {
             this.listDoctors = res;
-            if(!this.selectedDoctor){
+            if (!this.selectedDoctor) {
                 this.selectedDoctor = this.listDoctors.length > 0
                     ? this.listDoctors.reduce((max, current) =>
                         current.emP_NO > max.emP_NO ? current : max
                     ).emP_ID
                     : '';
             }
-                this.loadExistingAppointments(this.selectedDoctor);
+            this.loadExistingAppointments(this.selectedDoctor);
         });
         this._employeeService.cM_EMPLOYEE_DROPDOWNLIST('PT').subscribe(res => this.listAssistants = res);
     }
@@ -477,4 +516,6 @@ interface CalendarDay {
     isActive?: boolean;
     date?: Date;
     isDisable?: boolean;
+    isFirstDayOfMonth: boolean;
+    monthGradient?: string;
 }

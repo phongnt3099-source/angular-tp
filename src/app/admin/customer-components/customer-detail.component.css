@@ -232,3 +232,74 @@ textarea.form-control:focus {
 .border-female {
     border-color: #f472b6 !important; /* Màu hồng Pink 400 */
 }
+
+.luxury-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    /* Đẩy lên phía trên hoặc căn chỉnh lại vị trí */
+    bottom: 120%; 
+    left: 0;
+    width: 200px;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border: 1px solid #f0f0f0;
+    z-index: 9999;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none; /* Tránh giật lag khi di chuột */
+}
+.has-tooltip:hover + .luxury-tooltip {
+    visibility: visible;
+    opacity: 1;
+    bottom: 100%; /* Trồi lên đúng vị trí */
+}
+.tooltip-header {
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 5px;
+}
+.luxury-tooltip li { font-size: 0.8rem; color: #444; }
+
+.stat-card {
+    border-radius: 12px;
+    padding: 1rem !important; 
+    height: 100%; /* Ép chiều cao lấp đầy cột */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Căn giữa dọc */
+    transition: transform 0.2s ease-in-out;
+    background: #fff;
+    border: 0;
+}
+
+/* Đảm bảo các mã hồ sơ không xuống dòng quá sớm */
+.info-value {
+    font-size: 15px !important; /* Thu nhỏ một chút để 5 mã nằm vừa hàng ngang */
+    font-weight: 700;
+}
+
+/* Chấm tròn trạng thái */
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+.active { background-color: #4f46e5; }
+.completed { background-color: #10b981; }
+.pending { background-color: #f59e0b; }
+
+/* Định dạng hover để trông đẳng cấp hơn */
+.info-value {
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+.info-value:hover {
+    background-color: #f1f5f9;
+}

@@ -92,3 +92,4 @@
 .tp-dropdown.is-disabled .placeholder {
     color: #d1d5db;
 }
+.debt-select-highlight { border-color: #D97706; color: #D97706; font-weight: 700; }

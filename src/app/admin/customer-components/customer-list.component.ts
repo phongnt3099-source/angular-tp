@@ -67,4 +67,13 @@ export class CustomerComponentsComponent extends AppComponentBase implements OnI
               this.primengTableHelper.hideLoadingIndicator();
           });
     }
-}
+    getStatusLabel(status: number): string {
+        switch (status) {
+            case 0: return 'Chờ khám';
+            case 1: return 'Đang điều trị';
+            case 2: return 'Hoàn thành';
+            case 3: return 'Đã hủy';
+            default: return 'Không rõ';
+        }
+    }
+  }

@@ -1,0 +1,477 @@
+/* Tông màu nền và bo góc tổng thể */
+.bg-light-gray { background-color: #f8fafc !important; }
+.cursor-pointer { cursor: pointer; }
+
+/* 1. Thiết kế lại Quyển lịch (Calendar) */
+.custom-calendar {
+    background: #ffffff;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.3s ease;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.day-name {
+    font-weight: 700;
+    color: #94a3b8;
+    font-size: 11px;
+    text-transform: uppercase;
+    padding-bottom: 12px;
+}
+.day-num {
+    height: 38px;
+    width: auto;
+    min-width: 38px;
+    padding: 0 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px auto;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Xử lý căn lề và định dạng cho Ngày 1 */
+.day-num.has-month {
+    display: inline-flex;
+    align-items: flex-end; 
+    justify-content: center;
+    gap: 1px; 
+    padding-bottom: 6px; 
+
+    .num-text {
+        font-size: 16px; 
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1;
+    }
+
+    // Định dạng nhãn số tháng (/6)
+    .month-badge {
+        font-size: 11px; /* Tăng nhẹ 1px để nhìn rõ ràng hơn */
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: -1px;
+        display: inline-block;
+        
+        // Nhận giá trị Gradient từ file TS truyền qua HTML
+        background: var(--month-grad); 
+        
+        // Ép thuộc tính chỉ hiển thị màu nền bên trong chữ (Xóa bỏ ô vuông)
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+/* Khi ô được chọn (Active) */
+.day-num.active {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    
+    .num-text {
+        color: white !important;
+    }
+
+    &.has-month {
+        .month-badge {
+            background: none !important;
+            -webkit-text-fill-color: initial !important;
+            color: rgba(255, 255, 255, 0.95) !important; /* Chuyển thành màu trắng rõ nét trên nền xanh */
+        }
+    }
+}
+
+/* Khi bị disabled */
+.day-num.disabled {
+    color: #cbd5e1 !important;
+    cursor: not-allowed;
+    background: transparent !important;
+    
+    &.has-month {
+        .num-text { color: #cbd5e1 !important; }
+        .month-badge {
+            background: none !important;
+            -webkit-text-fill-color: initial !important;
+            color: #cbd5e1 !important;
+        }
+    }
+}
+/* 2. Định dạng các ô Input và Select */
+.input-group-text {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.form-control, .form-select {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 14px;
+    padding: 0.6rem 0.75rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+    outline: none;
+}
+
+/* 3. Nút chọn nhanh thời gian (Time Chips) */
+.time-chip-group .btn-outline-primary {
+    border-color: #e2e8f0;
+    color: #64748b;
+    background: white;
+    font-weight: 500;
+    font-size: 12px;
+    padding: 5px 15px;
+    transition: all 0.2s;
+}
+
+.time-chip-group .btn-outline-primary:hover, 
+.time-chip-group .btn-outline-primary:active {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* 4. Phần Phụ tá thu gọn (Collapse Box) */
+.assistant-toggle-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: white;
+    transition: border-color 0.2s;
+}
+
+.assistant-toggle-card:hover {
+    border-color: #3b82f6;
+}
+
+.assistant-header {
+    padding: 12px 15px;
+    text-decoration: none !important;
+}
+
+/* 5. Hiệu ứng cho nút bấm Modal */
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 10px 25px;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+    transform: translateY(-1px);
+}
+
+/* 6. Input Number (Duration) */
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1; /* Luôn hiện nút tăng giảm */
+}
+
+.time-chip-group .btn-sm {
+    font-size: 11px;      /* Cỡ chữ nhỏ hơn */
+    font-weight: 500;     /* Độ đậm vừa phải */
+    padding: 2px 10px;    /* Thu hẹp khoảng cách trong nút */
+    line-height: 1.2;     /* Giảm chiều cao dòng */
+    border-width: 1px;    /* Làm viền mảnh lại */
+    min-width: 50px;      /* Đảm bảo độ rộng tối thiểu để cân đối */
+}
+
+/* Hiệu ứng khi hover vào nút nhỏ */
+.time-chip-group .btn-sm:hover {
+    transform: none;      /* Bỏ hiệu ứng nhảy nếu nút quá nhỏ */
+    box-shadow: none;     /* Bỏ đổ bóng lớn để tránh bị rối */
+    background-color: #3b82f6;
+    color: white;
+}
+
+.range-time-badge {
+    background-color: #eef2ff; /* Màu nền xanh nhạt dịu mắt */
+    color: #4361ee;            /* Màu chữ xanh đậm tương phản */
+    font-size: 1.1rem;         /* Kích thước chữ to hơn hẳn */
+    border: 1px solid #dbeafe;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+/* Hiệu ứng khi form thay đổi, nhấn mạnh vào con số */
+.range-time-badge span {
+    letter-spacing: 0.5px;
+}
+
+/* Tùy chỉnh thêm nhãn nếu muốn cực kỳ rõ ràng */
+label.form-label {
+    color: #334155 !important;
+    letter-spacing: -0.2px;
+}
+
+
+/* Tùy chỉnh thêm để phần badge thời gian to rõ như bạn muốn */
+.range-time-badge {
+    font-size: 1.25rem !important; /* To hẳn lên cho dễ nhìn */
+    padding: 10px 20px !important;
+    border: 2px solid #4361ee !important; /* Viền đậm hơn */
+}
+button[disabled] {
+    cursor: not-allowed !important;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+.day-num.disabled {
+    color: #d1d5db !important;
+    background-color: #f9fafb !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+/* Container tiêu đề tháng */
+.month-title {
+    font-size: 1.1rem;
+    color: #1e293b;
+    letter-spacing: -0.5px;
+}
+
+/* Style cho nút điều hướng */
+.btn-nav-month {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    background-color: #ffffff;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Hiệu ứng khi di chuột vào nút */
+.btn-nav-month:hover:not([disabled]) {
+    background-color: #f1f5f9;
+    color: #2563eb;
+    border-color: #3b82f6;
+    transform: scale(1.1);
+}
+
+/* Trạng thái khi bị vô hiệu hóa (không cho lùi về quá khứ) */
+.btn-nav-month[disabled] {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background-color: #f8fafc;
+    border-color: #f1f5f9;
+}
+
+/* Biểu tượng mũi tên nhỏ lại cho tinh tế */
+.btn-nav-month i {
+    font-size: 12px;
+}
+
+.time-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 12px;
+}
+
+/* Sửa lỗi chồng chữ trong Select */
+.time-select {
+    appearance: none;          /* Xóa icon mũi tên mặc định của trình duyệt */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    
+    font-weight: 700 !important;
+    color: #475569 !important;
+    text-align: center;
+    
+    width: 60px !important;    /* Độ rộng cố định để không bị nhảy */
+    height: 40px !important;
+    padding: 0 !important;     /* Xóa padding để chữ nằm chính giữa */
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Hiệu ứng khi focus hoặc hover */
+.time-select:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    outline: none;
+}
+
+/* Dấu hai chấm giữa giờ và phút */
+.time-separator {
+    font-weight: bold;
+    color: #64748b;
+    font-size: 18px;
+}
+
+/* Khi box đang mở, xoay icon mũi tên */
+[data-bs-toggle="collapse"][aria-expanded="true"] i.fa-chevron-down {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+/* Thêm màu nền nhẹ cho phần nội dung để tách biệt */
+#helperBox .bg-light {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0;
+    overflow: visible !important;
+}
+app-dropdown {
+    display: block;
+    width: 100%;
+}
+
+.border-primary-light {
+    border-color: #dbeafe !important;
+}
+
+/* Nút giờ rảnh */
+.btn-time-free {
+    background-color: #ffffff;
+    color: #0d6efd;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-time-free:hover {
+    background-color: #0d6efd;
+    color: #ffffff;
+    border-color: #0d6efd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+}
+
+/* Nút giờ bận */
+.btn-time-busy {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    text-decoration: line-through;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Border nét đứt cho khối gợi ý */
+.border-dashed {
+    border-style: dashed !important;
+    border-width: 2px !important;
+    border-color: #cbd5e1 !important;
+}
+
+.hour-group {
+    min-width: 75px;
+    flex-grow: 0;
+}
+
+.slot-free {
+    width: 12px;
+    height: 12px;
+    background-color: #22c55e; /* Màu xanh lá rảnh */
+    border-radius: 2px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.slot-busy {
+    width: 12px;
+    height: 12px;
+    background-color: #ef4444; /* Màu đỏ bận */
+    border-radius: 2px;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.slot-free:hover {
+    transform: scale(1.3);
+    background-color: #16a34a;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+
+/* Ô bị vô hiệu hóa (Bận hoặc Đã qua) */
+.slot-disabled {
+    width: 12px; height: 12px;
+    background-color: #cbd5e1; /* Màu xám nhạt */
+    border-radius: 2px;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Nếu bạn muốn phân biệt rõ giờ Bác sĩ đang bận (Đỏ) */
+.slot-busy-real {
+    background-color: #ef4444 !important;
+}
+
+.btn-outline-danger {
+    border-color: #f8d7da;
+    color: #dc3545;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.25);
+    transform: translateY(-1px);
+}
+/* Nút hủy bỏ (Dạng link cho nhẹ nhàng) */
+.btn-link {
+    font-weight: 500;
+    font-size: 14px;
+}
+.view-pill-switcher {
+  button {
+    padding: 8px 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &.active {
+      background: white; 
+      color: #4f46e5;   
+      font-weight: 700;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+

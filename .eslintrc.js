@@ -111,7 +111,7 @@ module.exports = {
         'arrow-body-style': 'off',
         'brace-style': ['error', '1tbs'],
         'constructor-super': 'error',
-        curly: 'error',
+        curly: 'off',
         'dot-notation': 'off',
         'eol-last': 'error',
         eqeqeq: ['error', 'smart'],

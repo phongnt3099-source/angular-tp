@@ -1,4 +1,6 @@
-﻿import { Component, Injector, OnInit,ViewChild } from '@angular/core';
+﻿/* eslint-disable eqeqeq */
+/* eslint-disable no-trailing-spaces */
+import { Component, Injector, OnInit,ViewChild } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { FullCalendarComponent } from '@fullcalendar/angular';
@@ -17,7 +19,7 @@ import { AppointmentServiceProxy, MED_APPOINTMENT_ENTITY } from '@shared/service
 const tippyDefault = (tippy as any).default || tippy;
 @Component({
     templateUrl: './appointment-list.component.html',
-    styleUrl: './appointment-list.component.css',
+    styleUrl: './appointment-list.component.scss',
     animations: [appModuleAnimation()]
 })
 

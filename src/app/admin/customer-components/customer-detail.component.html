@@ -1,56 +1,83 @@
 <div [@routerTransition]>
     <div class="customer-detail-container p-4">
-    
-        <div class="d-flex flex-wrap justify-content-between align-items-start align-items-sm-center mb-4 bg-white p-3 rounded-3 shadow-sm border-top border-4 border-primary gap-3"
-        [ngClass]="inputModel.cuS_GENDER === 2 ? 'border-female' : 'border-primary'">
-    
+        <div
+            class="d-flex flex-wrap justify-content-between align-items-start align-items-sm-center mb-4 bg-white p-3 rounded-3 shadow-sm border-top border-4 border-primary gap-3"
+            [ngClass]="inputModel.cuS_GENDER === 2 ? 'border-female' : 'border-primary'"
+        >
             <div class="d-flex align-items-center flex-grow-1">
                 <a (click)="goBack()" class="back-navigation me-2 me-md-3">
                     <div class="back-icon"><i class="fas fa-chevron-left"></i></div>
                 </a>
-                <div class="avatar-large me-2 me-md-3" [ngClass]="inputModel.cuS_GENDER === 2 ? 'bg-female' : 'bg-male'">{{ getDisplayName(inputModel.cuS_NAME)?.charAt(0) }}</div>
+                <div
+                    class="avatar-large me-2 me-md-3"
+                    [ngClass]="inputModel.cuS_GENDER === 2 ? 'bg-female' : 'bg-male'"
+                >
+                    {{ getDisplayName(inputModel.cuS_NAME)?.charAt(0) }}
+                </div>
                 <div>
                     <h2 class="fw-bold mb-0 text-dark fs-4 fs-md-2">{{ inputModel.cuS_NAME }}</h2>
-                    <span class="text-muted small">Mã KH: <strong>{{ inputModel.cuS_CODE }}</strong></span>
+                    <span class="text-muted small">
+                        Mã KH:
+                        <strong>{{ inputModel.cuS_CODE }}</strong>
+                    </span>
                 </div>
             </div>
 
             <div class="d-flex flex-wrap gap-2 justify-content-end align-items-center w-sm-100">
-                <button class="btn btn-outline-primary text-danger fw-bold btn-sm p-1 p-md-2" (click)="deleteCustomer()">
-                    <i class="fas fa-trash-alt"></i> <span class="d-none d-md-inline">Xoá</span>
+                <button
+                    class="btn btn-outline-primary text-danger fw-bold btn-sm p-1 p-md-2"
+                    (click)="deleteCustomer()"
+                >
+                    <i class="fas fa-trash-alt"></i>
+                    <span class="d-none d-md-inline">Xoá</span>
                 </button>
-                <button class="btn btn-outline-primary  fw-bold btn-sm p-1 p-md-2" (click)="editCustomer()">
-                    <i class="fas fa-edit"></i> <span class="d-none d-md-inline">Sửa</span>
+                <button class="btn btn-outline-primary fw-bold btn-sm p-1 p-md-2" (click)="editCustomer()">
+                    <i class="fas fa-edit"></i>
+                    <span class="d-none d-md-inline">Sửa</span>
                 </button>
                 <button class="btn btn-outline-primary btn-sm px-2 px-md-3">
-                    <i class="fas fa-print"></i> <span class="d-none d-md-inline">In hồ sơ</span>
+                    <i class="fas fa-print"></i>
+                    <span class="d-none d-md-inline">In hồ sơ</span>
                 </button>
-                
+
                 <div class="btn-group" dropdown>
                     <button dropdownToggle class="btn btn-primary btn-sm px-3 fw-bold">
-                        <i class="fas fa-plus-circle me-1"></i> Thêm <span class="d-none d-md-inline">điều trị</span>
+                        <i class="fas fa-plus-circle me-1"></i>
+                        Thêm
+                        <span class="d-none d-md-inline">điều trị</span>
                     </button>
-                    <ul id="dropdown-treatment" *dropdownMenu class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2"
-                        role="menu" aria-labelledby="button-treatment">
-                        
+                    <ul
+                        id="dropdown-treatment"
+                        *dropdownMenu
+                        class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2"
+                        role="menu"
+                        aria-labelledby="button-treatment"
+                    >
                         <li role="menuitem">
-                            <a class="dropdown-item py-2 px-3 d-flex align-items-center" href="javascript:;" (click)="addTreatment()">
-                                <i class="fas fa-stethoscope me-3 text-primary" style="width: 20px;"></i>
+                            <a
+                                class="dropdown-item py-2 px-3 d-flex align-items-center"
+                                href="javascript:;"
+                                (click)="addTreatment()"
+                            >
+                                <i class="fas fa-stethoscope me-3 text-primary" style="width: 20px"></i>
                                 <span class="fw-medium">Thêm điều trị mới</span>
                             </a>
                         </li>
-                        
+
                         <li role="menuitem">
-                            <a class="dropdown-item py-2 px-3 d-flex align-items-center" href="javascript:;" (click)="addAppointment()">
-                                <i class="fas fa-calendar-plus me-3 text-success" style="width: 20px;"></i>
+                            <a
+                                class="dropdown-item py-2 px-3 d-flex align-items-center"
+                                href="javascript:;"
+                                (click)="addAppointment()"
+                            >
+                                <i class="fas fa-calendar-plus me-3 text-success" style="width: 20px"></i>
                                 <span class="fw-medium">Thêm lịch hẹn</span>
                             </a>
                         </li>
 
-                        
                         <li role="menuitem">
                             <a class="dropdown-item py-2 px-3 d-flex align-items-center" href="javascript:;">
-                                <i class="fas fa-x-ray me-3 text-secondary" style="width: 20px;"></i>
+                                <i class="fas fa-x-ray me-3 text-secondary" style="width: 20px"></i>
                                 <span class="fw-medium">Tải lên phim X-Quang</span>
                             </a>
                         </li>
@@ -58,8 +85,8 @@
                         <li class="divider dropdown-divider"></li>
 
                         <li role="menuitem">
-                            <a class="dropdown-item py-2 px-3 d-flex align-items-center" href="javascript:;" >
-                                <i class="fas fa-file-invoice-dollar me-3 text-danger" style="width: 20px;"></i>
+                            <a class="dropdown-item py-2 px-3 d-flex align-items-center" href="javascript:;">
+                                <i class="fas fa-file-invoice-dollar me-3 text-danger" style="width: 20px"></i>
                                 <span class="fw-medium text-danger">Xuất hóa đơn</span>
                             </a>
                         </li>
@@ -70,69 +97,108 @@
 
         <div class="row mb-4">
             <div class="col-md-2">
-                <div class="stat-card p-3 shadow-sm bg-white rounded-3 border-0 d-flex flex-column justify-content-center">
+                <div
+                    class="stat-card p-3 shadow-sm bg-white rounded-3 border-0 d-flex flex-column justify-content-center"
+                >
                     <div class="info-label text-primary">SỐ LẦN KHÁM</div>
-                    <div class="info-value fs-3 lh-1 mt-1">01</div>
+                    <div class="info-value fs-3 lh-1 mt-1">{{ inputModel.exM_COUNT || 0 }}</div>
                 </div>
             </div>
-        <div class="col-md-4">
-                    <div class="stat-card p-3 shadow-sm bg-white rounded-3 border-start border-4 border-success">
-                        <div class="info-label text-success text-uppercase">Tài chính</div>
-                        <div class="info-value">
-                            <span class="text-success">4,150,000đ</span> / <span class="text-danger">500,000đ</span>
-                        </div>
-                        <small class="text-muted small-text">Đã trả / Còn nợ</small>
+            <div class="col-md-4">
+                <div class="stat-card p-3 shadow-sm bg-white rounded-3 border-start border-4 border-success">
+                    <div class="info-label text-success text-uppercase">Tài chính</div>
+                    <div class="info-value">
+                        <span class="text-success">{{ inputModel.totaL_PAID || 0 | number:'1.0-0':'vi-VN' }}</span>
+                        /
+                        <span class="text-danger">{{ inputModel.remaininG_DEBT || 0 | number:'1.0-0':'vi-VN' }}</span>
                     </div>
+                    <small class="text-muted small-text">Đã trả / Còn nợ</small>
                 </div>
-                <div class="col-md-3">
-                    <div class="stat-card p-3 shadow-sm bg-white rounded-3 border-0">
-                        <div class="info-label">Hồ sơ gần nhất</div>
-                        <div class="info-value text-info">#HS1532</div>
-                        <small class="text-muted small-text">3 ngày trước (05/05)</small>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stat-card p-3 shadow-sm bg-primary-gradient text-white rounded-3 border-0 cursor-pointer" (click)="addAppointment(inputModel.apP_ID)">
-                        <div class="fw-bold fs-5 mt-1">
-                            <div *ngIf="inputModel.sloT_NAME; else noAppointment">
-                                <div class="small fw-bold opacity-75">LỊCH HẸN TỚI</div>
-                                {{ inputModel.sloT_NAME.split(' ')[0] }}
+            </div>
+           <div class="col-md-3">
+                <div class="stat-card p-3 shadow-sm bg-white rounded-3 border-0 h-100 d-flex flex-column justify-content-center">
+                    <div class="info-label text-uppercase mb-2" style="letter-spacing: 1px; color: #64748b; font-weight: 700;">Hồ sơ điều trị</div>
+                    
+                    <div class="d-flex flex-wrap gap-2">
+                        <div *ngFor="let item of treatmentList | slice:0:8" class="position-relative">
+                            <span 
+                                class="info-value cursor-pointer has-tooltip fw-bold d-flex align-items-center"
+                                [ngClass]="getStatusClass(item.exM_STATUS)"
+                                (click)="viewTreatmentDetail(item.exM_ID)"
+                                style="cursor: pointer;">
+                                <span class="status-dot me-1" [ngClass]="item.exM_STATUS"></span>
+                                {{ item.exM_CODE }}
+                            </span>
+                            
+                            <div class="luxury-tooltip">
+                                <div class="tooltip-header">{{ item.serviceName }}</div>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="small text-muted">{{ item.exM_DATE | date:'dd/MM/yyyy' }}</li>
+                                </ul>
                             </div>
-
-                            <ng-template #noAppointment>
-                                <div class="text-white d-flex align-items-center">
-                                    <i class="fas fa-calendar-plus text-white me-2" style="width: 20px;"></i>
-                                    Thêm lịch hẹn
-                                </div>
-                            </ng-template>
                         </div>
-                        <div class="small fw-medium">{{inputModel.sloT_NAME?.split(' ').slice(1).join(' ')||''}}</div>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-3">
+                <div
+                    class="stat-card p-3 shadow-sm bg-primary-gradient text-white rounded-3 border-0 cursor-pointer"
+                    (click)="addAppointment(inputModel.apP_ID)"
+                >
+                    <div class="fw-bold fs-5 mt-1">
+                        <div *ngIf="inputModel.sloT_NAME; else noAppointment">
+                            <div class="small fw-bold opacity-75">LỊCH HẸN TỚI</div>
+                            {{ inputModel.sloT_NAME.split(' ')[0] }}
+                        </div>
+
+                        <ng-template #noAppointment>
+                            <div class="text-white d-flex align-items-center">
+                                <i class="fas fa-calendar-plus text-white me-2" style="width: 20px"></i>
+                                Thêm lịch hẹn
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="small fw-medium">{{ inputModel.sloT_NAME?.split(' ').slice(1).join(' ') || '' }}</div>
+                </div>
+            </div>
         </div>
 
         <div class="row">
             <div class="col-lg-4">
                 <div class="card shadow-sm mb-4 border-0">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-id-card me-2"></i>Hành chính</h5>
+                        <h5 class="mb-0 fw-bold text-primary">
+                            <i class="fas fa-id-card me-2"></i>
+                            Hành chính
+                        </h5>
                     </div>
                     <div class="card-body p-4">
                         <div class="mb-3">
                             <div class="info-label">Ngày sinh / Tuổi</div>
-                            <div class="info-value">{{ inputModel.cuS_DOB | date: 'dd/MM/yyyy' }} ({{ inputModel.age }} tuổi)</div>
+                            <div class="info-value">
+                                {{ inputModel.cuS_DOB | date: 'dd/MM/yyyy' }} ({{ inputModel.age }} tuổi)
+                            </div>
                         </div>
                         <div class="mb-3">
                             <div class="info-label">Giới tính</div>
                             <div class="info-value">
-                                <i class="fas me-1" [class.fa-mars]="inputModel.cuS_GENDER === 1" [class.fa-venus]="inputModel.cuS_GENDER === 2"></i>
-                                {{ inputModel.cuS_GENDER === 1 ? 'Nam' : (inputModel.cuS_GENDER === 2 ? 'Nữ' : 'Khác') }}
+                                <i
+                                    class="fas me-1"
+                                    [class.fa-mars]="inputModel.cuS_GENDER === 1"
+                                    [class.fa-venus]="inputModel.cuS_GENDER === 2"
+                                ></i>
+                                {{ inputModel.cuS_GENDER === 1 ? 'Nam' : inputModel.cuS_GENDER === 2 ? 'Nữ' : 'Khác' }}
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="info-label">Số điện thoại</div>
                             <div class="info-value text-primary fw-bold">
-                                <a href="javascript:;" (click)="openZalo(inputModel.cuS_PHONE)" class="zalo-btn" title="Mở Zalo nhắn tin">
+                                <a
+                                    href="javascript:;"
+                                    (click)="openZalo(inputModel.cuS_PHONE)"
+                                    class="zalo-btn"
+                                    title="Mở Zalo nhắn tin"
+                                >
                                     <i class="fas fa-comment-dots me-2"></i>
                                     <span class="fw-bold">{{ inputModel.cuS_PHONE }}</span>
                                 </a>
@@ -144,7 +210,7 @@
                         </div>
                         <div class="mb-0">
                             <div class="info-label">T.Sử bệnh</div>
-                            <div class="info-value fs-6 lh-sm">{{ inputModel.cuS_MEDICAL_HISTORY||'Không' }}</div>
+                            <div class="info-value fs-6 lh-sm">{{ inputModel.cuS_MEDICAL_HISTORY || 'Không' }}</div>
                         </div>
                     </div>
                 </div>
@@ -153,25 +219,37 @@
             <div class="col-lg-8">
                 <div class="card shadow-sm border-0 mb-4 overflow-hidden border-start border-5 border-info">
                     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 fw-bold text-info text-uppercase"><i class="fas fa-edit me-2"></i>Ghi chú & Chỉ định</h5>
+                        <h5 class="mb-0 fw-bold text-info text-uppercase">
+                            <i class="fas fa-edit me-2"></i>
+                            Ghi chú & Chỉ định
+                        </h5>
                         <span class="badge bg-light text-muted border">ID: #9998</span>
                     </div>
                     <div class="card-body p-0">
                         <div class="p-3 bg-light-blue border-bottom">
-                            <textarea class="form-control border-0 shadow-none fs-5 bg-white p-3" 
-                                    rows="3" 
-                                    placeholder="Nhập nội dung điều trị mới tại đây..."></textarea>
+                            <textarea
+                                class="form-control border-0 shadow-none fs-5 bg-white p-3"
+                                rows="3"
+                                placeholder="Nhập nội dung điều trị mới tại đây..."
+                            ></textarea>
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <small class="text-muted italic"><i class="fas fa-history me-1"></i>Lần khám gần nhất: 3 ngày trước (14:34 05/05/2026)</small>
+                                <small class="text-muted italic">
+                                    <i class="fas fa-history me-1"></i>
+                                    Lần khám gần nhất: 3 ngày trước (14:34 05/05/2026)
+                                </small>
                                 <button class="btn btn-info text-white px-4 fw-bold shadow-sm">
-                                    <i class="fas fa-save me-1"></i> LƯU NỘI DUNG
+                                    <i class="fas fa-save me-1"></i>
+                                    LƯU NỘI DUNG
                                 </button>
                             </div>
                         </div>
                         <div class="p-4">
                             <div class="note-bubble">
                                 <p class="note-content-text mb-0">
-                                    {{ inputModel.notes || 'Bệnh nhân báo đau nhẹ sau khi đặt thuốc diệt tủy. Theo dõi thêm vùng nướu răng hàm số 6.' }}
+                                    {{
+                                        inputModel.notes ||
+                                            'Bệnh nhân báo đau nhẹ sau khi đặt thuốc diệt tủy. Theo dõi thêm vùng nướu răng hàm số 6.'
+                                    }}
                                 </p>
                             </div>
                         </div>
@@ -180,7 +258,10 @@
 
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold text-success text-uppercase"><i class="fas fa-history me-2"></i>Nhật ký điều trị</h5>
+                        <h5 class="mb-0 fw-bold text-success text-uppercase">
+                            <i class="fas fa-history me-2"></i>
+                            Nhật ký điều trị
+                        </h5>
                     </div>
                     <div class="card-body p-4">
                         <div class="treatment-timeline">
@@ -190,8 +271,13 @@
                                     <h6 class="fw-bold fs-5 mb-1">Nhổ răng số 8 (Hàm dưới)</h6>
                                     <span class="badge bg-light text-dark border">Hôm nay</span>
                                 </div>
-                                <p class="text-muted mb-2">Đã thực hiện tiền mê và nhổ bỏ răng mọc lệch. Vết thương ổn định.</p>
-                                <div class="small"><i class="fas fa-user-md me-1 text-primary"></i> BS. Phan Hoàng</div>
+                                <p class="text-muted mb-2">
+                                    Đã thực hiện tiền mê và nhổ bỏ răng mọc lệch. Vết thương ổn định.
+                                </p>
+                                <div class="small">
+                                    <i class="fas fa-user-md me-1 text-primary"></i>
+                                    BS. Phan Hoàng
+                                </div>
                             </div>
 
                             <div class="timeline-item">

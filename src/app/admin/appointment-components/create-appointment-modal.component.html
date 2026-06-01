@@ -55,8 +55,16 @@
                                         [class.empty]="!day.value"
                                         [class.active]="day.isActive"
                                         [class.disabled]="day.isDisable || isDisabled"
+                                        [class.has-month]="day.isFirstDayOfMonth"
                                         (click)="selectDate(day)">
-                                        {{ day.value }}
+                                        
+                                        <span class="num-text">{{ day.value }}</span>
+                                        
+                                        <span *ngIf="day.isFirstDayOfMonth" 
+                                            class="month-badge" 
+                                            [style.--month-grad]="day.monthGradient">
+                                            /{{ viewDate.getMonth() + 1 }}
+                                        </span>
                                     </div>
                                 </div>
                                 

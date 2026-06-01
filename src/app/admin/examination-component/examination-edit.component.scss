@@ -104,9 +104,41 @@ $bg-light: #f8fafc;
 
 /* --- KHỐI SIDEBAR THÈ BỆNH NHÂN PHẢI (PERSISTENT & NO-IMAGE) --- */
 .patient-sidebar {
-  position: sticky;
-  top: 24px;
-  height: calc(100vh - 48px);
+    position: sticky;
+    top: 24px;
+    /* CHÚ Ý: Đổi height thành max-height để kích hoạt tính năng cuộn nội bộ khi form quá dài */
+    max-height: calc(100vh - 48px); 
+    height: auto !important; 
+    
+    display: flex;
+    flex-direction: column;
+    gap: 16px;          /* Khoảng cách biệt lập giữa các thẻ */
+    align-self: start;  /* Ép sidebar bám đỉnh, không bị Grid kéo bệt xuống đáy */
+    
+    /* Bật tính năng cuộn mượt nội bộ tự động, chỉ xuất hiện thanh cuộn khi nội dung quá dài */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px; /* Tạo khoảng trống nhỏ dự phòng cho thanh cuộn không đè lên viền card */
+
+    /* Ẩn bớt độ thô của thanh cuộn mặc định, đưa về dạng đường line mảnh tinh tế */
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+        &:hover {
+            background: #94a3b8;
+        }
+    }
+}
+.patient-card, 
+.luxury-payment-card {
+    flex-shrink: 0; /* Ngăn chặn trình duyệt tự động bóp nghẹt chiều cao của card */
+    width: 100%;
 }
 .patient-card {
   background: #ffffff;
@@ -1197,4 +1229,167 @@ input.form-control:not(:disabled) {
     transform: translate(-50%, -50%) scale(1.05);
     opacity: 1;
   }
+}
+
+/* ĐỒNG BỘ HIỂN THỊ THẺ THANH TOÁN SANG TRỌNG */
+.luxury-payment-card {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #ebdff2;
+    box-shadow: 0 10px 25px -15px rgba(79, 70, 229, 0.08);
+
+    .payment-card-header {
+        padding: 18px 24px;
+        background-color: #fcfcfd;
+        border-bottom: 1px solid #f1f5f9;
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 0.9rem;
+        i { color: #4f46e5; }
+        
+        .badge {
+            font-size: 0.75rem; padding: 6px 12px; border-radius: 30px; font-weight: 700;
+            &.badge-paid { background-color: #dcfce7; color: #15803d; }
+            &.badge-debt { background-color: #fef3c7; color: #d97706; }
+        }
+    }
+}
+
+.financial-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f8fafc;
+    
+    .fin-label { color: #64748b; font-size: 0.85rem; font-weight: 600; }
+    .fin-value {
+        font-weight: 700; font-size: 1.05rem;
+        &.total { color: #334155; }
+        &.paid { color: #16a34a; }
+        &.debt { color: #dc2626; font-size: 1.25rem; font-weight: 800; }
+    }
+    
+    &.highlight-debt {
+        background-color: #fff8f8;
+        padding: 12px 14px;
+        margin: 6px -14px;
+        border-radius: 12px;
+        border-bottom: none;
+    }
+}
+
+.payment-history-section {
+    .history-title { font-size: 0.8rem; font-weight: 700; color: #828a99; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .history-timeline {
+        max-height: 120px; overflow-y: auto; background-color: #fcfcfd; border-radius: 10px; padding: 8px 12px; border: 1px solid #edf2f7;
+        .timeline-item {
+            padding: 6px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.8rem;
+            &:last-child { border-bottom: none; }
+            .log-date { color: #64748b; }
+        }
+    }
+}
+
+.btn-luxury-trigger {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff; border: none; font-weight: 700; font-size: 0.9rem; border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+        color: #fff;
+    }
+}
+/* ================= THIẾT KẾ ĐƯỜNG PHÂN CÁCH LUXURY HOÀNG GIA ================= */
+.luxury-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px 0; /* Tạo khoảng thở rộng rãi, cân đối cho 2 phần */
+    width: 100%;
+
+    /* Đường line dải màu chuyển biến mất dần về 2 rìa biên */
+    .divider-line {
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, 
+            rgba(226, 232, 240, 0) 0%, 
+            rgba(79, 70, 229, 0.2) 30%, 
+            rgba(79, 70, 229, 0.2) 70%, 
+            rgba(226, 232, 240, 0) 100%
+        );
+    }
+
+    /* Khung Badge chứa Icon bọc kính nằm chính giữa điểm giao thoa */
+    .divider-badge {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: #ffffff;
+        border: 1px solid #ebdff2;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px -2px rgba(79, 70, 229, 0.12);
+        transition: all 0.3s ease;
+
+        i {
+            font-size: 0.75rem;
+            color: #4f46e5; /* Màu Indigo chủ đạo */
+            opacity: 0.8;
+        }
+    }
+}
+
+/* Hiệu ứng tương tác nhẹ khi rê chuột vào khu vực thẻ */
+.luxury-payment-card:hover {
+    .luxury-divider .divider-badge {
+        transform: rotate(15deg) scale(1.08);
+        border-color: #4f46e5;
+        box-shadow: 0 6px 14px -2px rgba(79, 70, 229, 0.2);
+    }
+}
+.info-EXM:hover {
+    .luxury-divider .divider-badge {
+        transform: rotate(15deg) scale(1.08);
+        border-color: #4f46e5;
+        box-shadow: 0 6px 14px -2px rgba(79, 70, 229, 0.2);
+    }
+}
+/* Custom các nút bấm sửa xóa icon nhỏ gọn trong dòng nhật ký */
+.btn-icon-log {
+    background: none;
+    border: none;
+    padding: 2px 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.btn-icon-log:hover {
+    transform: scale(1.15);
+}
+.timeline-indicator-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #CBD5E1;
+    border-radius: 50%;
+    display: inline-block;
+}
+.border-bottom-dashed {
+    border-bottom: 1px dashed #E2E8F0;
+}
+.scale-xs {
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+}
+.bg-light-success {
+    background-color: #EBF7F2;
 }

@@ -2,7 +2,7 @@
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CreateCustomerModalComponent } from './create-customer-modal.component';
-import { CM_CUSTOMER_ENTITY,CustomerServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CM_CUSTOMER_ENTITY,CustomerServiceProxy, ExaminationServiceProxy, MED_EXAMINATION_ENTITY } from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { finalize } from 'rxjs/operators';
@@ -21,19 +21,22 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
     @ViewChild('createAppointmentModal', { static: true }) createAppointmentModal!: CreateAppointmentModalComponent;
     @ViewChild('paginator', { static: true }) paginator!: Paginator;
     alertVisible = true;
+    treatmentList: MED_EXAMINATION_ENTITY[]=[];
     inputModel: CM_CUSTOMER_ENTITY = new CM_CUSTOMER_ENTITY();
     constructor(
       injector: Injector,
       private _customerService: CustomerServiceProxy,
       private activeRoute: ActivatedRoute,
       private _router: Router,
-      private _modalService: BsModalService
+      private _modalService: BsModalService,
+      private _examinationService: ExaminationServiceProxy
     ) {
         super(injector);
         this.inputModel.cuS_ID = this.getRouteParam('customerId');
     }
     ngOnInit(): void {
         this.getCustomer();
+        this.getExaminations();
     }
     deleteCustomer(): void {
     this.message.confirm(
@@ -110,10 +113,37 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
     addAppointment(Id?: string): void {
         this.createAppointmentModal.show(this.inputModel.cuS_ID,Id)
     }
+    viewTreatmentDetail(exmId: string) {
+        this._router.navigate(['/app/admin/examination-edit/', exmId]);
+    }
     editCustomer(): void{
       this.createCustomerModal.show(this.inputModel.cuS_ID);
     }
     hideAlert(): void{
         this.alertVisible = false;
     }
+    getStatusClass(status: string): string {
+        switch(status) {
+            case 'active': return 'text-primary';      // Đang điều trị
+            case 'completed': return 'text-success';   // Đã xong
+            case 'pending': return 'text-warning';     // Chờ xử lý
+            default: return 'text-secondary';
+        }
+    }
+    getExaminations(): void {
+        const searchParam = new MED_EXAMINATION_ENTITY();
+        searchParam.skipCount = 0;
+        searchParam.maxResultCount = 4;
+        searchParam.exM_PATIENT_ID = this.inputModel.cuS_ID;
+
+        this._examinationService
+          .mED_EXAMINATION_Search(
+              searchParam)
+          .pipe(finalize(() => {
+          }))
+          .subscribe((result) => {
+              this.treatmentList = result.items??[]
+          });
+    }
+    
 }

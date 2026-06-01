@@ -16,7 +16,7 @@ import { HeaderComponent } from '@shared/components/header/header.component';
         AppointmentComponentsComponent,
         CreateAppointmentModalComponent
     ],
-    imports: [AppSharedModule, AdminSharedModule, AppointmentComponentsRoutingModule,SharedDropdownComponent,SimpleDropdownComponent,SharedDropdownComponent, CommonModule,FullCalendarModule,HeaderComponent,],
+    imports: [AppSharedModule, AdminSharedModule, AppointmentComponentsRoutingModule,SharedDropdownComponent,SimpleDropdownComponent, CommonModule,FullCalendarModule,HeaderComponent,],
     providers: [
         AppointmentServiceProxy,
         CustomerServiceProxy,

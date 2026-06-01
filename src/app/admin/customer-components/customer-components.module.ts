@@ -4,11 +4,10 @@ import { AppSharedModule } from '@app/shared/app-shared.module';
 import { CustomerComponentsRoutingModule } from './customer-components-routing.module';
 import { CreateCustomerModalComponent } from './create-customer-modal.component';
 import { SharedDropdownComponent } from '@app/components/shared-dropdown/shared-dropdown.component';
-import { CustomerServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy,ExaminationServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CustomerComponentsComponent } from './customer-list.component';
 import { CommonModule } from '@node_modules/@angular/common';
 import { CustomerDetailComponent } from './customer-detail.component';
-import { CreateAppointmentModalComponent } from '../appointment-components/create-appointment-modal.component';
 import { AppointmentComponentsModule } from '../appointment-components/appointment-components.module';
 import { HeaderComponent } from '@shared/components/header/header.component';
 
@@ -20,7 +19,8 @@ import { HeaderComponent } from '@shared/components/header/header.component';
     ],
     imports: [AppSharedModule, AdminSharedModule, CustomerComponentsRoutingModule,SharedDropdownComponent,CommonModule,AppointmentComponentsModule,HeaderComponent],
     providers: [
-        CustomerServiceProxy
+        CustomerServiceProxy,
+        ExaminationServiceProxy 
     ]
 })
 export class CustomerComponentsModule {}

@@ -1,0 +1,227 @@
+<div class="treatment-list-wrapper" [@routerTransition]>
+    <app-header 
+        [title]="'Quản Lý Hồ Sơ Điều Trị'"
+        [buttonText]="'Tạo phiếu điều trị mới'"
+        (addClicked)="createNewTreatment()">
+    </app-header>
+
+    <div class="container-fluid content-body mt-4">
+        
+       <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-sm-6">
+                <div class="luxury-kpi-card waiting">
+                    <div class="luxury-kpi-badge-wrapper">
+                        <i class="fa-solid fa-hourglass-half animate-pulse-soft"></i>
+                    </div>
+                    <div class="luxury-kpi-body">
+                        <div class="luxury-kpi-title">Hồ sơ mới (Chờ khám)</div>
+                        <div class="luxury-kpi-number">{{ countNew }}</div>
+                    </div>
+                    <div class="luxury-kpi-corner-glow"></div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6">
+                <div class="luxury-kpi-card doing">
+                    <div class="luxury-kpi-badge-wrapper">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                    <div class="luxury-kpi-body">
+                        <div class="luxury-kpi-title">Đang tiến hành điều trị</div>
+                        <div class="luxury-kpi-number">{{ countDoing }}</div>
+                    </div>
+                    <div class="luxury-kpi-corner-glow"></div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6">
+                <div class="luxury-kpi-card completed">
+                    <div class="luxury-kpi-badge-wrapper">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <div class="luxury-kpi-body">
+                        <div class="luxury-kpi-title">Điều trị hoàn thành</div>
+                        <div class="luxury-kpi-number">{{ countComplete }}</div>
+                    </div>
+                    <div class="luxury-kpi-corner-glow"></div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6">
+                <div class="luxury-kpi-card cancelled">
+                    <div class="luxury-kpi-badge-wrapper">
+                        <i class="fa-solid fa-folder-minus"></i>
+                    </div>
+                    <div class="luxury-kpi-body">
+                        <div class="luxury-kpi-title">Hồ sơ đã hủy bỏ</div>
+                        <div class="luxury-kpi-number">{{ countCancel }}</div>
+                    </div>
+                    <div class="luxury-kpi-corner-glow"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-filter-card shadow-sm mb-4 border-0 p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-1 border-bottom pb-2">
+                <span class="fw-bold text-dark small-label-heading"><i class="fa-solid fa-filter text-indigo me-1"></i> Bộ lọc tìm kiếm nâng cao</span>
+                <span class="badge bg-indigo-light text-indigo fw-bold" style="font-size: 11px;"><i class="fa-solid fa-calendar-day me-1"></i>Hệ thống tự động lọc dữ liệu 7 ngày gần nhất</span>
+            </div>
+
+            <div class="row g-3 align-items-end">
+                <div class="col-xl-4 col-md-5">
+                    <label class="form-filter-label"><i class="fa-solid fa-keyboard me-1 text-indigo"></i> Từ khóa tìm kiếm</label>
+                    <div class="premium-input-group">
+                        <span class="input-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" class="form-control-premium-sm" 
+                               placeholder="Mã phiếu, tên khách hàng, SĐT..." 
+                               [(ngModel)]="filterInput.searcH_KEYWORD" (keyup.enter)="refreshList()">
+                    </div>
+                </div>
+                
+                <div class="col-xl-2 col-md-3">
+                    <label class="form-filter-label"><i class="fa-solid fa-circle-info me-1 text-indigo"></i> Trạng thái phiếu</label>
+                    <select class="form-select-premium" [(ngModel)]="filterInput.exM_STATUS" (change)="refreshList()">
+                        <option [value]="null">Tất cả trạng thái</option>
+                        <option [value]="0">Chờ khám</option>
+                        <option [value]="1">Đang điều trị</option>
+                        <option [value]="2">Hoàn thành</option>
+                        <option [value]="3">Đã hủy</option>
+                    </select>
+                </div>
+
+                <div class="col-xl-2 col-md-2">
+                    <label class="form-filter-label"><i class="fa-solid fa-calendar-minus me-1 text-indigo"></i> Từ ngày tạo</label>
+                    <input type="date" class="form-control-premium-sm" [(ngModel)]="filterInput.froM_DATE" (change)="refreshList()">
+                </div>
+
+                <div class="col-xl-2 col-md-2">
+                    <label class="form-filter-label"><i class="fa-solid fa-calendar-plus me-1 text-indigo"></i> Đến ngày tạo</label>
+                    <input type="date" class="form-control-premium-sm" [(ngModel)]="filterInput.tO_DATE" (change)="refreshList()">
+                </div>
+
+                <div class="col-xl-2 col-md-12">
+                    <button class="btn btn-premium-indigo w-100 fw-bold d-flex align-items-center justify-content-center" (click)="refreshList()">
+                        <i class="fa-solid fa-sliders me-2"></i>Áp dụng lọc
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-card shadow-sm border-0">
+            <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                <p-table
+                    #dataTable
+                    sortMode="multiple"
+                    (onLazyLoad)="getExaminations($event)"
+                    [value]="primengTableHelper.records"
+                    rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                    [paginator]="false"
+                    [lazy]="true"
+                    [tableStyle]="{'min-width': '60rem'}"
+                    class="table-premium"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="center">
+                                    <span style="width: 40px">{{l("STT")}}</span>
+                                </th>
+                            <th style="width: 17%;text-align: center;">Mã phiếu</th>
+                            <th style="width: 20%;text-align: center;">Bệnh nhân / Liên hệ</th>
+                            <th style="width: 16%;text-align: center;">Ngày điều trị</th>
+                            <th style="width: 12%;text-align: center;" class="text-end">Tổng chi phí</th>
+                            <th style="width: 12%;text-align: center;" class="text-end">Đã trả</th>
+                            <th style="width: 12%;text-align: center;" class="text-end text-indigo">Còn lại (Chưa thu)</th>
+                            <th style="width: 11%;text-align: center;" class="text-center">Trạng thái</th>
+                            <th style="width: 8%;text-align: center;" class="text-center">Thao tác</th>
+                        </tr>
+                    </ng-template>
+                    
+                    <ng-template pTemplate="body" let-record>
+                        <tr class="text-large-size" >
+                             <td class="center"><span class="mo-header"></span>{{(filterInput.skipCount + primengTableHelper.records.indexOf(record)) + 1}}</td>
+                            <td style="text-align: center;">
+                                <span class="badge-code font-monospace">#{{ record.exM_CODE }}</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="patient-profile-cell clickable-patient-link" (click)="$event.stopPropagation(); viewPatientDetail(record.exM_PATIENT_ID)">
+                                    <div class="patient-name">{{ record.patienT_NAME }}</div>
+                                    <div class="patient-phone">
+                                        <i class="fa-solid fa-phone-flip me-1"></i>{{ record.patienT_PHONE }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="text-align: center;">
+                                <span class="text-date fw-bold text-slate">
+                                    <i class="fa-regular fa-clock me-1 text-muted"></i>
+                                    {{ record.exM_DATE | date:'dd/MM/yyyy HH:mm' }}
+                                </span>
+                            </td>
+                            <td style="text-align: center;" class="text-end fw-bold text-muted">
+                                {{ record.exM_FINAL_AMOUNT | number:'1.0-0' }}đ
+                            </td>
+                            <td style="text-align: center;" class="text-end fw-black" 
+                                [class.text-success]="record.totaL_PAID > 0" 
+                                [class.text-muted]="record.totaL_PAID <= 0">
+                                
+                                <span *ngIf="record.totaL_PAID > 0">
+                                    {{ record.totaL_PAID | number:'1.0-0' }}đ
+                                </span>
+                                
+                                <span *ngIf="record.totaL_PAID <= 0" class="text-danger">
+                                    Chưa trả
+                                </span>
+                            </td>
+                            <td style="text-align: center;" class="text-end">
+                                <span *ngIf="remainingAmount(record) > 0" class="text-danger font-weight-bold">
+                                    {{ remainingAmount(record) | number:'1.0-0' }}đ
+                                </span>
+                                
+                                <span *ngIf="remainingAmount(record) <= 0" class="text-success">
+                                    Đã thu đủ
+                                </span>
+                            </td>
+                            <td style="text-align: center;" class="text-center">
+                                <span [class]="getStatusClass(record.exM_STATUS)">
+                                    <span class="status-dot"></span> {{ getStatusLabel(record.exM_STATUS) }}
+                                </span>
+                            </td>
+                            <td style="text-align: center;" class="text-center" (click)="$event.stopPropagation()">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <button class="btn-action-table edit" title="Sửa hồ sơ" (click)="viewDetail(record.exM_ID)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                    <button class="btn-action-table delete" title="Xoá trực tiếp" (click)="deleteDirectly(record)">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+                <div class="primeng-no-data py-5 text-center text-muted border-top" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                    <div class="empty-state-container">
+                        <i class="fa-solid fa-receipt fs-1 mb-3 opacity-25 text-indigo"></i>
+                        <p class="fw-bold text-secondary mb-1">Không tìm thấy phiếu điều trị</p>
+                        <span class="small text-muted">Vui lòng thay đổi từ khóa hoặc bộ lọc thời gian để tìm lại.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer-premium d-flex justify-content-between align-items-center py-3 px-4">
+                <div class="text-pagination-info small text-muted fw-bold">
+                    Hiển thị từ <strong>{{ primengTableHelper.totalRecordsCount == 0 ? 0 : dataTable.first + 1 }}</strong> - 
+                    <strong>{{ (dataTable.first + dataTable.rows) > primengTableHelper.totalRecordsCount ? primengTableHelper.totalRecordsCount : (dataTable.first + dataTable.rows) }}</strong> 
+                    trên tổng số <strong>{{ primengTableHelper.totalRecordsCount }}</strong> hồ sơ.
+                </div>
+                <p-paginator #paginator
+                    (onPageChange)="getExaminations($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    dropdownAppendTo="body"
+                ></p-paginator>
+            </div>
+        </div>
+    </div>
+</div>

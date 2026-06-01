@@ -1,0 +1,333 @@
+<div
+    bsModal
+    #createModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    [config]="{ backdrop: 'static', keyboard: !saving }"
+>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden">
+            <div
+                class="modal-header-custom d-flex justify-content-between align-items-center"
+                [ngClass]="{ 'bg-receipt': transactionForm.fT_TYPE === 1, 'bg-payment': transactionForm.fT_TYPE === 2 }"
+            >
+                <div class="d-flex align-items-center">
+                    <div class="icon-box-header me-3">
+                        <i
+                            [class]="
+                                transactionForm.fT_TYPE === 1
+                                    ? 'fas fa-arrow-alt-circle-down text-white'
+                                    : 'fas fa-arrow-alt-circle-up text-white'
+                            "
+                        ></i>
+                    </div>
+                    <h5 class="modal-title-custom mb-0 text-white">
+                        {{ (transactionForm.fT_TYPE === 1 ? 'LẬP PHIẾU THU TIỀN' : 'LẬP PHIẾU CHI TIỀN') | localize }}
+                    </h5>
+                </div>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white shadow-none"
+                    (click)="close()"
+                    aria-label="Close"
+                ></button>
+            </div>
+
+            <form #form="ngForm" role="form" novalidate class="form-validation" (ngSubmit)="save()" *ngIf="active">
+                <div class="modal-body p-0 bg-light-gray">
+                    <!-- BỘ CHUYỂN ĐỔI LOẠI PHIẾU NHANH (TABS TRÊN CÙNG BODY) -->
+                    <div class="p-4 bg-white border-b-light flex-layout gap-3">
+                        <div
+                            class="switch-luxury-card"
+                            [class.active-r]="transactionForm.fT_TYPE === 1"
+                            (click)="onTypeChange(1)"
+                        >
+                            <div class="dot-status bg-success-pure"></div>
+                            <span class="fw-bold fs-14">{{ 'PHIẾU THU (Dòng tiền vào)' | localize }}</span>
+                        </div>
+                        <div
+                            class="switch-luxury-card"
+                            [class.active-p]="transactionForm.fT_TYPE === 2"
+                            (click)="onTypeChange(2)"
+                        >
+                            <div class="dot-status bg-danger-pure"></div>
+                            <span class="fw-bold fs-14">{{ 'PHIẾU CHI (Dòng tiền ra)' | localize }}</span>
+                        </div>
+                    </div>
+
+                    <!-- BỐ CỤC 2 CỘT TỶ LỆ VÀNG TRONG BODY -->
+                    <div class="row g-0">
+                        <!-- CỘT TRÁI: THÔNG TIN HÀNH CHÍNH GIAO DỊCH -->
+                        <div class="col-lg-7 bg-white p-4 border-e-light">
+                            <div class="section-title-zone mb-4">
+                                <span
+                                    class="line-indicator"
+                                    [ngClass]="
+                                        transactionForm.fT_TYPE === 1 ? 'indicator-receipt' : 'indicator-payment'
+                                    "
+                                ></span>
+                                <h6 class="fw-bold text-dark mb-0">{{ 'Thông tin chứng từ gốc' | localize }}</h6>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label-custom">{{ 'Mã Phiếu' | localize }}</label>
+                                    <input
+                                        type="text"
+                                        name="transactionId"
+                                        [(ngModel)]="transactionForm.fT_ID"
+                                        disabled
+                                        class="form-control-custom disabled-input-custom font-mono"
+                                    />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label-custom">{{ 'Ngày Chứng Từ' | localize }}</label>
+                                    <input
+                                        type="datetime-local"
+                                        name="documentDate"
+                                        [(ngModel)]="transactionForm.documenT_DATE"
+                                        class="form-control-custom"
+                                        required
+                                    />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label-custom">{{ 'Phân loại lý do' | localize }}</label>
+                                    <!-- <select
+                                        name="categoryId"
+                                        [(ngModel)]="transactionForm.categorY_ID"
+                                        class="form-select-custom"
+                                        required
+                                    >
+                                        <option [ngValue]="undefined" hidden disabled selected>-- Chọn lý do --</option>
+                                        <option *ngFor="let cat of categories" [ngValue]="cat.id">
+                                            {{ cat.name }}
+                                        </option>
+                                    </select> -->
+                                    <app-dropdown 
+                                        [dataList]="categories" 
+                                        labelField="name" 
+                                        valueField="id" 
+                                        required
+                                        [(selectedValue)]="selectedCategory"
+                                        >
+                                    </app-dropdown> 
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label-custom">{{ 'Hình thức thanh toán' | localize }}</label>
+                                    <div class="d-flex gap-2">
+                                        <button
+                                            type="button"
+                                            class="btn-method flex-fill"
+                                            [class.active]="transactionForm.methoD_ID === 1"
+                                            (click)="transactionForm.methoD_ID = 1"
+                                        >
+                                            {{ 'Tiền mặt' | localize }}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn-method flex-fill"
+                                            [class.active]="transactionForm.methoD_ID === 2"
+                                            (click)="transactionForm.methoD_ID = 2"
+                                        >
+                                            {{ 'Chuyển khoản' | localize }}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn-method flex-fill"
+                                            [class.active]="transactionForm.methoD_ID === 3"
+                                            (click)="transactionForm.methoD_ID = 3"
+                                        >
+                                            {{ 'Khác' | localize }}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label-custom">
+                                        {{ 'Khách hàng / Bệnh nhân nộp tiền' | localize }}
+                                    </label>
+                                    <app-dropdown 
+                                        [dataList]="customers" 
+                                        labelField="cuS_CODE|cuS_NAME" 
+                                        
+                                        disable="true"
+                                        valueField="cuS_ID" 
+                                        customClass="form-select-custom"
+                                        required
+                                        [(selectedValue)]="selectedPatient"
+                                            >
+                                    </app-dropdown> 
+                                    <!-- <select
+                                        name="patientId"
+                                        [(ngModel)]="transactionForm.patienT_ID"
+                                        class="form-select-custom"
+                                        disabled="true"
+                                        required
+                                    >
+                                        <option [ngValue]="undefined" hidden disabled selected>
+                                            -- Chọn bệnh nhân hệ thống --
+                                        </option>
+                                        <option *ngFor="let pat of customers" [ngValue]="pat.cuS_ID">
+                                            {{ pat.cuS_CODE }} - {{ pat.cuS_NAME }}
+                                        </option>
+                                    </select> -->
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label-custom">{{ 'Ghi chú nội dung phiếu' | localize }}</label>
+                                    <textarea
+                                        name="notes"
+                                        [(ngModel)]="transactionForm.notes"
+                                        rows="3"
+                                        class="form-control-custom textarea-custom"
+                                        placeholder="Nhập ghi chú chi tiết..."
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CỘT PHẢI: QUẢN LÝ TIẾN TRÌNH CÔNG NỢ PHIẾU KHÁM -->
+                        <div class="col-lg-5 p-4 flex-column justify-content-between">
+                            <div>
+                                <div class="section-title-zone mb-4">
+                                    <span class="line-indicator indicator-amber"></span>
+                                    <h6 class="fw-bold text-dark mb-0">{{ 'Theo dõi công nợ điều trị' | localize }}</h6>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label-custom">
+                                        {{ 'Liên kết Phiếu khám bệnh phát sinh nợ' | localize }}
+                                    </label>
+                                    <app-dropdown 
+                                        [dataList]="allExaminations" 
+                                        labelField="exM_CODE|patienT_NAME" 
+                                        valueField="exM_ID" 
+                                        disable="true"
+                                        customClass="form-select-custom debt-select-highlight"
+                                        [placeholder]="'-- Không liên kết phiếu khám (Chi ngoài/Thu ngoài) --'"
+                                        (selectedValueChange)="onExaminationChange($event)"
+                                        [(selectedValue)]="selectedExm"
+                                            >
+                                    </app-dropdown> 
+                                    <!-- <select
+                                        name="examinationId"
+                                        disabled="true"
+                                        [(ngModel)]="transactionForm.fT_EXM_ID"
+                                        class="form-select-custom debt-select-highlight"
+                                        (change)="onExaminationChange($event)"
+                                    >
+                                        <option [ngValue]="null">
+                                            -- Không liên kết phiếu khám (Chi ngoài/Thu ngoài) --
+                                        </option>
+                                        <option *ngFor="let exam of allExaminations" [ngValue]="exam.exM_ID">
+                                            {{ exam.exM_CODE }} ({{ exam.patienT_NAME }})
+                                        </option>
+                                    </select> -->
+                                </div>
+
+                                <!-- CARD THEO DÕI LŨY KẾ TIỀN (Chỉ sáng khi có liên kết phiếu khám) -->
+                                <div class="debt-luxury-card mb-4">
+                                    <div class="debt-item-row border-dashed-bottom">
+                                        <span class="text-muted fs-13">1. Tổng chi phí ca điều trị:</span>
+                                        <span class="fw-bold text-dark fs-14">
+                                            {{ currentDebtInfo.totalCost | number }} đ
+                                        </span>
+                                    </div>
+                                    <div class="debt-item-row border-dashed-bottom">
+                                        <span class="text-muted fs-13">2. Lũy kế đã thu đợt trước:</span>
+                                        <span class="badge-status-collected">
+                                            + {{ currentDebtInfo.totalPaid | number }} đ
+                                        </span>
+                                    </div>
+                                    <div class="debt-item-row pt-2">
+                                        <span class="fw-bold text-dark fs-13">3. Dư nợ phải trả hiện tại:</span>
+                                        <span class="fw-black text-amber fs-18 font-mono">
+                                            {{ currentDebtInfo.remainingDebt | number }} đ
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- KHU VỰC NHẬP LIỆU TRỌNG TÂM: SỐ TIỀN GIAO DỊCH -->
+                                <div class="amount-entry-card">
+                                    <label class="form-label-custom fw-bold text-dark mb-2">
+                                        {{ 'Số tiền giao dịch đợt này' | localize }}
+                                    </label>
+                                    <div class="position-relative d-flex align-items-center">
+                                        <input
+                                            type="text"
+                                            name="totalAmount"
+                                            [value]="formatNumber(transactionForm.totaL_AMOUNT)"
+                                            (input)="onAmountInput($event)"
+                                            class="amount-giant-input"
+                                            placeholder="0"
+                                            required
+                                        />
+                                        <span class="currency-label-absolute fw-bold text-muted">đ</span>
+                                    </div>
+                                    <div class="text-muted fs-11 mt-2 d-flex align-items-center">
+                                        <span class="pulse-dot-indicator me-1.5"></span>
+                                        Dư nợ dự kiến sau lượt này:
+                                        <strong class="text-dark ms-1 font-mono">
+                                            {{
+                                                currentDebtInfo.remainingDebt - transactionForm.totaL_AMOUNT | number
+                                            }}
+                                            đ
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 bg-white p-4">
+                    <div>
+                        <!-- Nút xóa chứng từ khi ở mode chỉnh sửa -->
+                        <button
+                            *ngIf="transactionForm.fT_ID"
+                            type="button"
+                            class="btn btn-outline-danger me-auto d-flex align-items-center rounded-pill"
+                            (click)="onDelete()"
+                        >
+                            <i class="fas fa-trash-alt me-2"></i>
+                            {{ 'Xóa chứng từ' | localize }}
+                        </button>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-light rounded-pill px-4 fw-bold text-muted shadow-none m-0"
+                        (click)="close()"
+                    >
+                        {{ 'HỦY BỎ' | localize }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary rounded-pill px-4 fw-bold d-flex align-items-center m-0"
+                        (click)="printOnly()"
+                    >
+                        <i class="fas fa-print me-2 text-secondary"></i>
+                        {{ 'IN PHIẾU' | localize }}
+                    </button>
+
+                    <button
+                        type="submit"
+                        [disabled]="!form.form.valid || saving"
+                        class="btn btn-luxury-action rounded-pill px-5 fw-bold shadow text-white m-0"
+                        [ngClass]="
+                            transactionForm.fT_TYPE === 1 ? 'btn-receipt-active' : 'btn-payment-active'
+                        "
+                    >
+                        <i class="fas fa-check-circle me-2 text-white"></i>
+                        {{ 'XÁC NHẬN LƯU' | localize }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

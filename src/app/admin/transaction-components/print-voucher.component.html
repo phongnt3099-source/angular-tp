@@ -1,0 +1,214 @@
+<div bsModal #createModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" [config]="{ backdrop: 'static', keyboard: !saving }">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            
+            <div class="modal-header-custom d-flex justify-content-between align-items-center" 
+                 [ngClass]="{'bg-receipt': transactionForm.fT_TRANSACTION_TYPE === 1, 'bg-payment': transactionForm.fT_TRANSACTION_TYPE === 2}">
+                <div class="d-flex align-items-center">
+                    <div class="icon-box-header me-3">
+                        <i [class]="transactionForm.fT_TRANSACTION_TYPE === 1 ? 'fas fa-arrow-alt-circle-down text-white' : 'fas fa-arrow-alt-circle-up text-white'"></i>
+                    </div>
+                    <h5 class="modal-title-custom mb-0 text-white">
+                        {{ (transactionForm.fT_TRANSACTION_TYPE === 1 ? 'LẬP PHIẾU THU TIỀN' : 'LẬP PHIẾU CHI TIỀN') | localize }}
+                    </h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white shadow-none" (click)="close()" aria-label="Close"></button>
+            </div>
+
+            <form #form="ngForm" role="form" novalidate class="form-validation" (ngSubmit)="save()" *ngIf="active">
+                <div class="modal-body p-0 bg-light-gray">
+                    
+                    <div class="p-4 bg-white border-b-light d-flex gap-3">
+                        <div class="switch-luxury-card" [class.active-r]="transactionForm.fT_TRANSACTION_TYPE === 1" (click)="changeTransactionType(1)">
+                            <div class="dot-status bg-success-pure"></div>
+                            <span class="fw-bold fs-14">{{ 'PHIẾU THU (Dòng tiền vào)' | localize }}</span>
+                        </div>
+                        <div class="switch-luxury-card" [class.active-p]="transactionForm.fT_TRANSACTION_TYPE === 2" (click)="changeTransactionType(2)">
+                            <div class="dot-status bg-danger-pure"></div>
+                            <span class="fw-bold fs-14">{{ 'PHIẾU CHI (Dòng tiền ra)' | localize }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-0">
+                        
+                        <div class="col-lg-7 bg-white p-4 border-e-light">
+                            <div class="section-title-zone mb-4">
+                                <span class="line-indicator" [ngClass]="transactionForm.fT_TRANSACTION_TYPE === 1 ? 'indicator-receipt' : 'indicator-payment'"></span>
+                                <h6 class="fw-bold text-dark mb-0">{{ 'Thông tin chứng từ gốc' | localize }}</h6>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label-custom">{{ 'Mã Phiếu' | localize }}</label>
+                                    <input type="text" name="transactionId" [(ngModel)]="transactionForm.fT_TRANSACTION_ID" disabled class="form-control-custom disabled-input-custom font-mono" />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label-custom">{{ 'Ngày Chứng Từ' | localize }}</label>
+                                    <input type="datetime-local" name="documentDate" [(ngModel)]="transactionForm.fT_DOCUMENT_DATE" class="form-control-custom" required />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label-custom">{{ 'Phân loại lý do' | localize }}</label>
+                                    <select name="categoryId" [(ngModel)]="transactionForm.fT_CATEGORY_ID" class="form-select-custom" required>
+                                        <option [ngValue]="undefined" hidden disabled selected>-- Chọn lý do --</option>
+                                        <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label-custom">{{ 'Hình thức thanh toán' | localize }}</label>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.fT_METHOD_ID === 1" (click)="transactionForm.fT_METHOD_ID = 1">{{ 'Tiền mặt' | localize }}</button>
+                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.fT_METHOD_ID === 2" (click)="transactionForm.fT_METHOD_ID = 2">{{ 'Chuyển khoản' | localize }}</button>
+                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.fT_METHOD_ID === 3" (click)="transactionForm.fT_METHOD_ID = 3">{{ 'Khác' | localize }}</button>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label-custom">{{ 'Khách hàng / Bệnh nhân nộp tiền' | localize }}</label>
+                                    <select name="patientId" [(ngModel)]="transactionForm.fT_PATIENT_ID" class="form-select-custom" (change)="onPatientChange()" required>
+                                        <option [ngValue]="undefined" hidden disabled selected>-- Chọn bệnh nhân hệ thống --</option>
+                                        <option *ngFor="let pat of patients" [ngValue]="pat.id">{{ pat.code }} - {{ pat.fullName }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label-custom">{{ 'Ghi chú nội dung phiếu' | localize }}</label>
+                                    <textarea name="notes" [(ngModel)]="transactionForm.fT_NOTES" rows="3" class="form-control-custom textarea-custom" placeholder="Nhập ghi chú chi tiết..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="section-title-zone mb-4">
+                                    <span class="line-indicator indicator-amber"></span>
+                                    <h6 class="fw-bold text-dark mb-0">{{ 'Theo dõi công nợ điều trị' | localize }}</h6>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label-custom">{{ 'Liên kết Phiếu khám bệnh phát sinh nợ' | localize }}</label>
+                                    <select name="examinationId" [(ngModel)]="transactionForm.fT_EXAMINATION_ID" class="form-select-custom debt-select-highlight" (change)="onExaminationChange()">
+                                        <option [ngValue]="null">-- Không liên kết phiếu khám (Chi ngoài/Thu ngoài) --</option>
+                                        <option *ngFor="let exam of examinations" [ngValue]="exam.id">{{ exam.code }} ({{ exam.date | date:'dd/MM/yyyy' }})</option>
+                                    </select>
+                                </div>
+
+                                <div class="debt-luxury-card mb-4">
+                                    <div class="debt-item-row border-dashed-bottom">
+                                        <span class="text-muted fs-13">1. Tổng chi phí ca điều trị:</span>
+                                        <span class="fw-bold text-dark fs-14">{{ currentDebtInfo.totalCost | number }} đ</span>
+                                    </div>
+                                    <div class="debt-item-row border-dashed-bottom">
+                                        <span class="text-muted fs-13">2. Lũy kế đã thu đợt trước:</span>
+                                        <span class="badge-status-collected">+ {{ currentDebtInfo.totalPaid | number }} đ</span>
+                                    </div>
+                                    <div class="debt-item-row pt-2">
+                                        <span class="fw-bold text-dark fs-13">3. Dư nợ phải trả hiện tại:</span>
+                                        <span class="fw-black text-amber fs-18 font-mono">{{ currentDebtInfo.remainingDebt | number }} đ</span>
+                                    </div>
+                                </div>
+
+                                <div class="amount-entry-card">
+                                    <label class="form-label-custom fw-bold text-dark mb-2">{{ 'Số tiền giao dịch đợt này' | localize }}</label>
+                                    <div class="position-relative d-flex align-items-center">
+                                        <input type="text" 
+                                               name="totalAmount" 
+                                               [value]="formatNumber(transactionForm.fT_TOTAL_AMOUNT)"
+                                               (input)="onAmountInput($event)" 
+                                               class="amount-giant-input" 
+                                               placeholder="0" 
+                                               required />
+                                        <span class="currency-label-absolute fw-bold text-muted">đ</span>
+                                    </div>
+                                    <div class="text-muted fs-11 mt-2 d-flex align-items-center">
+                                        <span class="pulse-dot-indicator me-1.5"></span>
+                                        Dư nợ dự kiến sau lượt này: <strong class="text-dark ms-1 font-mono">{{ (currentDebtInfo.remainingDebt - transactionForm.fT_TOTAL_AMOUNT) | number }} đ</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 bg-white p-4">
+                    <div>
+                        <button *ngIf="transactionForm.fT_TRANSACTION_ID && !saving" type="button" class="btn btn-outline-danger me-auto d-flex align-items-center rounded-pill px-3" (click)="onDelete()">
+                            <i class="fas fa-trash-alt me-2"></i> {{ 'Xóa chứng từ' | localize }}
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold text-muted shadow-none" (click)="close()">{{ 'HỦY BỎ' | localize }}</button>
+                    <button type="submit" [disabled]="!form.form.valid || saving" 
+                            class="btn btn-luxury-action rounded-pill px-5 fw-bold shadow text-white"
+                            [ngClass]="transactionForm.fT_TRANSACTION_TYPE === 1 ? 'btn-receipt-active' : 'btn-payment-active'">
+                        <i class="fas fa-print me-2 text-white"></i> {{ 'XÁC NHẬN & IN' | localize }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="financial-print-section" class="d-none-screen">
+  <div class="print-container">
+    <div class="print-cut-line"><span>Kéo cắt biên lai tại đây</span></div>
+
+    <div class="print-header">
+      <div class="brand-zone">
+        <h1 class="clinic-name">THIEN PHUC DENTAL</h1>
+        <p class="clinic-info">Số 123 Đường Ba Tháng Hai, Quận 10, TP. Hồ Chí Minh</p>
+        <p class="clinic-info">Hotline: 0912.xxx.xxx — Giấy phép: 084xx/SYT-GPHĐ</p>
+      </div>
+      <div class="barcode-zone">
+        <div class="voucher-id">{{ transactionForm.fT_TRANSACTION_ID }}</div>
+        <p class="print-date">Ngày in: {{ new Date() | date:'dd/MM/yyyy HH:mm' }}</p>
+      </div>
+    </div>
+
+    <hr class="print-divider" />
+
+    <div class="print-title-zone">
+      <h2 class="main-title">
+        {{ transactionForm.fT_TRANSACTION_TYPE === 1 ? 'PHIẾU THU TIỀN' : 'PHIẾU CHI TIỀN' }}
+      </h2>
+      <p class="document-date">Ngày chứng từ: {{ transactionForm.fT_DOCUMENT_DATE | date:'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+
+    <div class="print-body">
+      <div class="info-row">
+        <span class="info-label">{{ transactionForm.fT_TRANSACTION_TYPE === 1 ? 'Khách hàng nộp' : 'Người nhận tiền' }}:</span>
+        <span class="info-value fw-bold text-uppercase">{{ transactionForm.fT_PATIENT_ID }}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Lý do cụ thể:</span>
+        <span class="info-value">{{ transactionForm.fT_CATEGORY_ID }}</span>
+      </div>
+
+      <div class="info-row" *ngIf="transactionForm.fT_EXAMINATION_ID">
+        <span class="info-label">Mã phiếu khám nợ:</span>
+        <span class="info-value font-mono">{{ transactionForm.fT_EXAMINATION_ID }}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Hình thức:</span>
+        <span class="info-value">{{ transactionForm.fT_METHOD_ID === 1 ? 'Tiền mặt' : (transactionForm.fT_METHOD_ID === 2 ? 'Chuyển khoản' : 'Khác') }}</span>
+      </div>
+
+      <div class="money-highlight-box">
+        <div class="money-row">
+          <span>SỐ TIỀN GIAO DỊCH:</span>
+          <span class="money-number">{{ transactionForm.fT_TOTAL_AMOUNT | number }} đ</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="print-footer-signatures">
+      <div class="sig-col"><span class="sig-title">Người lập phiếu</span><span class="sig-sub">(Ký, họ tên)</span><div class="sig-space"></div></div>
+      <div class="sig-col"><span class="sig-title">Khách hàng</span><span class="sig-sub">(Ký, họ tên)</span><div class="sig-space"></div></div>
+      <div class="sig-col"><span class="sig-title">Thủ quỹ</span><span class="sig-sub">(Ký, đóng dấu)</span><div class="sig-space"></div></div>
+    </div>
+  </div>
+</div>

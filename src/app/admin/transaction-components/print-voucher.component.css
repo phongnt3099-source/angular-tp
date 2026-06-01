@@ -1,0 +1,160 @@
+/* --- Hệ thống CSS nền và định hình bổ trợ --- */
+.bg-light-gray { background-color: #F8FAFC; }
+.border-b-light { border-bottom: 1px solid #EEF2F6; }
+.border-e-light { border-right: 1px solid #EEF2F6; }
+.font-mono { font-family: 'Courier New', Courier, monospace; }
+.fw-black { font-weight: 900; }
+.fs-11 { font-size: 11px; }
+.fs-13 { font-size: 13px; }
+.fs-14 { font-size: 14px; }
+.fs-18 { font-size: 18px; }
+.text-amber { color: #D97706; }
+
+/* Trạng thái màu sắc đặc trưng Luxury Header */
+.bg-receipt { background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
+.bg-payment { background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%); }
+
+/* Thanh chỉ hướng khu vực */
+.section-title-zone { display: flex; align-items: center; }
+.line-indicator { width: 3.5px; height: 16px; border-radius: 2px; margin-right: 10px; display: inline-block; }
+.indicator-receipt { background-color: #10B981; }
+.indicator-payment { background-color: #F43F5E; }
+.indicator-amber { background-color: #D97706; }
+
+/* Thẻ chuyển đổi Tab Thu / Chi Apple style */
+.switch-luxury-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    padding: 12px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dot-status { width: 7px; height: 7px; border-radius: 50%; margin-right: 10px; }
+.bg-success-pure { background-color: #10B981; }
+.bg-danger-pure { background-color: #F43F5E; }
+
+.switch-luxury-card.active-r { border: 2px solid #10B981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08); }
+.switch-luxury-card.active-p { border: 2px solid #F43F5E; box-shadow: 0 4px 12px rgba(244, 63, 94, 0.08); }
+
+/* Thành phần của biểu mẫu (Inputs) */
+.form-label-custom { font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px; }
+.form-control-custom, .form-select-custom {
+    width: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 13.5px;
+    color: #1E293B;
+    outline: none;
+    transition: all 0.2s ease;
+}
+.form-control-custom:focus, .form-select-custom:focus {
+    border-color: #64748B;
+    box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.05);
+}
+.disabled-input-custom { background-color: #F1F5F9; color: #94A3B8; cursor: not-allowed; }
+.textarea-custom { resize: none; }
+
+/* Hộp chọn thanh toán nhanh */
+.btn-method {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 11px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    transition: all 0.2s ease;
+}
+.btn-method.active { background-color: #F0FDF4; border-color: #10B981; color: #10B981; }
+
+/* Bảng tính lũy kế nợ nần */
+.debt-select-highlight { border-color: #D97706; color: #D97706; font-weight: 700; }
+.debt-luxury-card { background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 20px; }
+.debt-item-row { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; }
+.border-dashed-bottom { border-bottom: 1px dashed #E2E8F0; margin-bottom: 12px; }
+.badge-status-collected { background-color: #F0FDF4; color: #10B981; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 30px; }
+
+/* Khu vực ô tiền khổng lồ trung tâm */
+.amount-entry-card { background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 20px; }
+.amount-giant-input {
+    width: 100%;
+    border: 2px solid #10B981;
+    border-radius: 12px;
+    padding: 14px 40px 14px 16px;
+    font-size: 26px;
+    font-weight: 900;
+    font-family: monospace;
+    outline: none;
+    letter-spacing: 0.5px;
+    color: #1E293B;
+}
+.currency-label-absolute { position: absolute; right: 18px; font-size: 18px; }
+.pulse-dot-indicator { width: 5px; height: 5px; background-color: #94A3B8; border-radius: 50%; }
+
+/* Tạo phong cách cho nút Action chốt hạ */
+.btn-luxury-action { border: none; transition: all 0.3s ease; }
+.btn-luxury-action:hover { transform: translateY(-1px); filter: brightness(0.95); }
+.btn-luxury-action:active { transform: scale(0.98); }
+.btn-receipt-active { background: linear-gradient(135deg, #10B981 0%, #059669 100%); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+.btn-payment-active { background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2); }
+
+@media (max-width: 991px) {
+    .border-e-light { border-right: none; border-bottom: 1px solid #EEF2F6; }
+}
+
+/* =================================================== */
+/* HỆ THỐNG ĐIỀU PHỐI ĐỘC LẬP CHO BIÊN LAI IN A5    */
+/* =================================================== */
+.d-none-screen {
+  display: none; /* Mặc định giấu đi trên trình duyệt màn hình web */
+}
+
+.print-container {
+  padding: 20px;
+  background: #ffffff;
+  color: #000000;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 14px;
+}
+.print-cut-line { border-top: 1px dashed #aaaaaa; text-align: center; margin-bottom: 20px; position: relative; }
+.print-cut-line span { font-size: 11px; color: #777777; background: #ffffff; padding: 0 8px; position: relative; top: -9px; }
+.print-header { display: flex; justify-content: space-between; }
+.clinic-name { font-size: 16px; font-weight: 800; margin: 0; }
+.clinic-info { font-size: 11px; margin: 0; color: #333333; }
+.voucher-id { font-family: monospace; font-weight: 700; font-size: 14px; text-align: right; }
+.print-date { font-size: 10px; color: #555555; text-align: right; margin: 0; }
+.print-divider { border: none; border-top: 1px solid #000000; margin: 12px 0; }
+.print-title-zone { text-align: center; margin-bottom: 20px; }
+.main-title { font-size: 20px; font-weight: 800; margin: 0; }
+.document-date { font-size: 11px; font-style: italic; margin: 2px 0 0 0; }
+.info-row { display: flex; margin-bottom: 6px; }
+.info-label { width: 130px; font-weight: 600; }
+.info-value { flex: 1; }
+.money-highlight-box { border: 1px solid #000000; padding: 10px 15px; margin-top: 15px; }
+.money-row { display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; }
+.money-number { font-size: 18px; font-weight: 900; }
+.print-footer-signatures { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: 35px; }
+.sig-title { font-weight: 700; font-size: 12px; }
+.sig-sub { font-size: 10px; font-style: italic; }
+.sig-space { height: 60px; }
+
+/* QUY TẮC ÉP KHI ẤN IN GIẤY THẬT */
+@media print {
+  /* Giấu sạch sành sanh giao diện web và Modal đi */
+  .modal-dialog, .modal-backdrop, app-root > *:not(#financial-print-section) {
+    display: none !important;
+  }
+  /* Bật bung khu in biên lai lên toàn màn hình máy in */
+  .d-none-screen {
+    display: block !important;
+  }
+  @page {
+    size: A5 landscape; /* Tự thiết lập trang in ngang khổ A5 */
+    margin: 0.8cm;
+  }
+}

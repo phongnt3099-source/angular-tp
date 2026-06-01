@@ -1,18 +1,14 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ExaminationEditComponent } from './examination-edit.component';
+import { ExaminationListComponent } from './examination-list.component';
 
 const routes: Routes = [
-    // {
-    //     path: '',
-    //     component: CustomerComponentsComponent,
-    //     pathMatch: 'full',
-    // },
-    // {
-    //     path: ':customerId',
-    //     component: ExaminationDetailComponent,
-    //     pathMatch: 'full',
-    // },
+    {
+        path: '',
+        component: ExaminationListComponent,
+        pathMatch: 'full',
+    },
     {
         path: ':id',
         component: ExaminationEditComponent,
