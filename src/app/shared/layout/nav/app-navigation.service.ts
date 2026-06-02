@@ -140,6 +140,21 @@ export class AppNavigationService {
                 'fas fa-notes-medical',
                 '/app/admin/examination'
             ),
+            new AppMenuItem(
+                'Thiết lập',
+                '',
+                'fa-solid fa-list-ul',
+                '',
+                [],
+                [
+                    new AppMenuItem(
+                        'Nhóm thủ thuật',
+                        '',
+                        'fa-solid fa-list',
+                        '/app/admin/procedure-group'
+                    ),
+                ]
+            ),
         ]);
     }
 

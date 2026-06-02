@@ -14,6 +14,7 @@ import { HostListener } from '@angular/core';
 import { it } from 'node:test';
 import { CreateTransactionModalComponent } from '../transaction-components/create-transaction-modal.component';
 import { NotifyService } from '@node_modules/abp-ng2-module';
+import { DateTime } from 'luxon';
 
 
 
@@ -174,7 +175,10 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
               row.tD_FINAL_PRICE = finalPrice; row.tD_FINAL_PRICE = finalPrice;
               row.tD_STATUS = +status; row.tD_STATUS = +status;
               row.tD_ASSIGNED_DOCTOR_ID = dt.tD_ASSIGNED_DOCTOR_ID || dt.TD_ASSIGNED_DOCTOR_ID;
+              row.tD_WARRANTY_EXPIRED_DATE = dt.tD_WARRANTY_EXPIRED_DATE || '';
+              row.tD_WARRANTY_START_DATE = dt.tD_WARRANTY_START_DATE || '';
 
+              row.tD_HAS_WARRANTY = dt.tD_HAS_WARRANTY || false;
               // Đổ trực tiếp cấu hình giảm giá từ Store gửi lên mà không cần tính ngược
               row.srV_NAME = cached ? cached.srV_NAME : (dt.srV_NAME || 'Dịch vụ chỉ định');
               row.discountType = dt.discountType || 'VND';
@@ -261,7 +265,7 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
     this.temporarySelectedServices.forEach(srv => {
       const isAlreadyExist = this.treatmentDetails.some(x => x.tD_SRV_ID === srv.srV_ID);
       if (!isAlreadyExist) {
-        this.addNewServiceRow(srv.srV_ID, srv.srV_NAME, srv.srV_PRICE);
+        this.addNewServiceRow(srv.srV_ID, srv.srV_NAME, srv.srV_PRICE, srv.haS_WARRANTY);
       }
     });
     this.closeServiceModal();
@@ -426,7 +430,7 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
     if (this.examination.exM_FINAL_AMOUNT < 0) this.examination.exM_FINAL_AMOUNT = 0;
 
     // G. Đồng bộ công nợ mặc định
-    this.debtAmount = this.examination.exM_FINAL_AMOUNT;
+    this.debtAmount = this.examination.exM_FINAL_AMOUNT - (this.examination.totaL_PAID || 0);
   }
   // Khi sửa ô "Giảm giá thêm" ở phần tổng hóa đơn dưới đáy màn hình
   onGlobalDiscountValueChange(value: string): void {
@@ -439,7 +443,7 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
     this.calculateInvoice();
   }
 
-  addNewServiceRow(srvId: string, srvName: string, price: number): void {
+  addNewServiceRow(srvId: string, srvName: string, price: number, hasWarranty: boolean): void {
     const newDetail: ExtendedTreatmentDetail = {
       tD_ID: '',
       tD_EXM_ID: '',
@@ -458,7 +462,10 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
 
       discountType: 'VND',
       discountValue: 0,
-      showDiscountPanel: false
+      showDiscountPanel: false,
+      tD_WARRANTY_EXPIRED_DATE: '',
+      tD_WARRANTY_START_DATE: '',
+      tD_HAS_WARRANTY: hasWarranty
     } as any as ExtendedTreatmentDetail;
 
     this.treatmentDetails.push(newDetail);
@@ -494,7 +501,7 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
   }
   selectService(srv: any): void {
     // Gọi hàm nạp thêm dòng mới vào bảng chỉ định điều trị ngoài màn hình chính
-    this.addNewServiceRow(srv.srV_ID, srv.srV_NAME, srv.srV_PRICE);
+    this.addNewServiceRow(srv.srV_ID, srv.srV_NAME, srv.srV_PRICE, srv.haS_WARRANTY);
 
     // Tiến hành reset trạng thái ô tìm kiếm và đóng hộp thoại dropdown
     this.searchKeyword = '';
@@ -543,6 +550,8 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
       detail.tD_SRV_ID = item.tD_SRV_ID;
       detail.tD_TOOTH_NUMBER = item.tD_TOOTH_NUMBER;
       detail.tD_ASSIGNED_DOCTOR_ID = item.tD_ASSIGNED_DOCTOR_ID;
+      detail.tD_WARRANTY_EXPIRED_DATE = item.tD_WARRANTY_EXPIRED_DATE;
+      detail.tD_WARRANTY_START_DATE = item.tD_WARRANTY_START_DATE;
 
       return detail; // Trả về instance có đầy đủ hàm toJSON()
     });
@@ -556,8 +565,7 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
     this.examination.makeR_ID = this.appSession.user.userName;
     this.examination.exM_DOCTOR_ID = this.selectedDoctor;
     this.examination.exM_TOTAL_RAW = this.totalRawBeforeDiscount; // Tổng chưa giảm
-    this.examination.exM_SUB_TOTAL = this.subTotal;              // Tổng tạm tính sau giảm dòng
-    console.log(this.examination);
+    this.examination.exM_SUB_TOTAL = this.subTotal;
 
     // Lưu ý: exM_TOTAL_DISCOUNT và exM_FINAL_AMOUNT đã được tự động đồng bộ trong hàm calculateInvoice()
 
@@ -703,6 +711,102 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
       item.showDiscountPanel = false;
     }
     else item.showDiscountPanel = true;
+    if (item.tD_STATUS === 2) {
+      // 1. KIỂM TRA: Nếu đã có dữ liệu ngày hết hạn từ trước thì GIỮ NGUYÊN, không tính toán lại
+      if (!item.tD_WARRANTY_EXPIRED_DATE) {
+
+        // 2. Cập nhật ngày bắt đầu bảo hành bằng ngày hiện tại
+        item.tD_WARRANTY_START_DATE = DateTime.local().toISODate();
+
+        // 3. SỬA TẠI ĐÂY: Tìm dịch vụ tương ứng trong danh mục để lấy số tháng bảo hành gốc
+        // Thay listServices bằng tên mảng danh mục dịch vụ phòng khám của bạn (ví dụ: filteredModalServices hoặc listServices)
+        const srvOrigin = this.cachedServices?.find(x => x.srV_ID === item.tD_SRV_ID);
+
+        // Lấy số tháng bảo hành (warrantY_PERIOD hoặc srV_WARRANTY_MONTH tùy thuộc vào DTO danh mục)
+        const warrantyMonths = Number(srvOrigin?.warrantY_PERIOD || 0);
+
+        if (warrantyMonths > 0) {
+          item.tD_WARRANTY_EXPIRED_DATE = DateTime.local().plus({ months: warrantyMonths }).toISODate();
+        } else {
+          item.tD_WARRANTY_EXPIRED_DATE = DateTime.local().toISODate();
+        }
+      }
+    } else {
+      // Nếu chuyển trạng thái ngược lại từ Hoàn tất về trạng thái khác thì xóa sạch cả 2 mốc bảo hành
+      item.tD_WARRANTY_START_DATE = null;
+      item.tD_WARRANTY_EXPIRED_DATE = null;
+    }
+  }
+  convertMonthsToYears(input: any | number | undefined | null): string {
+    let months = 0;
+
+    if (input && typeof input === 'object') {
+      if (+input.tD_STATUS === 2) {
+        if (!input.tD_WARRANTY_EXPIRED_DATE) {
+          return 'Có bảo hành';
+        }
+
+        // SỬA TẠI ĐÂY: Sử dụng hàm parse an toàn để không bị lỗi "Invalid DateTime"
+        const startDate = input.tD_WARRANTY_START_DATE
+          ? this.parseToLuxon(input.tD_WARRANTY_START_DATE).startOf('day')
+          : DateTime.local().startOf('day');
+
+        const expiredDate = this.parseToLuxon(input.tD_WARRANTY_EXPIRED_DATE).startOf('day');
+
+        // Nếu parse lỗi vì lý do gì đó, kiểm tra tính hợp lệ trước khi tính toán
+        if (!startDate.isValid || !expiredDate.isValid) {
+          return 'Có bảo hành';
+        }
+
+        const diffInMonths = expiredDate.diff(startDate, 'months').months;
+        months = Math.max(0, Math.round(diffInMonths));
+      }
+      else {
+        const srvOrigin = this.cachedServices?.find(x => x.srV_ID === input.tD_SRV_ID);
+        months = Number(srvOrigin?.warrantY_PERIOD  || 0);
+        if (months <= 0) return 'Không bảo hành';
+      }
+    }
+    else {
+      months = Number(input || 0);
+      if (months <= 0) return 'Không bảo hành';
+    }
+
+    // --- XỬ LÝ CHUỖI HIỂN THỊ LUXURY ---
+    if (months <= 0) return 'Có bảo hành';
+
+    const years = Math.floor(months / 12);
+    const remainingMonths = months % 12;
+
+    if (years > 0 && remainingMonths > 0) {
+      return `${years} năm ${remainingMonths} th`;
+    } else if (years > 0) {
+      return `${years} năm`;
+    } else {
+      return `${months} tháng`;
+    }
+  }
+  onWarrantyDateChange(newDateStr: string, item: any): void {
+    if (!newDateStr) return;
+
+    // Cập nhật lại ngày hết hạn mới cho dòng
+    item.tD_WARRANTY_EXPIRED_DATE = newDateStr;
+
+    // Tính toán số tháng chênh lệch từ ngày hiện tại đến ngày hết hạn mới bằng Luxon
+    const today = DateTime.local().startOf('day');
+    const newExpiredDate = DateTime.fromISO(newDateStr).startOf('day');
+
+    if (newExpiredDate < today) {
+      this.notify.warn('Ngày hết hạn bảo hành không được nhỏ hơn ngày hiện tại!');
+      // Reset về mặc định dựa trên số tháng cũ nếu cần
+      return;
+    }
+
+    // Tính toán số tháng chênh lệch chính xác
+    const diffInMonths = newExpiredDate.diff(today, 'months').months;
+
+    // Làm tròn số tháng (ví dụ: 11.9 tháng hoặc 12.1 tháng về đúng chu kỳ nguyên số)
+    item.warrantY_PERIOD = Math.max(0, Math.round(diffInMonths));
   }
   toggleDiscountPanel(item: ExtendedTreatmentDetail, event: Event): void {
     event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài làm đóng panel ngay lập tức
@@ -787,7 +891,7 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
 
           this._transactionService.fIN_TRANSACTION_Del(log.fT_ID, this.appSession.user.userName).subscribe({
             next: (res) => {
-              
+
               if (res && res.result === '0') {
                 this._notifyService.success('Xóa chứng từ và cập nhật công nợ thành công!');
 
@@ -815,6 +919,7 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
     // Chuyển số về dạng chuỗi và dùng Regex để chèn dấu phẩy mỗi 3 chữ số từ phải qua
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
+
 
   private parseFormattedNumber(value: string | number): number {
     if (value === null || value === undefined) return 0;
@@ -844,5 +949,34 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
     // Tính toán lại tài chính dựa trên số lượng mới cập nhật
     this.onQuantityChange(this.selectedRowForTooth);
   }
+  private parseToLuxon(dateStr: string | null | undefined): DateTime {
+    if (!dateStr) return DateTime.local();
+
+    // Loại bỏ khoảng trắng thừa ở 2 đầu chuỗi nếu có
+    const cleanStr = dateStr.trim();
+
+    // TRƯỜNG HỢP: Chuỗi có dạng "06/01/2026 00:00:00"
+    if (cleanStr.includes('/')) {
+        // Nếu hệ thống của bạn quy định: Ngày trước Tháng sau (dd/MM/yyyy)
+        let parsed = DateTime.fromFormat(cleanStr, 'dd/MM/yyyy HH:mm:ss');
+        if (parsed.isValid) return parsed;
+
+        // Dự phòng nếu DB trả về dạng Tháng trước Ngày sau (MM/dd/yyyy)
+        parsed = DateTime.fromFormat(cleanStr, 'MM/dd/yyyy HH:mm:ss');
+        if (parsed.isValid) return parsed;
+    }
+
+    // TRƯỜNG HỢP: Chuỗi có dấu gạch ngang "2026-06-01 00:00:00" hoặc chuẩn ISO
+    if (cleanStr.includes('-')) {
+        let parsed = DateTime.fromFormat(cleanStr, 'yyyy-MM-dd HH:mm:ss');
+        if (parsed.isValid) return parsed;
+
+        parsed = DateTime.fromISO(cleanStr);
+        if (parsed.isValid) return parsed;
+    }
+
+    // Fallback ngày hiện tại nếu chuỗi hoàn toàn lỗi
+    return DateTime.local();
+}
 
 }

@@ -1,0 +1,132 @@
+<div [@routerTransition]>
+    <app-header
+        [title]="'Danh sách Nhóm thủ thuật'"
+        [buttonText]="'Thêm mới'"
+        [permission]="'Pages.Tenants.Create' | permission"
+        (addClicked)="addNewRow()"
+    ></app-header>
+    <div class="luxury-container">
+
+        <div class="luxury-card" [class.loading-effect]="primengTableHelper.isLoading">
+            <div class="search-bar-luxury">
+                <div class="search-input-group">
+                    <i class="fas fa-search search-icon"></i>
+                    <input
+                        type="text"
+                        [(ngModel)]="filterName"
+                        (input)="applyFilter()"
+                        placeholder="Tìm kiếm nhanh tên nhóm thủ thuật..."
+                        class="input-search"
+                    />
+                </div>
+
+                <div class="search-status-group">
+                    <span class="status-label">Trạng thái danh mục</span>
+                    <select [(ngModel)]="filterStatus" (change)="applyFilter()" class="select-luxury">
+                        <option value="ALL">Tất cả trạng thái</option>
+                        <option value="ACTIVE">Đang hoạt động</option>
+                        <option value="INACTIVE">Đã ẩn (Tạm dừng)</option>
+                    </select>
+                </div>
+            </div>
+
+            <p-table #dataTable 
+                     [value]="primengTableHelper.records" 
+                     styleClass="p-datatable-luxury"
+                     [lazy]="true"
+                     (onLazyLoad)="loadData($event)"
+                     [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                     [paginator]="false">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 90px" class="text-center">STT</th>
+                        <th>Tên nhóm thủ thuật</th>
+                        <th style="width: 250px" class="text-center">Số lượng liên kết</th>
+                        <th style="width: 200px" class="text-center">Trạng thái hiển thị</th>
+                        <th style="width: 180px" class="text-center">Thao tác</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-record let-i="rowIndex">
+                    <tr [class.row-editing]="editingRow === record"
+                        [class.row-disabled]="!record.isactive! && editingRow !== record">
+                         <td class="center"><span class="mo-header"></span>{{(filterInput.skipCount + primengTableHelper.records.indexOf(record)) + 1}}</td>
+                                   
+
+                        <td class="cell-main-title">
+                            <div *ngIf="editingRow !== record" class="text-dark-bold">
+                                {{ record.sT_NAME || 'CHƯA ĐẶT TÊN' }}
+                            </div>
+                            <div *ngIf="editingRow === record" class="input-luxury-wrapper">
+                                <input
+                                    type="text"
+                                    [(ngModel)]="tempRecord.sT_NAME"
+                                    placeholder="Nhập tên nhóm thủ thuật..."
+                                    class="input-luxury"
+                                    autofocus
+                                />
+                            </div>
+                        </td>
+
+                        <td class="text-center">
+                            <span class="count-badge" [class.count-zero]="record.totaL_PROCEDURES === 0">
+                                <i class="fas fa-layer-group me-1"></i>
+                                {{ record.totaL_PROCEDURES }} thủ thuật con
+                            </span>
+                        </td>
+
+                        <td class="text-center">
+                            <button
+                                class="btn-status-toggle"
+                                [class.is-active]="record.isactive!"
+                                (click)="toggleActive(record)"
+                                [disabled]="editingRow === record"
+                            >
+                                <i class="fas" [ngClass]="record.isactive! ? 'fa-check-circle' : 'fa-eye-slash'"></i>
+                                {{ record.isactive! ? 'ĐANG HIỂN THỊ' : 'ẨN TOÀN BỘ' }}
+                            </button>
+                        </td>
+
+                        <td class="text-center">
+                            <div *ngIf="editingRow !== record" class="action-buttons">
+                                <button class="btn-action-luxury edit" title="Sửa dòng" (click)="edit(record)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-action-luxury delete"
+                                        [class.disabled]="record.totaL_PROCEDURES > 0"
+                                        (click)="delete(record)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+
+                            <div *ngIf="editingRow === record" class="action-buttons row-editing-actions">
+                                <button class="btn-action-luxury save" (click)="save(record)">
+                                    <i class="fas fa-check"></i> ĐỒNG Ý
+                                </button>
+                                <button class="btn-action-luxury cancel" (click)="cancel()">
+                                    <i class="fas fa-times"></i> HỦY
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="primeng-paging-container" style="padding-top: 15px;">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="loadData($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'Tổng số dòng: {totalRecords}'"
+                ></p-paginator>
+            </div>
+
+            <div class="no-data-luxury" *ngIf="primengTableHelper.records?.length === 0 && !primengTableHelper.isLoading">
+                <i class="fas fa-search mb-3"></i>
+                <p>Không tìm thấy kết quả phù hợp với bộ lọc hiện tại</p>
+            </div>
+        </div>
+    </div>
+</div>

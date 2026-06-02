@@ -101,17 +101,27 @@
                     </div>
 
                     <div class="col-md-6 mb-5">
-                        <label class="form-label required" for="Name">{{ 'Tên khách hàng:' | localize }}</label>
-                        <input
-                            id="Name"
-                            #nameInput="ngModel"
-                            type="text"
-                            name="Name"
-                            class="form-control"
-                            [ngClass]="{ edited: customer.cuS_NAME }"
-                            [(ngModel)]="customer.cuS_NAME"
-                            required
-                        />
+                        <label class="form-label required fw-bold text-dark" for="Name">{{ 'Tên khách hàng:' | localize }}</label>
+                        
+                        <div class="luxury-input-wrapper">
+                            <input
+                                id="Name"
+                                #nameInput="ngModel"
+                                type="text"
+                                name="Name"
+                                class="form-control luxury-text-input"
+                                [ngClass]="{ edited: customer.cuS_NAME }"
+                                [(ngModel)]="customer.cuS_NAME"
+                                required
+                            />
+                            
+                            <div class="case-converter-actions d-flex gap-1.5 mt-1.5 justify-content-end" *ngIf="customer.cuS_NAME">
+                                <button type="button" class="btn btn-case-action" (click)="changeTextCase('ABC')" title="VIẾT HOA TOÀN BỘ">ABC</button>
+                                <button type="button" class="btn btn-case-action" (click)="changeTextCase('Abc')" title="Viết Hoa Chữ Đầu">Abc</button>
+                                <button type="button" class="btn btn-case-action" (click)="changeTextCase('abc')" title="viết thường toàn bộ">abc</button>
+                            </div>
+                        </div>
+                        
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
 
@@ -122,7 +132,7 @@
                             #phoneInput="ngModel"
                             type="text"
                             name="Phone"
-                            class="form-control"
+                            class="form-control luxury-text-input"
                             [ngClass]="{ edited: customer.cuS_PHONE}"
                             [(ngModel)]="customer.cuS_PHONE"
                             required
@@ -141,7 +151,7 @@
                             id="DOB"
                             type="text"
                             name="DOB"
-                            class="form-control"    
+                            class="form-control luxury-text-input"    
                             bsDatepicker
                             datePickerLuxonModifier
                             [(date)]="customer.cuS_DOB"
@@ -155,7 +165,7 @@
                             #EmailInput="ngModel"
                             type="text"
                             name="Email"
-                            class="form-control"
+                            class="form-control luxury-text-input"
                             [ngClass]="{ edited: customer.cuS_EMAIL}"
                             [(ngModel)]="customer.cuS_EMAIL"
                         />
@@ -168,7 +178,7 @@
                             #AddressInput="ngModel"
                             type="text"
                             name="Address"
-                            class="form-control"
+                            class="form-control luxury-text-input"
                             [ngClass]="{ edited: customer.cuS_ADDRESS}"
                             [(ngModel)]="customer.cuS_ADDRESS"
                             required
@@ -203,7 +213,7 @@
                             #CCCDInput="ngModel"
                             type="text"
                             name="CCCD"
-                            class="form-control"
+                            class="form-control luxury-text-input"
                             [ngClass]="{ edited: customer.cuS_CCCD}"
                             [(ngModel)]="customer.cuS_CCCD"
                         />
@@ -215,7 +225,7 @@
                             #OccupationInput="ngModel"
                             type="text"
                             name="Occupation"
-                            class="form-control"
+                            class="form-control luxury-text-input"
                             [ngClass]="{ edited: customer.cuS_JOB}"
                             [(ngModel)]="customer.cuS_JOB"
                         />
@@ -227,7 +237,7 @@
                             #EthnicityInput="ngModel"
                             type="text"
                             name="Ethnicity"
-                            class="form-control"
+                            class="form-control luxury-text-input"
                             [ngClass]="{ edited: customer.cuS_ETHNICITY}"
                             [(ngModel)]="customer.cuS_ETHNICITY"
                         />

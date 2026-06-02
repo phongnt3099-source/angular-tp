@@ -27,4 +27,4 @@ import { TransactionComponentsModule } from '../transaction-components/transacti
         TransactionServiceProxy
     ]
 })
-export class CustomerComponentsModule {}
+export class ExaminationComponentsModule {}

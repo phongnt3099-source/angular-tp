@@ -47,69 +47,74 @@
                 </div>
             </div>
 
-            <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom-2">
-                    <h5 class="mb-0 text-dark fw-bold">
-                        <i class="fa-solid fa-calculator text-indigo me-2"></i>
+            <!-- ================= CARD CHỈ ĐỊNH ĐIỀU TRỊ THIÊN PHÚC COMPACT LUXURY ================= -->
+            <div class="card luxury-clinical-card border-0 shadow-sm mb-4">
+                <!-- Header Thượng Lưu -->
+                <div
+                    class="card-header luxury-card-header d-flex justify-content-between align-items-center bg-transparent"
+                >
+                    <h5 class="header-title-premium mb-0 fw-bold">
+                        <span class="icon-orb"><i class="fa-solid fa-calculator"></i></span>
                         Chỉ Định Điều Trị
                     </h5>
 
                     <div class="search-box-container">
-                        <button
-                            type="button"
-                            class="btn btn-outline-indigo fw-bold px-3 py-2"
-                            (click)="openServiceModal()"
-                        >
-                            <i class="fa-solid fa-layer-group me-2"></i>
+                        <button type="button" class="btn btn-luxury-action" (click)="openServiceModal()">
+                            <i class="fa-solid fa-layer-group me-2 icon-action-gold"></i>
                             Chọn dịch vụ từ danh mục
                         </button>
                     </div>
                 </div>
 
+                <!-- Body Bảng Chống Bể Form -->
                 <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
+                    <div class="table-responsive luxury-table-container">
+                        <table class="table luxury-table align-middle mb-0">
+                            <thead>
                                 <tr>
                                     <th style="width: 25%">Dịch vụ / Vị trí Răng</th>
-                                    <th style="width: 8%" class="text-center">SL</th>
-                                    <th style="width: 14%">Đơn giá</th>
-                                    <th style="width: 14%">Giá sau giảm</th>
-                                    <th style="width: 16%">Trạng thái</th>
-                                    <th style="width: 20%" class="text-end">Thành tiền</th>
-                                    <th style="width: 3%"></th>
+                                    <th style="width: 7%" class="text-center">SL</th>
+                                    <th style="width: 15%" class="text-end">Đơn giá</th>
+                                    <th style="width: 15%" class="text-end">Giá sau giảm</th>
+                                    <th style="width: 13%">Trạng thái</th>
+                                    <th style="width: 12%">Bảo hành</th>
+                                    <th style="width: 10%" class="text-end">Thành tiền</th>
+                                    <th style="width: 3%" class="text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr
                                     *ngFor="let item of treatmentDetails; let i = index"
-                                    [class.row-disabled]="+item.tD_STATUS !== 0"
+                                    [class.row-premium-disabled]="+item.tD_STATUS === 3"
+                                    class="luxury-row-interactive"
                                 >
+                                    <!-- Cột 1: Tên Dịch vụ (Cho phép rớt dòng an toàn) -->
                                     <td>
-                                        <div class="fw-bold text-dark fs-6 mb-1 text-wrap-service">
+                                        <div class="fw-bold text-premium-dark fs-6 mb-1 text-wrap-service">
                                             {{ item.srV_NAME }}
                                         </div>
-                                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                                            <span class="small text-muted fw-bold">Răng (FDI):</span>
+                                        <div class="d-flex align-items-center gap-1.5 flex-wrap">
+                                            <span class="small-tag-label">Răng (FDI):</span>
                                             <span
-                                                class="badge bg-indigo-light text-indigo px-2 py-1 fw-bold"
+                                                class="badge premium-tooth-badge"
                                                 [class.cursor-pointer]="+item.tD_STATUS === 0"
                                                 [class.disabled-badge]="+item.tD_STATUS !== 0"
                                                 (click)="+item.tD_STATUS === 0 && openToothChart(item)"
                                             >
-                                                {{ item.tD_TOOTH_NUMBER || 'Chưa chọn vị trí' }}
+                                                {{ item.tD_TOOTH_NUMBER || 'Chưa chọn' }}
                                                 <i
-                                                    class="fa-solid fa-pen-to-square ms-1 small"
+                                                    class="fa-solid fa-pen-to-square ms-1 small text-muted"
                                                     *ngIf="+item.tD_STATUS === 0"
                                                 ></i>
                                             </span>
                                         </div>
                                     </td>
 
-                                    <td>
+                                    <!-- Cột 2: Số lượng (Cố định size nhỏ gọn) -->
+                                    <td class="text-center">
                                         <input
                                             type="number"
-                                            class="form-control form-control-sm text-center fw-bold"
+                                            class="form-control luxury-input-number text-center mx-auto"
                                             [(ngModel)]="item.tD_QUANTITY"
                                             (change)="onQuantityChange(item)"
                                             [name]="'qty_' + i"
@@ -118,16 +123,19 @@
                                         />
                                     </td>
 
+                                    <!-- Cột 3: Đơn giá gốc (Căn phải chống lệch input) -->
                                     <td class="position-relative">
-                                        <div class="discount-trigger-wrapper">
+                                        <div class="discount-trigger-wrapper d-flex flex-column align-items-end">
                                             <div
-                                                class="clinic-grid-price-input-wrapper"
+                                                class="clinic-grid-price-input-wrapper w-100"
                                                 [class.text-muted]="+item.tD_STATUS !== 0"
                                             >
-                                                <div class="d-flex align-items-center gap-1">
+                                                <div
+                                                    class="d-flex align-items-center justify-content-end gap-1 border-bottom-premium"
+                                                >
                                                     <input
                                                         type="text"
-                                                        class="form-control form-control-sm fw-semibold text-dark grid-price-input text-end"
+                                                        class="form-control luxury-grid-price-input text-end fw-bold"
                                                         [ngModel]="
                                                             item.displayPrice || (item.tD_UNIT_PRICE | number: '1.0-0')
                                                         "
@@ -136,30 +144,25 @@
                                                         [disabled]="+item.tD_STATUS !== 0"
                                                         placeholder="0"
                                                     />
-                                                    <span class="currency-unit small fw-bold text-secondary">đ</span>
-
-                                                    <span
-                                                        class="price-to-text text-muted ms-1"
-                                                        *ngIf="item.tD_PRICE_TO > 0"
-                                                    >
-                                                        - {{ item.tD_PRICE_TO | number }} đ
-                                                    </span>
+                                                    <span class="currency-premium">đ</span>
                                                 </div>
+                                                <span
+                                                    class="price-to-text text-muted d-block text-end mt-0.5 small position-absolute end-0"
+                                                    style="font-size: 11px"
+                                                    *ngIf="item.tD_PRICE_TO > 0"
+                                                >
+                                                    - {{ item.tD_PRICE_TO | number }} đ
+                                                </span>
                                             </div>
 
                                             <button
                                                 type="button"
-                                                class="btn btn-xs mt-1 fw-bold"
-                                                [class.btn-outline-danger]="
-                                                    item.discountValue > 0 && +item.TD_STATUS === 0
-                                                "
-                                                [class.btn-outline-secondary]="
-                                                    item.discountValue === 0 || +item.TD_STATUS !== 0
-                                                "
+                                                class="btn btn-luxury-tag mt-1"
+                                                [class.tag-danger]="item.discountValue > 0 && +item.tD_STATUS === 0"
                                                 [disabled]="+item.tD_STATUS !== 0"
                                                 (click)="toggleDiscountPanel(item, $event)"
                                             >
-                                                <i class="fa-solid fa-tags me-1"></i>
+                                                <i class="fa-solid fa-tags me-1 icon-gold-mini"></i>
                                                 {{
                                                     item.discountValue > 0
                                                         ? '-' +
@@ -169,8 +172,9 @@
                                                 }}
                                             </button>
 
+                                            <!-- Popover panel giảm giá nghệ thuật -->
                                             <div
-                                                class="discount-popover-panel shadow-lg p-2 rounded border"
+                                                class="discount-popover-panel premium-popover shadow-lg p-2 rounded border"
                                                 *ngIf="item.showDiscountPanel"
                                                 (click)="$event.stopPropagation()"
                                             >
@@ -208,20 +212,28 @@
                                             </div>
                                         </div>
                                     </td>
+
+                                    <!-- Cột 4: Giá sau giảm -->
                                     <td>
-                                        <input
-                                            type="text"
-                                            class="form-control form-control-sm text-start fw-bold text-success"
-                                            [ngModel]="item.tD_FINAL_PRICE_PER_UNIT | number"
-                                            (ngModelChange)="onFinalPricePerUnitChange(item, $event)"
-                                            [name]="'finalPricePerUnit_' + i"
-                                            [disabled]="+item.tD_STATUS !== 0"
-                                        />
+                                        <div
+                                            class="d-flex align-items-center justify-content-end gap-1 border-bottom-premium"
+                                        >
+                                            <input
+                                                type="text"
+                                                class="form-control luxury-grid-price-input text-end text-success fw-bold"
+                                                [ngModel]="item.tD_FINAL_PRICE_PER_UNIT | number"
+                                                (ngModelChange)="onFinalPricePerUnitChange(item, $event)"
+                                                [name]="'finalPricePerUnit_' + i"
+                                                [disabled]="+item.tD_STATUS !== 0"
+                                            />
+                                            <span class="currency-premium text-success">đ</span>
+                                        </div>
                                     </td>
 
+                                    <!-- Cột 5: Trạng thái điều trị -->
                                     <td>
                                         <select
-                                            class="form-select form-select-sm fw-bold status-select"
+                                            class="form-select form-select-sm fw-bold luxury-status-select"
                                             [(ngModel)]="item.tD_STATUS"
                                             (change)="item.tD_STATUS = +item.tD_STATUS; onStatusChange(item)"
                                             [name]="'status_' + i"
@@ -237,15 +249,54 @@
                                         </select>
                                     </td>
 
-                                    <td class="text-end fw-bold text-dark fs-6">
-                                        {{ item.tD_FINAL_PRICE | number }} đ
+                                    <!-- Cột 6: Bảo hành cao cấp -->
+                                    <td>
+                                        <div *ngIf="item.tD_HAS_WARRANTY" class="warranty-badge-container">
+                                            <ng-container *ngIf="+item.tD_STATUS === 2; else statusNotDone">
+                                                <span class="badge bg-luxury-gold d-block mb-1 py-1">
+                                                    <i class="fa-solid fa-shield-halved me-1 text-luxury-gold"></i>
+                                                    {{ convertMonthsToYears(item) }}
+                                                </span>
+                                                <div class="expired-date-picker-wrapper">
+                                                    <small class="text-muted d-block expired-date-text text-nowrap">
+                                                        Hạn:
+                                                        <strong class="text-indigo editable-date">
+                                                            {{ item.tD_WARRANTY_EXPIRED_DATE | date: 'dd/MM/yyyy' }}
+                                                            <i
+                                                                class="fa-solid fa-pen-to-square ms-0.5 small-edit-icon"
+                                                            ></i>
+                                                        </strong>
+                                                    </small>
+                                                    <input
+                                                        type="date"
+                                                        class="invisible-warranty-date-picker"
+                                                        [ngModel]="item.tD_WARRANTY_EXPIRED_DATE | date: 'yyyy-MM-dd'"
+                                                        (ngModelChange)="onWarrantyDateChange($event, item)"
+                                                    />
+                                                </div>
+                                            </ng-container>
+                                            <ng-template #statusNotDone>
+                                                <span class="badge bg-premium-info-light text-nowrap py-1">
+                                                    Kích hoạt khi xong
+                                                </span>
+                                            </ng-template>
+                                        </div>
+                                        <div *ngIf="!item.tD_HAS_WARRANTY" class="text-center">
+                                            <span class="text-muted small opacity-50">-</span>
+                                        </div>
                                     </td>
 
+                                    <!-- Cột 7: Thành tiền lớn (Sử dụng text-nowrap cố định dòng) -->
+                                    <td class="text-end text-premium-dark fw-bold fs-5 text-nowrap class-total-row">
+                                        {{ item.tD_FINAL_PRICE | number }}
+                                        <span class="currency-final">đ</span>
+                                    </td>
+
+                                    <!-- Cột 8: Hành động xóa -->
                                     <td class="text-center">
                                         <button
-                                            class="btn btn-link p-0"
+                                            class="btn btn-luxury-delete"
                                             [class.text-danger]="+item.tD_STATUS === 0"
-                                            [class.text-muted]="+item.tD_STATUS !== 0"
                                             (click)="+item.tD_STATUS === 0 && removeRow(i)"
                                             [disabled]="+item.tD_STATUS !== 0"
                                         >
@@ -257,30 +308,33 @@
                         </table>
                     </div>
 
-                    <div class="billing-summary p-4 bg-light border-top">
+                    <!-- Khối Tổng Hợp Hóa Đơn Tài Chính Gọn Gàng -->
+                    <div class="luxury-billing-summary p-4 bg-invoice-pearl border-top">
                         <div class="row justify-content-end">
-                            <div class="col-md-6 col-lg-5">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted fw-bold">Tổng chưa giảm (₫):</span>
-                                    <span class="fw-bold text-dark fs-5">{{ totalRawBeforeDiscount | number }}</span>
+                            <div class="col-md-6 col-lg-5 col-xl-4">
+                                <div class="billing-line">
+                                    <span class="billing-label">Tổng chưa giảm:</span>
+                                    <span class="billing-value text-dark fs-5 fw-bold">
+                                        {{ totalRawBeforeDiscount | number }}
+                                        <span class="billing-unit">đ</span>
+                                    </span>
                                 </div>
 
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="text-muted fw-bold">Giảm giá thêm (₫):</span>
-                                    <div class="input-group input-group-sm ms-2" style="max-width: 200px">
+                                <div class="billing-line align-items-center">
+                                    <span class="billing-label">Giảm giá thêm:</span>
+                                    <div class="input-group luxury-input-group">
                                         <input
                                             type="text"
-                                            class="form-control text-end fw-bold"
+                                            class="form-control text-end fw-bold py-1.5"
                                             [ngModel]="globalDiscountValue === 0 ? '' : (globalDiscountValue | number)"
                                             (ngModelChange)="onGlobalDiscountValueChange($event)"
                                             name="globalDiscountValue"
                                         />
                                         <select
-                                            class="form-select bg-white fw-bold custom-discount-select"
+                                            class="form-select fw-bold bg-light luxury-select-clean"
                                             [(ngModel)]="globalDiscountType"
                                             (ngModelChange)="onGlobalDiscountTypeChange()"
                                             name="globalDiscountType"
-                                            style="max-width: 75px"
                                         >
                                             <option value="VND">đ</option>
                                             <option value="PERCENT">%</option>
@@ -288,25 +342,40 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted fw-bold">Tổng giá giảm (₫):</span>
-                                    <span class="fw-bold text-danger fs-5">
+                                <div class="billing-line">
+                                    <span class="billing-label">Tổng giá giảm:</span>
+                                    <span class="billing-value text-danger-premium fw-bold">
                                         - {{ examination.exM_TOTAL_DISCOUNT | number }}
+                                        <span class="billing-unit">đ</span>
                                     </span>
                                 </div>
 
-                                <hr class="my-2" />
+                                <div class="luxury-divider-summary"></div>
 
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="fw-bold text-dark fs-6">Tổng tiền (₫):</span>
-                                    <span class="fw-bold text-dark fs-4">
-                                        {{ examination.exM_FINAL_AMOUNT | number }}
-                                    </span>
+                                <!-- Khối Tổng tiền bọc khung gọn gàng tinh tế -->
+                                <div class="grand-total-luxury-box mb-2">
+                                    <div class="billing-line total-final-line m-0">
+                                        <span class="final-label">TỔNG PHẢI THU:</span>
+                                        <span class="final-value-grand">
+                                            {{ examination.exM_FINAL_AMOUNT | number }}
+                                            <span class="final-unit">đ</span>
+                                        </span>
+                                    </div>
                                 </div>
 
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold text-danger fs-6">Chưa thu (₫):</span>
-                                    <span class="fw-bold text-danger fs-4">{{ debtAmount | number }}</span>
+                                <div class="grand-total-luxury-box debt-box" [class.debt-zero-box]="debtAmount === 0">
+                                    <div class="billing-line total-debt-line m-0">
+                                        <span class="debt-label">
+                                            <i *ngIf="debtAmount === 0" class="fa-solid fa-circle-check me-1.5 icon-status-glow"></i>
+                                            <i *ngIf="debtAmount > 0" class="fa-solid fa-circle-exclamation me-1.5 icon-status-glow"></i>
+                                            {{ debtAmount === 0 ? 'HOÀN TẤT THANH TOÁN' : 'DƯ NỢ CHƯA THU' }}
+                                        </span>
+                                        
+                                        <span class="debt-value-grand">
+                                            {{ debtAmount | number }}
+                                            <span class="final-unit">đ</span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -632,7 +701,11 @@
                                             Chi/Hoàn trả
                                         </span>
 
-                                        <span *ngIf="isLast" class="badge rounded-pill bg-light-primary text-primary" style="font-size: 0.75rem; padding: 2px 6px; margin-left: 5px;">
+                                        <span
+                                            *ngIf="isLast"
+                                            class="badge rounded-pill bg-light-primary text-primary"
+                                            style="font-size: 0.75rem; padding: 2px 6px; margin-left: 5px"
+                                        >
                                             New
                                         </span>
                                     </div>
@@ -759,9 +832,10 @@
                                 <thead class="table-light sticky-top">
                                     <tr>
                                         <th style="width: 8%" class="text-center">Chọn</th>
-                                        <th style="width: 15%">Mã</th>
-                                        <th style="width: 52%">Tên dịch vụ</th>
-                                        <th style="width: 25%" class="text-end">Đơn giá gốc</th>
+                                        <th style="width: 12%">Mã</th>
+                                        <th style="width: 42%">Tên dịch vụ</th>
+                                        <th style="width: 18%">Bảo hành</th>
+                                        <th style="width: 20%" class="text-end">Đơn giá gốc</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -785,6 +859,17 @@
                                             </span>
                                         </td>
                                         <td class="fw-bold text-dark fs-6">{{ srv.srV_NAME }}</td>
+                                        <td>
+                                            <div *ngIf="srv.haS_WARRANTY; else noWarrantyInModal">
+                                                <span class="badge bg-luxury-gold-light text-luxury-gold fw-bold">
+                                                    <i class="fa-solid fa-shield-halved me-1 text-luxury-gold"></i>
+                                                    {{ convertMonthsToYears(srv.warrantY_PERIOD) }}
+                                                </span>
+                                            </div>
+                                            <ng-template #noWarrantyInModal>
+                                                <span class="text-muted small opacity-50">-</span>
+                                            </ng-template>
+                                        </td>
                                         <td class="text-end fw-bold text-dark">
                                             <ng-container *ngIf="srv.srV_PRICE_TO && srv.srV_PRICE_TO > 0">
                                                 {{ srv.srV_PRICE | number }} - {{ srv.srV_PRICE_TO | number }} đ

@@ -122,16 +122,24 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'examination',
                         loadChildren: () =>
-                            import('./examination-component/examination-components.module').then(
-                                (m) => m.CustomerComponentsModule
+                            import('./examination-components/examination-components.module').then(
+                                (m) => m.ExaminationComponentsModule
                             ),
                         data: { permission: '' },
                     },
                     {
                         path: 'examination-edit',
                         loadChildren: () =>
-                            import('./examination-component/examination-components.module').then(
-                                (m) => m.CustomerComponentsModule
+                            import('./examination-components/examination-components.module').then(
+                                (m) => m.ExaminationComponentsModule
+                            ),
+                        data: { permission: '' },
+                    },
+                    {
+                        path: 'procedure-group',
+                        loadChildren: () =>
+                            import('./procedure-group-components/procedure-group-components.module').then(
+                                (m) => m.ProcedureGroupComponentsModule
                             ),
                         data: { permission: '' },
                     },

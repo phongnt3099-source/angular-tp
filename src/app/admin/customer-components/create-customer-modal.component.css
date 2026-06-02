@@ -186,3 +186,54 @@
     
     opacity: 1 !important;             /* Đảm bảo không bị mờ */
 }
+.luxury-text-input {
+    text-transform: capitalize; /* Hỗ trợ hiển thị viết hoa chữ đầu ngay tại tầng giao diện trực quan */
+    font-weight: 600 !important;
+    color: #0f172a !important;
+    border-radius: 8px !important;
+    &:focus {
+        border-color: #4f46e5 !important;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+    }
+}
+.luxury-input-wrapper {
+    position: relative;
+
+    .luxury-text-input {
+        font-weight: 600 !important;
+        color: #0f172a !important;
+        border-radius: 8px !important;
+        border: 1px solid #cbd5e1;
+        padding: 8px 12px;
+        
+        &:focus {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+        }
+    }
+
+    .case-converter-actions {
+        .btn-case-action {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background-color: #4f46e5;
+                color: #ffffff;
+                border-color: #4f46e5;
+                transform: translateY(-1px);
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+        }
+    }
+}

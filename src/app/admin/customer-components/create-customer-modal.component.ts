@@ -27,7 +27,7 @@ export class CreateCustomerModalComponent extends AppComponentBase {
     setRandomPassword = true;
     useHostDb = true;
     editions: SubscribableEditionComboboxItemDto[] = [];
-    customer: CM_CUSTOMER_ENTITY= new CM_CUSTOMER_ENTITY();
+    customer: CM_CUSTOMER_ENTITY = new CM_CUSTOMER_ENTITY();
     isUnlimited = false;
     isSubscriptionFieldsVisible = false;
     isSelectedEditionFree = false;
@@ -61,7 +61,7 @@ export class CreateCustomerModalComponent extends AppComponentBase {
                 (this.customer as any).cuS_DOB = new Date(result['cuS_DOB']);
                 this.loadDropdowns();
             });
-        }else{
+        } else {
             this.init();
             this.loadDropdowns();
         }
@@ -77,9 +77,10 @@ export class CreateCustomerModalComponent extends AppComponentBase {
 
     init(): void {
         this.customer = new CM_CUSTOMER_ENTITY();
-        this.selectedCity =this.customer.cuS_CITY = '28';
+        this.selectedCity = this.customer.cuS_CITY = '28';
         this.selectedWard = this.customer.cuS_WARD = '71317009';
         this.selectedNationality = this.customer.cuS_NATIONALITY = 'VN';
+        this.customer.cuS_ETHNICITY = 'Kinh';
         this.customer.creatE_DT = new Date() as any;
         this.customer.isHuyetAp = false;
         this.customer.isDongKinh = false;
@@ -95,17 +96,17 @@ export class CreateCustomerModalComponent extends AppComponentBase {
     }
 
     toggleCamera() {
-    this.enableScanner = !this.enableScanner;
+        this.enableScanner = !this.enableScanner;
     }
 
     onCityChange(cityCode: any) {
         if (cityCode) {
             this.wards = [];
             this.selectedWard = '';
-            this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('WARD',cityCode).subscribe((res) => {
+            this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('WARD', cityCode).subscribe((res) => {
                 this.wards = res;
             });
-        } else if(!this.isLoad){
+        } else if (!this.isLoad) {
             this.wards = [];
             this.selectedWard = '';
         }
@@ -120,38 +121,38 @@ export class CreateCustomerModalComponent extends AppComponentBase {
         this.customer.makeR_ID = this.appSession.user.userName?.toString();
         this.customer.creatE_DT = new Date() as any;
         this.customer.cuS_MEDICAL_HISTORY = this.concatMedicalHistory();
-        if(this.customer.cuS_ID){
+        if (this.customer.cuS_ID) {
             this.customer.makeR_ID = this.appSession.user.userName?.toString();
             this._customerService
-            .cM_CUSTOMER_Upd(this.customer)
-            .pipe(finalize(() => (this.saving = false)))
-            .subscribe((response) => {
-                if(response.result == '0'){
-                    this.notify.info(this.l('SavedSuccessfully'));
-                    this.close();
-                        this.modalSave.emit(null);
-                    }
-                    else{
-                        this.notify.error(this.l('Cập Nhật Thất Bại! ') + ': ' + response.errorDesc);
-                    }
-                });
-            }
-            else{
-                this.customer.updatE_ID = this.appSession.user.userName?.toString();
-                this._customerService
-                .cM_CUSTOMER_Ins(this.customer)
+                .cM_CUSTOMER_Upd(this.customer)
                 .pipe(finalize(() => (this.saving = false)))
                 .subscribe((response) => {
-                    if(response.result == '0'){
+                    if (response.result == '0') {
                         this.notify.info(this.l('SavedSuccessfully'));
                         this.close();
                         this.modalSave.emit(null);
                     }
-                    else{
+                    else {
+                        this.notify.error(this.l('Cập Nhật Thất Bại! ') + ': ' + response.errorDesc);
+                    }
+                });
+        }
+        else {
+            this.customer.updatE_ID = this.appSession.user.userName?.toString();
+            this._customerService
+                .cM_CUSTOMER_Ins(this.customer)
+                .pipe(finalize(() => (this.saving = false)))
+                .subscribe((response) => {
+                    if (response.result == '0') {
+                        this.notify.info(this.l('SavedSuccessfully'));
+                        this.close();
+                        this.modalSave.emit(null);
+                    }
+                    else {
                         this.notify.error(this.l('Thêm Thất Bại! ') + ': ' + response.errorDesc);
                     }
                 });
-            }
+        }
     }
 
     concatMedicalHistory(): string {
@@ -189,9 +190,39 @@ export class CreateCustomerModalComponent extends AppComponentBase {
         this.tenantAdminPasswordRepeat = '';
         this.modal.hide();
     }
+    changeTextCase(formatType: 'ABC' | 'Abc' | 'abc'): void {
+        if (!this.customer || !this.customer.cuS_NAME) return;
+
+        // Lấy chuỗi gốc hiện tại trong ô Input và dọn sạch khoảng trắng thừa
+        const currentName = this.cleanWhitespace(this.customer.cuS_NAME);
+        if (!currentName) return;
+
+        switch (formatType) {
+            case 'ABC':
+                this.customer.cuS_NAME = currentName.toUpperCase();
+                break;
+
+            case 'abc':
+                this.customer.cuS_NAME = currentName.toLowerCase();
+                break;
+
+            case 'Abc':
+                this.customer.cuS_NAME = currentName
+                    .toLowerCase()
+                    .split(' ')
+                    .filter(word => word.length > 0) // Loại bỏ các phần tử rỗng nếu người dùng lỡ gõ nhiều dấu cách
+                    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+                break;
+        }
+    }
+    cleanWhitespace(value: string | null | undefined): string {
+        if (!value) return '';
+        return value.trim().replace(/\s+/g, ' ');
+    }
     private loadDropdowns(): void {
-        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('PROVINCE','CITY_PROVINCE').subscribe(res => this.provinces = res);
-        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('NAT','NATIONALITY').subscribe(res => this.nationalities = res);
+        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('PROVINCE', 'CITY_PROVINCE').subscribe(res => this.provinces = res);
+        this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('NAT', 'NATIONALITY').subscribe(res => this.nationalities = res);
         this._commonLookupService.cM_ALLCODE_DROPDOWNLIST('WARD', this.customer.cuS_CITY).subscribe(res => {
             this.wards = res;
             this.isLoad = false;
