@@ -290,7 +290,6 @@ ul.p-autocomplete-items{
 .modal-header-custom {
     padding: 15px 20px;
     background: linear-gradient(135deg, #4361ee 0%, #2a4acb 100%);
-    border-radius: 15px 15px 0 0; /* Bo góc trên modal */
 }
 
 /* Vòng tròn bọc icon nổi bật */
@@ -310,7 +309,6 @@ ul.p-autocomplete-items{
 .modal-header-custom {
     padding: 16px 24px;
     background: linear-gradient(135deg, #4361ee 0%, #2a4acb 100%);
-    border-radius: 12px 12px 0 0;
     /* Đảm bảo nội dung không bị dính sát mép */
 }
 
@@ -376,3 +374,177 @@ ul.p-autocomplete-items{
     margin: 0.5cm;
   }
 }
+/* ====================================================================
+   TRUY CẬP TOÀN CỤC - KIẾT TẠO GIAO DIỆN LUXURY SUPER CHO PRIMENG
+   ==================================================================== */
+
+/* 1. Lột xác khung Popover thành kính mờ pha lê (Crystal Glass) */
+body .p-datepicker.luxury-calendar-popover {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.88) !important; /* Nền trong suốt nhẹ */
+    backdrop-filter: blur(20px) saturate(180%) !important; /* Kính mờ cao cấp */
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important; /* Viền phản quang ánh sáng */
+    border-radius: 24px !important; /* Bo góc dày mịn màng */
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.01),
+        0 20px 40px -12px rgba(15, 23, 42, 0.22), 
+        0 0 0 1px rgba(15, 23, 42, 0.02) !important; /* Đổ bóng đa tầng có chiều sâu */
+    padding: 22px !important;
+    z-index: 999999999 !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+/* 2. Cách điệu thanh điều hướng Header */
+body .luxury-calendar-popover .p-datepicker-header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+    padding-bottom: 16px !important;
+    margin-bottom: 10px;
+    
+    /* ─── THÊM 2 DÒNG NÀY ĐỂ ĐẨY 2 NÚT MŨI TÊN CÁCH NHAU RA ─── */
+    display: flex !important;
+    gap: 12px !important; /* Bạn có thể tăng lên 16px hoặc 20px nếu muốn cách xa hơn nữa */
+}
+
+/* Tiêu đề Tháng Năm chữ đậm sắc nét */
+body .luxury-calendar-popover .p-datepicker-title .p-datepicker-month, 
+body .luxury-calendar-popover .p-datepicker-title .p-datepicker-year {
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    font-size: 1.05rem !important;
+    letter-spacing: -0.02em;
+}
+
+/* 2 nút mũi tên chuyển tháng dạng tinh thể tròn */
+body .luxury-calendar-popover .p-datepicker-header .p-datepicker-prev, 
+body .luxury-calendar-popover .p-datepicker-header .p-datepicker-next {
+    color: #475569 !important;
+    border-radius: 50% !important;
+    width: 34px !important;
+    height: 34px !important;
+    background: rgba(15, 23, 42, 0.04) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+body .luxury-calendar-popover .p-datepicker-header .p-datepicker-prev:hover, 
+body .luxury-calendar-popover .p-datepicker-header .p-datepicker-next:hover {
+    background: rgba(79, 70, 229, 0.1) !important;
+    color: #4f46e5 !important;
+    transform: scale(1.05);
+}
+
+/* 3. Kiến tạo lưới ngày và cột số tuần tinh tế */
+body .luxury-calendar-popover .p-datepicker-weeknumber {
+    color: #94a3b8 !important;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    padding-right: 12px !important;
+    border-right: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+body .luxury-calendar-popover .p-datepicker-calendar th {
+    color: #64748b !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    padding-bottom: 10px !important;
+}
+
+/* Biến các ô số đơn điệu thành vòng tròn pha lê tương tác */
+body .luxury-calendar-popover .p-datepicker-calendar td {
+    padding: 3px 2px !important;
+}
+
+body .luxury-calendar-popover .p-datepicker-calendar td > span {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important; /* Bo tròn hoàn mỹ từng ô ngày */
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    color: #334155 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Hiệu ứng di chuột lướt nhẹ mềm mại */
+body .luxury-calendar-popover .p-datepicker-calendar td > span:hover:not(.p-highlight) {
+    background: #f1f5f9 !important;
+    color: #4f46e5 !important;
+    transform: translateY(-1px);
+}
+
+/* Ngày hiện tại (Hôm nay) - Đường viền mỏng tinh tế */
+body .luxury-calendar-popover .p-datepicker-calendar td > span.p-datepicker-today {
+    color: #4f46e5 !important;
+    border: 1.5px solid rgba(79, 70, 229, 0.4) !important;
+    background: rgba(79, 70, 229, 0.02) !important;
+}
+
+/* Ô NGÀY ĐƯỢC CHỌN - ĐỔ GRADIENT CHUYỂN SẮC TỐI CAO (ĐIỂM NHẤN LUXURY) */
+body .luxury-calendar-popover .p-datepicker-calendar td > span.p-highlight {
+    background: linear-gradient(135deg, #4f46e5, #0ea5e9) !important; /* Chuyển màu Indigo sang Cyan rực rỡ */
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.45) !important; /* Đổ bóng phát sáng viền */
+    transform: scale(1.05);
+}
+
+/* Các ngày của tháng trước/sau (Làm mờ để làm nổi bật tháng hiện tại) */
+body .luxury-calendar-popover .p-datepicker-calendar td.p-datepicker-other-month > span {
+    color: #cbd5e1 !important;
+    font-weight: 400 !important;
+}
+/* ====================================================================
+   TRUY CẬP TOÀN CỤC - ÉP ĐỘ DÀI INPUT DATE-PICKER KHỚP BOOTSTRAP 100%
+   ==================================================================== */
+
+/* 1. Ép thẳng vào component selector để nó bung hết diện tích col-md-6 */
+date-picker {
+    display: block !important;
+    width: 100% !important;
+}
+
+/* 2. Cưỡng ép lớp vỏ bọc ngoài cùng của PrimeNG phá vỡ trạng thái inline-block */
+body .luxury-prime-calendar {
+    display: block !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+/* 3. Ép thẻ input thực tế bên trong lấp đầy 100% khoảng trống */
+body .luxury-prime-calendar .p-inputtext {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding-right: 2.5rem !important; /* Chừa khoảng trống bên phải cho icon lịch */
+}
+
+/* 4. Định vị lại vị trí icon lịch nằm nép sát lề phải của input đã kéo dãn */
+body .luxury-prime-calendar .p-datepicker-trigger {
+    position: absolute !important;
+    right: 1rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: transparent !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    cursor: pointer !important;
+    font-size: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    z-index: 5 !important;
+}
+
+body .luxury-prime-calendar .p-datepicker-trigger:hover {
+    color: #4f46e5 !important;
+}
+

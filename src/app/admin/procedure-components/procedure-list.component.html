@@ -1,0 +1,319 @@
+<div [@routerTransition] class="super-luxury-container">
+    <div class="main-data-layout" [class.drawer-expanded]="isDrawerOpen">
+        <app-header
+            [title]="'Danh sách thủ thuật'"
+            class="d-block mb-5"
+            [buttonText]="'Thêm mới'"
+            [permission]="'Pages.Tenants.Create' | permission"
+            (addClicked)="openCreateDrawer()"
+        ></app-header>
+
+        <div class="luxury-card" [class.loading-effect]="primengTableHelper.isLoading">
+            <div class="premium-search-bar">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search input-icon-thin"></i>
+                    <input
+                        type="text"
+                        [(ngModel)]="filterName"
+                        (keyup.enter)="applyFilter()"
+                        (blur)="applyFilter()"
+                        placeholder="Tìm theo tên dịch vụ, mã thủ thuật..."
+                        class="input-luxury"
+                    />
+                </div>
+                <div class="search-select-wrapper">
+                    <span class="label">Nhóm thủ thuật:</span>
+                    <select [(ngModel)]="filterTypeCode" (change)="applyFilter()" class="select-luxury">
+                        <option value="">TẤT CẢ DANH MỤC</option>
+                        <option *ngFor="let type of serviceTypes" [value]="type.sT_NAME">{{ type.sT_NAME }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <p-table
+                #dataTable
+                [value]="primengTableHelper.records"
+                styleClass="p-datatable-luxury"
+                [lazy]="true"
+                (onLazyLoad)="loadData($event)"
+                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                [paginator]="false"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 80px" class="text-center">STT</th>
+                        <th style="width: 140px">Mã thủ thuật</th>
+                        <th>Tên dịch vụ nha khoa</th>
+                        <th style="width: 160px">Phân hệ danh mục</th>
+                        <th style="width: 110px">Đơn vị</th>
+                        <th style="width: 160px" class="text-end">Chi phí sàn</th>
+                        <th style="width: 160px" class="text-end">Chi phí trần</th>
+                        <th style="width: 140px" class="text-center">Bảo hành</th>
+                        <th style="width: 180px" class="text-center">Trạng thái</th>
+                        <th style="width: 130px" class="text-center">Thao tác</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-record let-i="rowIndex">
+                    <tr
+                        [class.row-active-editing]="tempRecord?.srV_ID === record.srV_ID"
+                        [class.row-disabled]="!record.isactive"
+                    >
+                        <td class="center">
+                            <span class="mo-header"></span>
+                            {{ filterInput.skipCount + primengTableHelper.records.indexOf(record) + 1 }}
+                        </td>
+
+                        <td class="fw-bold text-dark">
+                            <i class="fas fa-fingerprint me-2 text-muted" style="font-size: 0.85rem"></i>
+                            {{ record.srV_CODE || '---' }}
+                        </td>
+
+                        <td>
+                            <div class="fw-bold text-dark">{{ record.srV_NAME }}</div>
+                            <small class="text-muted d-block mt-1" *ngIf="record.srV_NOTE">
+                                <i class="fas fa-align-left me-1" style="font-size: 0.75rem"></i>
+                                {{ record.srV_NOTE }}
+                            </small>
+                        </td>
+
+                        <td>
+                            <span class="text-dark fw-semibold">{{ record.servicE_TYPE_NAME || '---' }}</span>
+                        </td>
+
+                        <td>
+                            <span class="badge-unit">{{ record.srV_UNIT || 'Lần' }}</span>
+                        </td>
+
+                        <td class="text-end fw-bold text-dark">{{ record.srV_PRICE | number: '1.0-0' }}đ</td>
+
+                        <td class="text-end fw-bold text-dark">
+                            <span *ngIf="record.srV_PRICE_TO">{{ record.srV_PRICE_TO | number: '1.0-0' }}đ</span>
+                            <span *ngIf="!record.srV_PRICE_TO" class="text-muted fw-normal" style="font-size: 0.9rem">
+                                Cố định
+                            </span>
+                        </td>
+
+                        <td class="text-center">
+                            <span
+                                *ngIf="record.haS_WARRANTY"
+                                class="badge text-luxury-gold bg-luxury-gold-light fw-bold"
+                            >
+                                <i class="fa-solid fa-shield-halved me-1 text-luxury-gold"></i>
+                                {{ convertMonthsToYears(record.warrantY_PERIOD) }}
+                            </span>
+
+                            <span *ngIf="!record.haS_WARRANTY" class="text-muted font-index">---</span>
+                        </td>
+
+                        <td class="text-center">
+                            <button
+                                class="btn-status-toggle"
+                                [class.is-active]="record.isactive"
+                                (click)="toggleActive(record)"
+                            >
+                                <i class="fa-solid me-1.5" 
+                                [ngClass]="record.isactive ? 'fa-circle-check status-active-breath' : 'fa-eye-slash text-muted'"></i>
+                                
+                                <span class="status-text-label">{{ record.isactive ? 'ĐANG HIỂN THỊ' : 'ĐÃ ẨN' }}</span>
+                            </button>
+                        </td>
+
+                        <td class="text-center">
+                            <div class="action-icons-group">
+                                <button class="btn-icon edit" title="Sửa thông tin" (click)="openEditDrawer(record)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon delete" title="Xóa dữ liệu" (click)="delete(record)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div
+                class="no-data-luxury"
+                *ngIf="primengTableHelper.records?.length === 0 && !primengTableHelper.isLoading"
+            >
+                <div class="luxury-empty-art">
+                    <div class="art-circle">
+                        <i class="fa-light fa-sparkles art-icon-1"></i>
+                        <i class="fa-thin fa-folder-open art-icon-2"></i>
+                    </div>
+                </div>
+                <h3>KHÔNG TÌM THẤY DỮ LIỆU PHÙ HỢP</h3>
+                <p>Hệ thống không tìm thấy thủ thuật nào khớp với bộ lọc hiện tại của bạn.</p>
+
+                <button class="btn-clear-filter" (click)="filterName = ''; filterTypeCode = ''; applyFilter()">
+                    <i class="fa-light fa-arrow-rotate-left me-2"></i>
+                    LÀM SẠCH BỘ LỌC
+                </button>
+            </div>
+
+            <div class="primeng-paging-container">
+                <p-paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    #paginator
+                    (onPageChange)="loadData($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    [showCurrentPageReport]="true"
+                    [currentPageReportTemplate]="'Tổng: {totalRecords}'"
+                ></p-paginator>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <div class="premium-form-drawer" [class.open]="isDrawerOpen" *ngIf="isDrawerOpen">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <h3>{{ isAddingNew ? 'THÊM MỚI THỦ THUẬT' : 'CẬP NHẬT THỦ THUẬT' }}</h3>
+                <small>Hệ thống thiết lập thông số dịch vụ kỹ thuật lâm sàng</small>
+            </div>
+            <button class="btn-close-drawer" (click)="closeDrawer()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="drawer-body">
+            <div class="form-grid-luxury">
+                <div class="field-item span-12">
+                    <label>TÊN THỦ THUẬT / DỊCH VỤ *</label>
+                    <input
+                        type="text"
+                        [(ngModel)]="tempRecord.srV_NAME"
+                        class="drawer-input-luxury"
+                        placeholder="Ví dụ: Cấy ghép Implant đơn lẻ..."
+                    />
+                </div>
+
+                <div class="field-item span-6">
+                    <label>DANH MỤC NHÓM *</label>
+                    <select [(ngModel)]="tempRecord.servicE_TYPE_NAME" class="drawer-input-luxury">
+                        <option [value]="undefined">Chọn nhóm thủ thuật</option>
+                        <option *ngFor="let type of serviceTypes" [value]="type.sT_NAME">{{ type.sT_NAME }}</option>
+                    </select>
+                </div>
+
+                <div class="field-item span-6">
+                    <label>MÃ THỦ THUẬT NỘI BỘ</label>
+                    <input
+                        type="text"
+                        [(ngModel)]="tempRecord.srV_CODE"
+                        class="drawer-input-luxury"
+                        placeholder="Tự sinh nếu để trống..."
+                    />
+                </div>
+
+                <div class="field-item span-6">
+                    <label>CHI PHÍ TIÊU CHUẨN (MỨC SÀN) *</label>
+                    <input
+                        type="text"
+                        [ngModel]="formatCurrencyValue(tempRecord.srV_PRICE)"
+                        (input)="tempRecord.srV_PRICE = parseCurrencyValue($event)"
+                        class="drawer-input-luxury text-end fw-bold"
+                        placeholder="0"
+                    />
+                </div>
+
+                <div class="field-item span-6">
+                    <label>CHI PHÍ PHÁT SINH TỐI ĐA (MỨC TRẦN)</label>
+                    <input
+                        type="text"
+                        [ngModel]="formatCurrencyValue(tempRecord.srV_PRICE_TO)"
+                        (input)="tempRecord.srV_PRICE_TO = parseCurrencyValue($event)"
+                        class="drawer-input-luxury text-end fw-bold"
+                        placeholder="Để trống nếu giá cố định..."
+                    />
+                </div>
+
+                <div class="field-item span-4">
+                    <label>ĐƠN VỊ TÍNH</label>
+                    <input
+                        type="text"
+                        [(ngModel)]="tempRecord.srV_UNIT"
+                        class="drawer-input-luxury"
+                        placeholder="Răng, Lần, Liệu trình..."
+                    />
+                </div>
+
+                <div class="field-item span-4">
+                    <label>THUẾ SUẤT VAT (%)</label>
+                    <input
+                        type="number"
+                        [(ngModel)]="tempRecord.taX_RATE"
+                        class="drawer-input-luxury"
+                        placeholder="0%, 8%, 10%..."
+                    />
+                </div>
+
+                <div class="field-item span-4">
+                    <label>TÊN LOẠI THUẾ (VAT)</label>
+                    <input
+                        type="text"
+                        [(ngModel)]="tempRecord.vaT_NAME"
+                        class="drawer-input-luxury"
+                        placeholder="Thuế GTGT..."
+                    />
+                </div>
+
+                <div
+                    class="field-item span-6 toggle-block-luxury clickable-toggle"
+                    (click)="tempRecord.pricE_INCLUDES_VAT = !tempRecord.pricE_INCLUDES_VAT"
+                >
+                    <div class="toggle-info">
+                        <span class="toggle-title">GIÁ ĐÃ BAO GỒM VAT</span>
+                        <small>Giá niêm yết xuất hóa đơn trực tiếp</small>
+                    </div>
+                    <div class="switch-control-area">
+                        <p-inputSwitch
+                            [(ngModel)]="tempRecord.pricE_INCLUDES_VAT"
+                            (click)="$event.stopPropagation()"
+                        ></p-inputSwitch>
+                    </div>
+                </div>
+
+                <div
+                    class="field-item span-6 toggle-block-luxury clickable-toggle"
+                    (click)="tempRecord.haS_WARRANTY = !tempRecord.haS_WARRANTY"
+                >
+                    <div class="toggle-info">
+                        <span class="toggle-title">CHẾ ĐỘ BẢO HÀNH</span>
+                        <small>Kích hoạt thẻ bảo hành điện tử</small>
+                    </div>
+                    <div class="switch-control-area">
+                        <p-inputSwitch
+                            [(ngModel)]="tempRecord.haS_WARRANTY"
+                            (click)="$event.stopPropagation()"
+                        ></p-inputSwitch>
+                    </div>
+                </div>
+
+                <div class="field-item span-12" *ngIf="tempRecord.haS_WARRANTY">
+                    <label>THỜI GIAN BẢO HÀNH (THÁNG)</label>
+                    <input
+                        type="number"
+                        [(ngModel)]="tempRecord.warrantY_PERIOD"
+                        class="drawer-input-luxury"
+                        placeholder="Nhập số tháng bảo hành..."
+                    />
+                </div>
+
+                <div class="field-item span-12">
+                    <label>GHI CHÚ KỸ THUẬT / MÔ TẢ LÂM SÀNG</label>
+                    <textarea
+                        rows="4"
+                        [(ngModel)]="tempRecord.srV_NOTE"
+                        class="drawer-input-luxury text-area"
+                    ></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-footer">
+            <button class="btn-footer cancel" (click)="closeDrawer()">HỦY BỎ</button>
+            <button class="btn-footer confirm" (click)="save()">LƯU THÔNG TIN</button>
+        </div>
+    </div>
+</div>

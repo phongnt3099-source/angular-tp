@@ -1,0 +1,309 @@
+<div [@routerTransition] class="super-luxury-container">
+    <app-header
+        [title]="'Quản Lý Nhân Sự'"
+        class="d-block mb-5"
+        [buttonText]="'Thêm Nhân Sự Mới'"
+        [permission]="'Pages.Tenants.Create' | permission"
+        (addClicked)="openDrawer(null)"
+    ></app-header>
+    
+    <div class="luxury-container">
+        <div class="luxury-control-card">
+            <div class="search-box-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input
+                    type="text"
+                    placeholder="Tìm tên, số điện thoại, CCCD nhân viên..."
+                    [(ngModel)]="filterInput.emP_NAME"
+                    (input)="loadData(true)"
+                    class="search-input-premium"
+                />
+            </div>
+            <div class="filter-group">
+                <select class="form-select-premium" [(ngModel)]="filterInput.emP_ROLE" (change)="loadData(true)">
+                    <option [ngValue]="null">Tất cả chức vụ</option>
+                    <option value="DOCTOR">Bác sĩ</option>
+                    <option value="NURSE">Y tá / Điều dưỡng</option>
+                    <option value="RECEPTION">Lễ tân</option>
+                </select>
+
+                <select class="form-select-premium" [(ngModel)]="filterInput.synC_STATUS" (change)="loadData(true)">
+                    <option [ngValue]="undefined">Tất cả trạng thái tài khoản</option>
+                    <option [ngValue]="1">Đã đồng bộ User</option>
+                    <option [ngValue]="0">Chưa tạo tài khoản</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="luxury-table-container">
+            <table class="luxury-table">
+                <thead>
+                    <tr>
+                        <th>Mã NV</th>
+                        <th>Thông Tin Nhân Viên</th>
+                        <th>Liên Hệ</th>
+                        <th>Chức Vụ</th>
+                        <th>Tài Khoản Hệ Thống</th>
+                        <th class="text-center">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (emp of employeeList; track emp.emP_ID) {
+                        <tr class="luxury-row">
+                            <td class="emp-id-cell">
+                                <strong>{{ emp.emP_ID }}</strong>
+                            </td>
+                            <td>
+                                <div class="emp-profile-cell">
+                                    <div class="avatar-gradient">{{ getInitials(emp.emP_NAME) }}</div>
+                                    <div class="emp-info-meta">
+                                        <span class="emp-name-text">{{ emp.emP_NAME }}</span>
+                                        <span class="emp-cccd-text">
+                                            <i class="fa-solid fa-id-card"></i> {{ emp.emP_CCCD }}
+                                            @if(emp.emP_GENDER) {
+                                                <span class="ms-2 font-weight-bold">({{ emp.emP_GENDER === 'M' ? 'Nam' : (emp.emP_GENDER === 'F' ? 'Nữ' : 'Khác') }})</span>
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="contact-meta">
+                                    <span>
+                                        <i class="fa-solid fa-phone"></i> {{ emp.emP_PHONE }}
+                                    </span>
+                                    <span class="sub-address">{{ emp.emP_WARD }}{{ emp.emP_WARD && emp.emP_CITY ? ', ' : '' }}{{ emp.emP_CITY }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge-role-tag">{{ emp.emP_ROLE }}</span>
+                            </td>
+                            <td>
+                                @if (emp.isSynced) {
+                                    <span class="status-badge synced">
+                                        <i class="fa-solid fa-circle-check"></i> {{ emp.useR_NAME }}
+                                    </span>
+                                } @else {
+                                    <button class="btn-quick-sync-icon" title="Tạo nhanh tài khoản hệ thống" (click)="executeQuickSync(emp); $event.stopPropagation()">
+                                        <i class="fa-solid fa-bolt-lightning"></i>
+                                        <span>Tạo tài khoản</span>
+                                    </button>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="luxury-action-dock-always">
+                                    <button class="btn-premium-action edit" title="Chỉnh sửa thông tin" (click)="openDrawer(emp)">
+                                        <i class="fa-solid fa-user-pen"></i>
+                                    </button>
+                                    <div class="action-divider"></div>
+                                    <button class="btn-premium-action delete" title="Xóa nhân sự" (click)="deleteEmployee(emp.emP_ID)">
+                                        <i class="fa-solid fa-user-xmark"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="luxury-drawer" [class.active]="isDrawerOpen">
+        <div class="drawer-overlay" (click)="closeDrawer()"></div>
+
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h3>{{ isEditMode ? 'Cập Nhật Nhân Sự' : 'Đăng Ký Nhân Sự Mới' }}</h3>
+                <button class="btn-close" (click)="closeDrawer()">×</button>
+            </div>
+
+            <div class="drawer-body">
+                <form #empForm="ngForm" novalidate autocomplete="off">
+                    <div class="form-section-title">I. Thông Tin Hành Chính</div>
+                    
+                    <div class="luxury-form-group">
+                        <label>Họ và tên nhân viên <span class="required"></span></label>
+                        <input
+                            type="text"
+                            #nameInput="ngModel"
+                            name="emP_NAME"
+                            [(ngModel)]="currentEmp.emP_NAME"
+                            required
+                            (input)="onNameChange()"
+                            placeholder="Nhập họ và tên có dấu..."
+                            class="form-control-premium"
+                        />
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="luxury-form-grid">
+                        <div class="luxury-form-group">
+                            <label>Ngày sinh <span class="required"></span></label>
+                            <date-picker 
+                                name="emP_DOB" 
+                                [(ngModel)]="currentEmp.emP_DOB" 
+                                [required]="true"
+                            ></date-picker>
+                        </div>
+                        <div class="luxury-form-group">
+                            <label>Giới tính <span class="required"></span></label>
+                            <select 
+                                class="form-select-premium w-100" 
+                                #genderInput="ngModel"
+                                name="emP_GENDER" 
+                                [(ngModel)]="currentEmp.emP_GENDER"
+                                required>
+                                <option [ngValue]="null">-- Chọn giới tính --</option>
+                                <option value="M">Nam</option>
+                                <option value="F">Nữ</option>
+                                <option value="O">Khác</option>
+                            </select>
+                            <validation-messages [formCtrl]="genderInput"></validation-messages>
+                        </div>
+                    </div>
+
+                    <div class="luxury-form-grid">
+                        <div class="luxury-form-group">
+                            <label>Số điện thoại <span class="required"></span></label>
+                            <input
+                                type="text"
+                                #phoneInput="ngModel"
+                                name="emP_PHONE"
+                                [(ngModel)]="currentEmp.emP_PHONE"
+                                required
+                                pattern="^(03|05|07|08|09)\d{8}$"
+                                placeholder="0901xxxxxx"
+                                class="form-control-premium"
+                            />
+                            <validation-messages 
+                                [formCtrl]="phoneInput" 
+                                [errorDefs]="[{ error: 'pattern', localizationKey: 'Số điện thoại chưa đúng định dạng' }]">
+                            </validation-messages>
+                        </div>
+                        <div class="luxury-form-group">
+                            <label>Số CCCD <span class="required"></span></label>
+                            <input
+                                type="text"
+                                #cccdInput="ngModel"
+                                name="emP_CCCD"
+                                [(ngModel)]="currentEmp.emP_CCCD"
+                                required
+                                minlength="12"
+                                maxlength="12"
+                                pattern="^[0-9]{12}$"
+                                placeholder="Số định danh cá nhân (12 chữ số)"
+                                class="form-control-premium"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                            />
+                            <validation-messages 
+                                [formCtrl]="cccdInput"
+                                [errorDefs]="[
+                                    { error: 'required', localizationKey: 'Vui lòng nhập số định danh cá nhân' },
+                                    { error: 'minlength', localizationKey: 'Số định danh cá nhân phải đúng 12 chữ số' },
+                                    { error: 'pattern', localizationKey: 'Số định danh cá nhân không hợp lệ (chỉ được chứa số)' }
+                                ]"
+                            ></validation-messages>
+                        </div>
+                    </div>
+
+                    <div class="luxury-form-group">
+                        <label>Địa chỉ thường trú / Tạm trú <span class="required"></span></label>
+                        <input
+                            type="text"
+                            #addressInput="ngModel"
+                            name="emP_ADDRESS"
+                            [(ngModel)]="currentEmp.emP_ADDRESS"
+                            required
+                            placeholder="Số nhà, tên đường, tổ dân phố..."
+                            class="form-control-premium"
+                        />
+                        <validation-messages [formCtrl]="addressInput"></validation-messages>
+                    </div>
+
+                    <div class="luxury-form-grid">
+                        <div class="luxury-form-group">
+                            <label>Phường / Xã</label>
+                            <input type="text" name="emP_WARD" [(ngModel)]="currentEmp.emP_WARD" placeholder="Phường/Xã" class="form-control-premium">
+                        </div>
+                        <div class="luxury-form-group">
+                            <label>Quận / Thành phố</label>
+                            <input type="text" name="emP_CITY" [(ngModel)]="currentEmp.emP_CITY" placeholder="Quận/Thành phố" class="form-control-premium">
+                        </div>
+                    </div>
+
+                    <div class="luxury-form-group">
+                        <label>Chức vụ phòng ban <span class="required"></span></label>
+                        <select class="form-select-premium w-100" name="emP_ROLE_SELECT" [(ngModel)]="currentEmp.emP_ROLE" required #roleSelectInput="ngModel">
+                            <option [ngValue]="null">-- Chọn vị trí công tác --</option>
+                            <option value="DOCTOR">Bác sĩ</option>
+                            <option value="NURSE">Y tá / Điều dưỡng</option>
+                            <option value="RECEPTION">Lễ tân</option>
+                        </select>
+                        <validation-messages [formCtrl]="roleSelectInput"></validation-messages>
+                    </div>
+
+                    <div class="luxury-form-group">
+                        <label>Ghi chú hồ sơ nhân sự (Notes)</label>
+                        <textarea name="notes" [(ngModel)]="currentEmp.notes" rows="3" placeholder="Lưu ý đặc biệt, chứng chỉ hành nghề..." class="form-control-premium text-area-luxury"></textarea>
+                    </div>
+
+                    <div class="form-section-title d-flex justify-content-between align-items-center">
+                        <span>II. Tài Khoản Hệ Thống</span>
+                        <div class="switch-control-area">
+                            <p-inputSwitch
+                                name="iS_CREATE_USER"
+                                [(ngModel)]="currentEmp.iS_CREATE_USER"
+                                (click)="$event.stopPropagation()"
+                            ></p-inputSwitch>
+                        </div>
+                    </div>
+
+                    @if (currentEmp.iS_CREATE_USER) {
+                        <div class="animated-sync-zone">
+                            <div class="luxury-form-group">
+                                <label>Tên tài khoản tự sinh</label>
+                                <input
+                                    type="text"
+                                    name="useR_NAME"
+                                    [value]="currentEmp.useR_NAME"
+                                    readonly
+                                    class="form-control-premium readonly-gradient"
+                                />
+                                <small class="text-muted-premium">Gợi ý tự động từ cấu trúc tên nhân sự.</small>
+                            </div>
+                            <div class="luxury-form-group">
+                                <label>Địa chỉ Email phân quyền <span class="required"></span></label>
+                                <input
+                                    type="email"
+                                    #emailInput="ngModel" 
+                                    name="email"
+                                    [(ngModel)]="currentEmp.email"
+                                    required
+                                    email
+                                    placeholder="example@thienphucdental.com"
+                                    class="form-control-premium"
+                                />
+                                <validation-messages [formCtrl]="emailInput"></validation-messages>
+                            </div>
+                            <div class="luxury-form-group">
+                                <label>Vai trò truy cập hệ thống <span class="required"></span></label>
+                                <select class="form-select-premium w-100" name="roleId" [(ngModel)]="currentEmp.emP_ROLE" required #roleInput="ngModel">
+                                    <option [ngValue]="undefined">-- Chọn nhóm quyền hạn --</option>
+                                    <option [ngValue]="1">Quản trị viên tối cao (Admin)</option>
+                                    <option [ngValue]="2">Bác sĩ điều trị lâm sàng</option>
+                                    <option [ngValue]="3">Lễ tân điều phối</option>
+                                </select>
+                                <validation-messages [formCtrl]="roleInput"></validation-messages>
+                            </div>
+                        </div>
+                    }
+                </form>
+            </div>
+
+            <div class="drawer-footer">
+                <button class="btn-secondary-luxury" (click)="closeDrawer()">Hủy bỏ</button>
+                <button class="btn-luxury-gradient" [disabled]="empForm.invalid" (click)="saveData()">Lưu Dữ Liệu</button>
+            </div>
+        </div>
+    </div>
+</div>

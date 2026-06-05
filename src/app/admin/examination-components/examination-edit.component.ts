@@ -15,6 +15,7 @@ import { it } from 'node:test';
 import { CreateTransactionModalComponent } from '../transaction-components/create-transaction-modal.component';
 import { NotifyService } from '@node_modules/abp-ng2-module';
 import { DateTime } from 'luxon';
+import { CalendarModule } from 'primeng/calendar';
 
 
 
@@ -764,12 +765,12 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
       else {
         const srvOrigin = this.cachedServices?.find(x => x.srV_ID === input.tD_SRV_ID);
         months = Number(srvOrigin?.warrantY_PERIOD  || 0);
-        if (months <= 0) return 'Không bảo hành';
+        if (months <= 0) return 'Có bảo hành';
       }
     }
     else {
       months = Number(input || 0);
-      if (months <= 0) return 'Không bảo hành';
+      if (months <= 0) return 'Có bảo hành';
     }
 
     // --- XỬ LÝ CHUỖI HIỂN THỊ LUXURY ---

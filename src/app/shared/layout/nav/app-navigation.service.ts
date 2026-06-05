@@ -141,6 +141,12 @@ export class AppNavigationService {
                 '/app/admin/examination'
             ),
             new AppMenuItem(
+                'Nhân sự',
+                '',
+                'fas fa-users',
+                '/app/admin/employee'
+            ),
+            new AppMenuItem(
                 'Thiết lập',
                 '',
                 'fa-solid fa-list-ul',
@@ -150,8 +156,14 @@ export class AppNavigationService {
                     new AppMenuItem(
                         'Nhóm thủ thuật',
                         '',
-                        'fa-solid fa-list',
+                        'fas fa-layer-group',
                         '/app/admin/procedure-group'
+                    ),
+                    new AppMenuItem(
+                        'Thủ thuật',
+                        '',
+                        'fas fa-file-medical-alt',
+                        '/app/admin/procedure'
                     ),
                 ]
             ),

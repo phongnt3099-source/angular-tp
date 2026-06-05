@@ -144,6 +144,22 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         data: { permission: '' },
                     },
                     {
+                        path: 'procedure',
+                        loadChildren: () =>
+                            import('./procedure-components/procedure-components.module').then(
+                                (m) => m.ProcedureComponentsModule
+                            ),
+                        data: { permission: '' },
+                    },
+                    {
+                        path: 'employee',
+                        loadChildren: () =>
+                            import('./employee-components/employee-components.module').then(
+                                (m) => m.EmployeeComponentsModule
+                            ),
+                        data: { permission: '' },
+                    },
+                    {
                         path: 'install',
                         loadChildren: () => import('./install/install.module').then((m) => m.InstallModule),
                     },

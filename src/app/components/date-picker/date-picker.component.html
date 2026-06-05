@@ -1,0 +1,22 @@
+<div class="luxury-date-wrapper">
+    <p-calendar 
+        [(ngModel)]="innerValue"
+        dateFormat="dd/mm/yy"
+        [showIcon]="true"
+        iconDisplay="input"
+        [showOnFocus]="true"
+        [placeholder]="placeholder"
+        [disabled]="disabled"
+        [required]="required"
+        
+        [inputStyleClass]="inputClass"
+        [maxDate]="maxDate"
+        
+        styleClass="luxury-prime-calendar"
+        
+        panelStyleClass="luxury-calendar-popover"
+        appendTo="body"
+        (onSelect)="onDateSelect()"
+        (onBlur)="onTouched()"
+    ></p-calendar>
+</div>

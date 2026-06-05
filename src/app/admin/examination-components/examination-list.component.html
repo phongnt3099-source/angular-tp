@@ -81,22 +81,36 @@
                 <div class="col-xl-2 col-md-3">
                     <label class="form-filter-label"><i class="fa-solid fa-circle-info me-1 text-indigo"></i> Trạng thái phiếu</label>
                     <select class="form-select-premium" [(ngModel)]="filterInput.exM_STATUS" (change)="refreshList()">
-                        <option [value]="null">Tất cả trạng thái</option>
-                        <option [value]="0">Chờ khám</option>
-                        <option [value]="1">Đang điều trị</option>
-                        <option [value]="2">Hoàn thành</option>
-                        <option [value]="3">Đã hủy</option>
+                        <option [ngValue]="255" selected>Tất cả trạng thái</option>
+                        <option [ngValue]="0">Chờ khám</option>
+                        <option [ngValue]="1">Đang điều trị</option>
+                        <option [ngValue]="2">Hoàn thành</option>
+                        <option [ngValue]="3">Đã hủy</option>
                     </select>
                 </div>
 
                 <div class="col-xl-2 col-md-2">
                     <label class="form-filter-label"><i class="fa-solid fa-calendar-minus me-1 text-indigo"></i> Từ ngày tạo</label>
-                    <input type="date" class="form-control-premium-sm" [(ngModel)]="filterInput.froM_DATE" (change)="refreshList()">
+                   <date-picker
+                        id="FromDate"
+                        name="FromDate"
+                        #fromDateInput="ngModel"
+                        [(ngModel)]="filterInput.froM_DATE"
+                        inputClass="form-control form-control-premium-sm"
+                        (ngModelChange)="refreshList()"
+                    ></date-picker>
                 </div>
 
                 <div class="col-xl-2 col-md-2">
                     <label class="form-filter-label"><i class="fa-solid fa-calendar-plus me-1 text-indigo"></i> Đến ngày tạo</label>
-                    <input type="date" class="form-control-premium-sm" [(ngModel)]="filterInput.tO_DATE" (change)="refreshList()">
+                    <date-picker
+                        id="ToDate"
+                        name="ToDate"
+                        #toDateInput="ngModel"
+                        [(ngModel)]="filterInput.tO_DATE"
+                        inputClass="form-control form-control-premium-sm"
+                        (ngModelChange)="refreshList()"
+                    ></date-picker>
                 </div>
 
                 <div class="col-xl-2 col-md-12">

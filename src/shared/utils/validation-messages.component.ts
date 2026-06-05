@@ -26,7 +26,7 @@ export class ValidationMessagesComponent {
     _errorDefs: ErrorDef[] = [];
 
     readonly standartErrorDefs: ErrorDef[] = [
-        { error: 'required', localizationKey: 'ThisFieldIsRequired' } as ErrorDef,
+        { error: 'required', localizationKey: 'Vui lòng nhập thông tin' } as ErrorDef,
         {
             error: 'minlength',
             localizationKey: 'PleaseEnterAtLeastNCharacter',

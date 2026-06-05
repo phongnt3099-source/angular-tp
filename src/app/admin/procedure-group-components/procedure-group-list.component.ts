@@ -129,24 +129,26 @@ export class ProcedureGroupListComponent extends AppComponentBase implements OnI
     }
 
     if (this.isAddingNew) {
+      this.tempRecord.makeR_ID = this.appSession.user.userName.toString();
       this._serviceTypeService.cM_SERVICE_TYPE_Ins(this.tempRecord).subscribe((response) => {
         if (response.result == '0') {
           this.notify.success(this.l('Thêm Thành Công!'));
           this.cancel();
         }
         else {
-          this.notify.error(this.l('Thêm Thất Bại! ') + ': ' + response.errorDesc);
+          this.notify.error(this.l('Thêm Thất Bại!') + ': ' + response.errorDesc);
         }
 
       });
     } else {
+      this.tempRecord.updatE_USER = this.appSession.user.userName.toString();
       this._serviceTypeService.cM_SERVICE_TYPE_Upd(this.tempRecord).subscribe((response) => {
         if (response.result == '0') {
-          this.notify.success(this.l('Thêm Thành Công!'));
+          this.notify.success(this.l('Cập Nhật Thành Công!'));
           this.cancel();
         }
         else {
-          this.notify.error(this.l('Thêm Thất Bại! ') + ': ' + response.errorDesc);
+          this.notify.error(this.l('Cập Nhật Thất Bại!') + ': ' + response.errorDesc);
         }
       });
     }
@@ -162,12 +164,12 @@ export class ProcedureGroupListComponent extends AppComponentBase implements OnI
     record.isactive! = !record.isactive!;
     this._serviceTypeService.cM_SERVICE_TYPE_Upd(record).subscribe((response) => {
       if (response.result == '0') {
-          this.notify.success(this.l('Cập Nhật Trạng Thái Thành Công!'));
-          this.cancel();
-        }
-        else {
-          this.notify.error(this.l('Cập Nhật Trạng Thái Thất Bại! ') + ': ' + response.errorDesc);
-        }
+        this.notify.success(this.l('Cập Nhật Trạng Thái Thành Công!'));
+        this.cancel();
+      }
+      else {
+        this.notify.error(this.l('Cập Nhật Trạng Thái Thất Bại!') + ': ' + response.errorDesc);
+      }
       this.loadData();
     });
   }
@@ -183,8 +185,14 @@ export class ProcedureGroupListComponent extends AppComponentBase implements OnI
       'Xác nhận xóa dữ liệu',
       (isConfirmed) => {
         if (isConfirmed) {
-          this._serviceTypeService.cM_SERVICE_TYPE_Del(record.sT_ID).subscribe(() => {
-            this.notify.success(this.l('SuccessfullyDeleted'));
+          this._serviceTypeService.cM_SERVICE_TYPE_Del(record.sT_ID).subscribe((response) => {
+            if (response.result == '0') {
+              this.notify.success(this.l('Xóa Thành Công!'));
+              this.cancel();
+            }
+            else {
+              this.notify.error(this.l('Xóa Thất Bại!') + ': ' + response.errorDesc);
+            }
             this.loadData();
           });
         }

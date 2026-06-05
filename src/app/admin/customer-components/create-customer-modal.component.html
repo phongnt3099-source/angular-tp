@@ -9,7 +9,7 @@
     aria-hidden="true"
     [config]="{ backdrop: 'static', keyboard: !saving }"
 >
-    <div class="modal-dialog modal-xl" style="max-width: 95%;">
+    <div class="modal-dialog modal-xl" style="max-width: 75%">
         <div class="modal-content">
             <form
                 #tenantCreateForm="ngForm"
@@ -39,60 +39,93 @@
                         </div>
                         <h5 class="modal-title-custom mb-0 text-white">{{ 'THÊM MỚI KHÁCH HÀNG' | localize }}</h5>
                     </div>
-                    <button type="button" class="btn-close btn-close-white shadow-none" (click)="close()" aria-label="Close"></button>
+                    <button
+                        type="button"
+                        class="btn-close btn-close-white shadow-none"
+                        (click)="close()"
+                        aria-label="Close"
+                    ></button>
                 </div>
 
                 <div class="modal-body row">
                     <div class="col-md-6 mb-5">
-                    <label class="form-label" for="CusCode">{{ 'Mã khách hàng:' | localize }}</label>
-                    <div class="input-group custom-toggle-input">
-                        <div class="input-group-text bg-light border-end-0">
-                            <label class="form-check form-switch mb-0">
-                                <input class="form-check-input me-2" type="checkbox" role="switch" (change)="customer.cuS_CODE = ''"
-                                    [(ngModel)]="isAutoGenerate" name="autoGen">
-                                <span class="small text-muted">{{ 'Tạo tự động' | localize }}</span>
-                            </label>
+                        <label class="form-label" for="CusCode">{{ 'Mã khách hàng:' | localize }}</label>
+                        <div class="input-group custom-toggle-input">
+                            <div class="input-group-text bg-light border-end-0">
+                                <label class="form-check form-switch mb-0">
+                                    <input
+                                        class="form-check-input me-2"
+                                        type="checkbox"
+                                        role="switch"
+                                        (change)="customer.cuS_CODE = ''"
+                                        [(ngModel)]="isAutoGenerate"
+                                        name="autoGen"
+                                    />
+                                    <span class="small text-muted">{{ 'Tạo tự động' | localize }}</span>
+                                </label>
+                            </div>
+
+                            <input
+                                id="CusCode"
+                                #cusCodeInput="ngModel"
+                                class="form-control ps-3"
+                                type="text"
+                                [ngClass]="{
+                                    edited: customer.cuS_CODE,
+                                    'text-success font-weight-bold': isAutoGenerate
+                                }"
+                                name="cusCode"
+                                [(ngModel)]="customer.cuS_CODE"
+                                [disabled]="isAutoGenerate"
+                                placeholder="{{ isAutoGenerate ? ('Hệ thống tự tạo' | localize) : '' }}"
+                            />
                         </div>
-                        
-                        <input
-                            id="CusCode"
-                            #cusCodeInput="ngModel"
-                            class="form-control ps-3"
-                            type="text" 
-                            [ngClass]="{ 'edited': customer.cuS_CODE, 'text-success font-weight-bold': isAutoGenerate }"
-                            name="cusCode"
-                            [(ngModel)]="customer.cuS_CODE"
-                            [disabled]="isAutoGenerate" 
-                            placeholder="{{ isAutoGenerate ? ( 'Hệ thống tự tạo' | localize) : '' }}"
-                        />
                     </div>
-                </div>
 
                     <div class="col-md-6 mb-4">
                         <label class="form-label fw-bold text-dark fs-4 mb-3">
-                            <i class="fas fa-venus-mars me-2"></i>{{ 'Giới tính:' | localize }}
+                            <i class="fas fa-venus-mars me-2"></i>
+                            {{ 'Giới tính:' | localize }}
                         </label>
 
                         <div class="d-flex gap-5 mt-2">
                             <div class="form-check custom-radio-large">
-                                <input class="form-check-input" type="radio" name="gender" id="male" 
-                                    [value]="1" [(ngModel)]="customer.cuS_GENDER">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="gender"
+                                    id="male"
+                                    [value]="1"
+                                    [(ngModel)]="customer.cuS_GENDER"
+                                />
                                 <label class="form-check-label fw-semibold text-dark fs-5" for="male">
                                     {{ 'Nam' | localize }}
                                 </label>
                             </div>
 
                             <div class="form-check custom-radio-large">
-                                <input class="form-check-input" type="radio" name="gender" id="female" 
-                                    [value]="2" [(ngModel)]="customer.cuS_GENDER">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="gender"
+                                    id="female"
+                                    [value]="2"
+                                    [(ngModel)]="customer.cuS_GENDER"
+                                />
                                 <label class="form-check-label fw-semibold text-dark fs-5" for="female">
                                     {{ 'Nữ' | localize }}
                                 </label>
                             </div>
 
                             <div class="form-check custom-radio-large">
-                                <input class="form-check-input" type="radio" name="gender" id="other" 
-                                    [value]="3" [(ngModel)]="customer.cuS_GENDER">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="gender"
+                                    id="other"
+                                    [value]="3"
+                                    [(ngModel)]="customer.cuS_GENDER"
+                                />
                                 <label class="form-check-label fw-semibold text-dark fs-5" for="other">
                                     {{ 'Khác' | localize }}
                                 </label>
@@ -101,62 +134,60 @@
                     </div>
 
                     <div class="col-md-6 mb-5">
-                        <label class="form-label required fw-bold text-dark" for="Name">{{ 'Tên khách hàng:' | localize }}</label>
-                        
-                        <div class="luxury-input-wrapper">
-                            <input
-                                id="Name"
-                                #nameInput="ngModel"
-                                type="text"
-                                name="Name"
-                                class="form-control luxury-text-input"
-                                [ngClass]="{ edited: customer.cuS_NAME }"
-                                [(ngModel)]="customer.cuS_NAME"
-                                required
-                            />
-                            
-                            <div class="case-converter-actions d-flex gap-1.5 mt-1.5 justify-content-end" *ngIf="customer.cuS_NAME">
-                                <button type="button" class="btn btn-case-action" (click)="changeTextCase('ABC')" title="VIẾT HOA TOÀN BỘ">ABC</button>
-                                <button type="button" class="btn btn-case-action" (click)="changeTextCase('Abc')" title="Viết Hoa Chữ Đầu">Abc</button>
-                                <button type="button" class="btn btn-case-action" (click)="changeTextCase('abc')" title="viết thường toàn bộ">abc</button>
-                            </div>
-                        </div>
-                        
-                        <validation-messages [formCtrl]="nameInput"></validation-messages>
-                    </div>
-
-                    <div class="col-md-6 mb-5">
-                        <label class="form-label" for="Phone">{{ 'Số điện thoại' | localize }}</label>
+                    <label class="form-label required fw-bold text-dark" for="Name">{{ 'Tên khách hàng:' | localize }}</label>
+                    
+                    <div class="luxury-input-wrapper">
                         <input
-                            id="Phone"
-                            #phoneInput="ngModel"
+                            id="Name"
+                            #nameInput="ngModel"
                             type="text"
-                            name="Phone"
+                            name="Name"
                             class="form-control luxury-text-input"
-                            [ngClass]="{ edited: customer.cuS_PHONE}"
-                            [(ngModel)]="customer.cuS_PHONE"
+                            [ngClass]="{ edited: customer.cuS_NAME }"
+                            [(ngModel)]="customer.cuS_NAME"
                             required
                         />
-                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                        
+                        <div class="case-converter-actions d-flex gap-1.5 mt-1.5 justify-content-end" *ngIf="customer.cuS_NAME">
+                            <button type="button" class="btn btn-case-action" (click)="changeTextCase('ABC')" title="VIẾT HOA TOÀN BỘ">ABC</button>
+                            <button type="button" class="btn btn-case-action" (click)="changeTextCase('Abc')" title="Viết Hoa Chữ Đầu">Abc</button>
+                            <button type="button" class="btn btn-case-action" (click)="changeTextCase('abc')" title="viết thường toàn bộ">abc</button>
+                        </div>
                     </div>
-                    <div>
-                        <span class="form-control-feedback" *ngIf="!phoneInput.valid && !phoneInput.pristine">
-                            {{ 'Số điện thoại chưa đúng định dạng' | localize }}
-                        </span>
-                    </div>
+                    
+                    <validation-messages [formCtrl]="nameInput"></validation-messages>
+                </div>
+
+                <div class="col-md-6 mb-5 position-relative">
+                    <label class="form-label required" for="Phone">{{ 'Số điện thoại:' | localize }}</label>
+                   <input
+                        id="Phone"
+                        #phoneInput="ngModel"
+                        type="text"
+                        name="Phone"
+                        class="form-control luxury-text-input"
+                        [(ngModel)]="customer.cuS_PHONE"
+                        required
+                        pattern="^(0[3|5|7|8|9])+([0-9]{8})\b$"
+                    />
+
+                    <validation-messages 
+                        [formCtrl]="phoneInput" 
+                        [errorDefs]="[{ error: 'pattern', localizationKey: 'Số điện thoại chưa đúng định dạng' }]">
+                    </validation-messages>
+                </div>
 
                     <div class="col-md-6 mb-5">
                         <label class="form-label required" for="DOB">{{ 'Ngày sinh:' | localize }}</label>
-                        <input
+                        <date-picker
                             id="DOB"
-                            type="text"
                             name="DOB"
-                            class="form-control luxury-text-input"    
-                            bsDatepicker
-                            datePickerLuxonModifier
-                            [(date)]="customer.cuS_DOB"
-                            [bsConfig]="{ adaptivePosition: true }"
-                        />
+                            #dobInput="ngModel"
+                            [(ngModel)]="customer.cuS_DOB"
+                            [required]="true"
+                            inputClass="form-control luxury-text-input"
+                        ></date-picker>
+                        <validation-messages [formCtrl]="dobInput"></validation-messages>
                     </div>
                     <div class="col-md-6 mb-5">
                         <label class="form-label" for="Email">{{ 'Email:' | localize }}</label>
@@ -166,11 +197,15 @@
                             type="text"
                             name="Email"
                             class="form-control luxury-text-input"
-                            [ngClass]="{ edited: customer.cuS_EMAIL}"
+                            [ngClass]="{ edited: customer.cuS_EMAIL }"
                             [(ngModel)]="customer.cuS_EMAIL"
+                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                         />
-                        <validation-messages [formCtrl]="EmailInput"></validation-messages>
-                    </div>  
+                        <validation-messages 
+                            [formCtrl]="EmailInput" 
+                            [errorDefs]="[{ error: 'pattern', localizationKey: 'Email chưa đúng định dạng' }]">
+                        </validation-messages>
+                    </div>
                     <div class="col-md-12 mb-5">
                         <label class="form-label required" for="Address">{{ 'Địa chỉ:' | localize }}</label>
                         <input
@@ -179,32 +214,32 @@
                             type="text"
                             name="Address"
                             class="form-control luxury-text-input"
-                            [ngClass]="{ edited: customer.cuS_ADDRESS}"
+                            [ngClass]="{ edited: customer.cuS_ADDRESS }"
                             [(ngModel)]="customer.cuS_ADDRESS"
                             required
                         />
                         <validation-messages [formCtrl]="AddressInput"></validation-messages>
-                    </div> 
+                    </div>
                     <div class="col-md-6 mb-5">
                         <label class="form-label">{{ 'Tỉnh/Thành phố:' | localize }}</label>
-                        <app-dropdown 
-                            [dataList]="provinces" 
-                            labelField="content" 
-                            valueField="cdval" 
+                        <app-dropdown
+                            [dataList]="provinces"
+                            labelField="content"
+                            valueField="cdval"
                             placeholder="-Chọn tỉnh/thành phố---"
                             [(selectedValue)]="selectedCity"
-                            (selectedValueChange)="onCityChange($event)">
-                        </app-dropdown> 
-                    </div>  
+                            (selectedValueChange)="onCityChange($event)"
+                        ></app-dropdown>
+                    </div>
                     <div class="col-md-6 mb-5">
                         <label class="form-label">{{ 'Xã/Phường:' | localize }}</label>
-                        <app-dropdown 
-                            [dataList]="wards" 
-                            labelField="content" 
-                            valueField="cdval" 
+                        <app-dropdown
+                            [dataList]="wards"
+                            labelField="content"
+                            valueField="cdval"
                             placeholder="-Chọn xã/phường---"
-                            [(selectedValue)]="selectedWard">
-                        </app-dropdown> 
+                            [(selectedValue)]="selectedWard"
+                        ></app-dropdown>
                     </div>
                     <div class="col-md-6 mb-5">
                         <label class="form-label" for="CCCD">{{ 'CMND/CCCD/Hộ chiếu:' | localize }}</label>
@@ -214,10 +249,10 @@
                             type="text"
                             name="CCCD"
                             class="form-control luxury-text-input"
-                            [ngClass]="{ edited: customer.cuS_CCCD}"
+                            [ngClass]="{ edited: customer.cuS_CCCD }"
                             [(ngModel)]="customer.cuS_CCCD"
                         />
-                    </div> 
+                    </div>
                     <div class="col-md-6 mb-5">
                         <label class="form-label" for="Occupation">{{ 'Nghề nghiệp:' | localize }}</label>
                         <input
@@ -226,10 +261,10 @@
                             type="text"
                             name="Occupation"
                             class="form-control luxury-text-input"
-                            [ngClass]="{ edited: customer.cuS_JOB}"
+                            [ngClass]="{ edited: customer.cuS_JOB }"
                             [(ngModel)]="customer.cuS_JOB"
                         />
-                    </div> 
+                    </div>
                     <div class="col-md-6 mb-5">
                         <label class="form-label" for="Ethnicity">{{ 'Dân tộc:' | localize }}</label>
                         <input
@@ -238,89 +273,174 @@
                             type="text"
                             name="Ethnicity"
                             class="form-control luxury-text-input"
-                            [ngClass]="{ edited: customer.cuS_ETHNICITY}"
+                            [ngClass]="{ edited: customer.cuS_ETHNICITY }"
                             [(ngModel)]="customer.cuS_ETHNICITY"
                         />
-                    </div>  
-                     <div class="col-md-6 mb-5">
+                    </div>
+                    <div class="col-md-6 mb-5">
                         <label class="form-label">{{ 'Quốc tịch:' | localize }}</label>
-                        <app-dropdown 
-                            [dataList]="nationalities" 
-                            labelField="content" 
-                            valueField="cdval" 
+                        <app-dropdown
+                            [dataList]="nationalities"
+                            labelField="content"
+                            valueField="cdval"
                             placeholder="-Chọn quốc tịch---"
-                            [(selectedValue)]="selectedNationality">
-                        </app-dropdown>
+                            [(selectedValue)]="selectedNationality"
+                        ></app-dropdown>
                     </div>
                     <div class="card border-0 shadow-sm mt-3">
                         <div class="card-header bg-white py-3 border-bottom-0">
                             <h6 class="m-0 font-weight-bold text-primary">
-                                <i class="fas fa-file-medical me-2"></i>{{ 'THÔNG TIN Y TẾ' | localize }}
+                                <i class="fas fa-file-medical me-2"></i>
+                                {{ 'THÔNG TIN Y TẾ' | localize }}
                             </h6>
                         </div>
 
                         <div class="card-body pt-0">
                             <div class="medical-section p-3 rounded-3 bg-light-blue mb-4">
                                 <label class="form-label fw-bold text-dark mb-3">
-                                    {{ 'Tiền sử bệnh' | localize }} 
-                                    <i class="fas fa-info-circle ms-1 text-info" title="Vui lòng chọn các tình trạng bệnh lý hiện có"></i>
+                                    {{ 'Tiền sử bệnh' | localize }}
+                                    <i
+                                        class="fas fa-info-circle ms-1 text-info"
+                                        title="Vui lòng chọn các tình trạng bệnh lý hiện có"
+                                    ></i>
                                 </label>
-                                
+
                                 <div class="row gx-4 gy-2">
                                     <div class="col-lg-4 col-md-6">
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isHuyetAp" id="hp" [(ngModel)]="customer.isHuyetAp">
-                                            <label class="form-check-label" for="hp">Huyết Áp</label>
-                                        </div>
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isDongKinh" id="dk" [(ngModel)]="customer.isDongKinh">
-                                            <label class="form-check-label" for="dk">Động kinh</label>
-                                        </div>
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isMauKhongDong" id="mkd" [(ngModel)]="customer.isMauKhongDong">
-                                            <label class="form-check-label" for="mkd">Máu không đông</label>
-                                        </div>
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isBenhTim" id="bt" [(ngModel)]="customer.isBenhTim">
-                                            <label class="form-check-label" for="bt">Bệnh Tim</label>
-                                        </div>
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="hp">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isHuyetAp"
+                                                id="hp"
+                                                [(ngModel)]="customer.isHuyetAp"
+                                            />
+                                            <span class="checkbox-text-label">Huyết Áp</span>
+                                        </label>
+
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="dk">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isDongKinh"
+                                                id="dk"
+                                                [(ngModel)]="customer.isDongKinh"
+                                            />
+                                            <span class="checkbox-text-label">Động kinh</span>
+                                        </label>
+
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="mkd">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isMauKhongDong"
+                                                id="mkd"
+                                                [(ngModel)]="customer.isMauKhongDong"
+                                            />
+                                            <span class="checkbox-text-label">Máu không đông</span>
+                                        </label>
+
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="bt">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isBenhTim"
+                                                id="bt"
+                                                [(ngModel)]="customer.isBenhTim"
+                                            />
+                                            <span class="checkbox-text-label">Bệnh Tim</span>
+                                        </label>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isTieuDuongType1" id="dt1" [(ngModel)]="customer.isTieuDuongType1">
-                                            <label class="form-check-label" for="dt1">Đái tháo đường type 1</label>
-                                        </div>
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isTieuDuongType2" id="dt2" [(ngModel)]="customer.isTieuDuongType2">
-                                            <label class="form-check-label" for="dt2">Đái tháo đường type 2</label>
-                                        </div>
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isDiUng" id="du" [(ngModel)]="customer.isDiUng">
-                                            <label class="form-check-label" for="du">Dị ứng</label>
-                                        </div>
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isSocPhanVe" id="spv" [(ngModel)]="customer.isSocPhanVe">
-                                            <label class="form-check-label" for="spv">Sốc phản vệ</label>
-                                        </div>
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="dt1">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isTieuDuongType1"
+                                                id="dt1"
+                                                [(ngModel)]="customer.isTieuDuongType1"
+                                            />
+                                            <span class="checkbox-text-label">Đái tháo đường type 1</span>
+                                        </label>
+
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="dt2">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isTieuDuongType2"
+                                                id="dt2"
+                                                [(ngModel)]="customer.isTieuDuongType2"
+                                            />
+                                            <span class="checkbox-text-label">Đái tháo đường type 2</span>
+                                        </label>
+
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="du">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isDiUng"
+                                                id="du"
+                                                [(ngModel)]="customer.isDiUng"
+                                            />
+                                            <span class="checkbox-text-label">Dị ứng</span>
+                                        </label>
+
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="spv">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isSocPhanVe"
+                                                id="spv"
+                                                [(ngModel)]="customer.isSocPhanVe"
+                                            />
+                                            <span class="checkbox-text-label">Sốc phản vệ</span>
+                                        </label>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isStentVanh" id="stent" [(ngModel)]="customer.isStentVanh">
-                                            <label class="form-check-label" for="stent">Đặt stent ĐM vành</label>
-                                        </div>
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isDotQuy" id="dq" [(ngModel)]="customer.isDotQuy">
-                                            <label class="form-check-label" for="dq">Đột qụy</label>
-                                        </div>
-                                        <div class="form-check custom-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="isLoangXuong" id="lx" [(ngModel)]="customer.isLoangXuong">
-                                            <label class="form-check-label" for="lx">Loãng xương</label>
-                                        </div>
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="stent">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isStentVanh"
+                                                id="stent"
+                                                [(ngModel)]="customer.isStentVanh"
+                                            />
+                                            <span class="checkbox-text-label">Đặt stent ĐM vành</span>
+                                        </label>
+
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="dq">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isDotQuy"
+                                                id="dq"
+                                                [(ngModel)]="customer.isDotQuy"
+                                            />
+                                            <span class="checkbox-text-label">Đột qụy</span>
+                                        </label>
+
+                                        <label class="custom-checkbox-luxury d-flex align-items-center" for="lx">
+                                            <input
+                                                class="form-check-input-luxury"
+                                                type="checkbox"
+                                                name="isLoangXuong"
+                                                id="lx"
+                                                [(ngModel)]="customer.isLoangXuong"
+                                            />
+                                            <span class="checkbox-text-label">Loãng xương</span>
+                                        </label>
+
                                         <div class="other-medical d-flex align-items-center mt-1">
                                             <span class="small text-muted me-2">Khác:</span>
-                                            <input type="text" class="form-control form-control-sm border-0 border-bottom bg-transparent" name="cuS_MEDICAL_HISTORY_NOTES" [(ngModel)]="customer.cuS_MEDICAL_HISTORY_NOTES" placeholder="...">
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm border-0 border-bottom bg-transparent"
+                                                name="cuS_MEDICAL_HISTORY_NOTES"
+                                                [(ngModel)]="customer.cuS_MEDICAL_HISTORY_NOTES"
+                                                placeholder="..."
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -328,8 +448,16 @@
 
                             <div class="row">
                                 <div class="col-12">
-                                    <label class="form-label small fw-bold text-secondary">{{ 'Ghi chú y tế:' | localize }}</label>
-                                    <textarea class="form-control border-secondary-subtle" rows="2" name="notes" [(ngModel)]="customer.notes" placeholder="Ví dụ: Dị ứng thuốc tê, sợ kim tiêm..."></textarea>
+                                    <label class="form-label small fw-bold text-secondary">
+                                        {{ 'Ghi chú y tế:' | localize }}
+                                    </label>
+                                    <textarea
+                                        class="form-control border-secondary-subtle"
+                                        rows="2"
+                                        name="notes"
+                                        [(ngModel)]="customer.notes"
+                                        placeholder="Ví dụ: Dị ứng thuốc tê, sợ kim tiêm..."
+                                    ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -354,9 +482,11 @@
                         <i class="fa fa-save"></i>
                         <span>{{ 'Save' | localize }}</span>
                     </button> -->
-                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" (click)="close()">HỦY BỎ</button>
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" (click)="close()">
+                        HỦY BỎ
+                    </button>
                     <!-- [disabled]="!appointmentForm.valid || saving" -->
-                    <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow" >
+                    <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow">
                         <i class="fa fa-save"></i>
                         <span>{{ 'LƯU KHÁCH HÀNG' | localize }}</span>
                     </button>

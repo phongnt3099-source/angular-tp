@@ -11,6 +11,7 @@ import {
 import { filter as _filter } from 'lodash-es';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'createCustomerModal',
@@ -19,6 +20,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class CreateCustomerModalComponent extends AppComponentBase {
     @ViewChild('createModal', { static: true }) modal!: ModalDirective;
+    @ViewChild('tenantCreateForm', { static: false }) tenantCreateForm!: NgForm;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -114,6 +116,11 @@ export class CreateCustomerModalComponent extends AppComponentBase {
 
     save(): void {
         this.saving = true;
+        this.tenantCreateForm.form.markAllAsTouched();
+
+        if (this.tenantCreateForm.form.invalid) {
+            return; // Dừng lại không cho lưu
+        }
 
         this.customer.cuS_CITY = this.selectedCity;
         this.customer.cuS_WARD = this.selectedWard;

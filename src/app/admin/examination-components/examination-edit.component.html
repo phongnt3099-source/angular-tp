@@ -366,11 +366,17 @@
                                 <div class="grand-total-luxury-box debt-box" [class.debt-zero-box]="debtAmount === 0">
                                     <div class="billing-line total-debt-line m-0">
                                         <span class="debt-label">
-                                            <i *ngIf="debtAmount === 0" class="fa-solid fa-circle-check me-1.5 icon-status-glow"></i>
-                                            <i *ngIf="debtAmount > 0" class="fa-solid fa-circle-exclamation me-1.5 icon-status-glow"></i>
+                                            <i
+                                                *ngIf="debtAmount === 0"
+                                                class="fa-solid fa-circle-check me-1.5 icon-status-glow"
+                                            ></i>
+                                            <i
+                                                *ngIf="debtAmount > 0"
+                                                class="fa-solid fa-circle-exclamation me-1.5 icon-status-glow"
+                                            ></i>
                                             {{ debtAmount === 0 ? 'HOÀN TẤT THANH TOÁN' : 'DƯ NỢ CHƯA THU' }}
                                         </span>
-                                        
+
                                         <span class="debt-value-grand">
                                             {{ debtAmount | number }}
                                             <span class="final-unit">đ</span>
@@ -384,7 +390,7 @@
             </div>
         </div>
 
-        <div class="patient-sidebar">
+        <div class="patient-sidebar" style="height: 100% !important; display: flex !important; flex-direction: column !important;">
             <div class="patient-card shadow-sm">
                 <div class="patient-card-header text-center">
                     <div class="mb-3">
@@ -524,6 +530,17 @@
                                             [max]="maxCurrentDate"
                                             [disabled]="!!examination?.exM_CODE"
                                             name="invoiceCreationDate"
+                                            style="
+                                                position: absolute !important;
+                                                top: 0 !important;
+                                                left: 0 !important;
+                                                width: 100% !important;
+                                                height: 100% !important;
+                                                opacity: 0 !important;
+                                                display: block !important;
+                                                cursor: pointer !important;
+                                                z-index: 2 !important;
+                                            "
                                         />
                                     </div>
                                 </div>
@@ -553,12 +570,24 @@
                                         <span class="active-status-dot"></span>
                                     </div>
 
-                                    <div class="clinic-doctor-info flex-grow-1">
-                                        <div class="position-relative w-100 select-wrapper-custom">
-                                            <div class="doctor-input-wrapper-inner d-flex align-items-center">
+                                    <div
+                                        class="clinic-doctor-info flex-grow-1"
+                                        style="overflow: visible !important; position: relative !important"
+                                    >
+                                        <div
+                                            class="position-relative w-100 select-wrapper-custom"
+                                            style="overflow: visible !important; z-index: 9999 !important"
+                                        >
+                                            <div
+                                                class="doctor-input-wrapper-inner d-flex align-items-center"
+                                                style="overflow: visible !important"
+                                            >
                                                 <span class="doctor-prefix-text fw-bold text-primary me-2">BS.</span>
 
-                                                <div class="flex-grow-1">
+                                                <div
+                                                    class="flex-grow-1"
+                                                    style="overflow: visible !important; position: relative !important"
+                                                >
                                                     <app-dropdown
                                                         #doctorDropdown
                                                         [dataList]="listDoctors"
@@ -570,6 +599,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="clinic-doctor-subtext text-muted small mt-1">
                                             <i class="fa-solid fa-star text-warning me-1"></i>
                                             Quản lý ca bệnh & Chỉ định điều trị
@@ -854,7 +884,10 @@
                                             />
                                         </td>
                                         <td>
-                                            <span class="badge bg-light text-dark font-monospace border">
+                                            <span
+                                                class="badge bg-light text-dark font-monospace border"
+                                                [hidden]="!srv.srV_CODE"
+                                            >
                                                 {{ srv.srV_CODE }}
                                             </span>
                                         </td>

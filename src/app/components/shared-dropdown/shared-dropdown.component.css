@@ -25,17 +25,19 @@
 
 /* Box đổ xuống */
 .tp-dropdown-panel {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  margin-top: 4px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 9999;
-  overflow: hidden;
+  position: absolute !important; /* Giữ nguyên vị trí tuyệt đối theo ô input cha */
+  top: 100% !important;
+  left: 0 !important;
+  width: 100% !important;
+  background: #fff !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 8px !important;
+  margin-top: 4px !important;
+  overflow: hidden !important;
+  
+  /* BỘ ĐÔI QUYẾT ĐỊNH NỔI LÊN BỀ MẶT */
+  z-index: 999999999 !important; /* Đẩy lớp hiển thị lên cao nhất */
+  display: block !important;       /* Ép hiển thị dạng khối */
 }
 
 .search-sticky {

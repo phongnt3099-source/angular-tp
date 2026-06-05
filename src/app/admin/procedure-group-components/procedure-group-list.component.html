@@ -2,6 +2,7 @@
     <app-header
         [title]="'Danh sách Nhóm thủ thuật'"
         [buttonText]="'Thêm mới'"
+        class="d-block mb-5"
         [permission]="'Pages.Tenants.Create' | permission"
         (addClicked)="addNewRow()"
     ></app-header>
@@ -78,12 +79,14 @@
                         <td class="text-center">
                             <button
                                 class="btn-status-toggle"
-                                [class.is-active]="record.isactive!"
+                                [class.is-active]="record.isactive"
                                 (click)="toggleActive(record)"
                                 [disabled]="editingRow === record"
                             >
-                                <i class="fas" [ngClass]="record.isactive! ? 'fa-check-circle' : 'fa-eye-slash'"></i>
-                                {{ record.isactive! ? 'ĐANG HIỂN THỊ' : 'ẨN TOÀN BỘ' }}
+                                <i class="fa-solid me-1.5" 
+                                [ngClass]="record.isactive ? 'fa-circle-check status-active-breath' : 'fa-eye-slash text-muted'"></i>
+                                
+                                <span class="status-text-label">{{ record.isactive ? 'ĐANG HIỂN THỊ' : 'ẨN TOÀN BỘ' }}</span>
                             </button>
                         </td>
 
@@ -111,6 +114,24 @@
                     </tr>
                 </ng-template>
             </p-table>
+            <div
+                class="no-data-luxury"
+                *ngIf="primengTableHelper.records?.length === 0 && !primengTableHelper.isLoading"
+            >
+                <div class="luxury-empty-art">
+                    <div class="art-circle">
+                        <i class="fa-light fa-sparkles art-icon-1"></i>
+                        <i class="fa-thin fa-folder-open art-icon-2"></i>
+                    </div>
+                </div>
+                <h3>KHÔNG TÌM THẤY DỮ LIỆU PHÙ HỢP</h3>
+                <p>Hệ thống không tìm thấy thủ thuật nào khớp với bộ lọc hiện tại của bạn.</p>
+
+                <button class="btn-clear-filter" (click)="filterName = ''; filterStatus = 'ALL'; applyFilter()">
+                    <i class="fa-light fa-arrow-rotate-left me-2"></i>
+                    LÀM SẠCH BỘ LỌC
+                </button>
+            </div>
             <div class="primeng-paging-container" style="padding-top: 15px;">
                 <p-paginator
                     [rows]="primengTableHelper.defaultRecordsCountPerPage"
@@ -121,11 +142,6 @@
                     [showCurrentPageReport]="true"
                     [currentPageReportTemplate]="'Tổng số dòng: {totalRecords}'"
                 ></p-paginator>
-            </div>
-
-            <div class="no-data-luxury" *ngIf="primengTableHelper.records?.length === 0 && !primengTableHelper.isLoading">
-                <i class="fas fa-search mb-3"></i>
-                <p>Không tìm thấy kết quả phù hợp với bộ lọc hiện tại</p>
             </div>
         </div>
     </div>

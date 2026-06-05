@@ -10,6 +10,8 @@ import { ExaminationEditComponent } from './examination-edit.component';
 import { ExaminationComponentsRoutingModule } from './examination-components-routing.module';
 import { ExaminationListComponent } from './examination-list.component';
 import { TransactionComponentsModule } from '../transaction-components/transaction-components.module';
+import { DatePickerComponent } from '@app/components/date-picker/date-picker.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
     declarations: [
@@ -17,7 +19,18 @@ import { TransactionComponentsModule } from '../transaction-components/transacti
         ExaminationListComponent,
 
     ],
-    imports: [AppSharedModule, AdminSharedModule, ExaminationComponentsRoutingModule,SharedDropdownComponent,TransactionComponentsModule,CommonModule,AppointmentComponentsModule,HeaderComponent],
+    imports: [
+              AppSharedModule,
+              AdminSharedModule,
+              ExaminationComponentsRoutingModule,
+              SharedDropdownComponent,
+              TransactionComponentsModule,
+              CommonModule,
+              AppointmentComponentsModule,
+              HeaderComponent,
+              DatePickerComponent,
+              CalendarModule,
+            ],
     providers: [
         CustomerServiceProxy,
         ExaminationServiceProxy,

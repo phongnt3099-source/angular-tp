@@ -7,7 +7,7 @@ $bg-luxury: #f4f5f7;
 $border-premium: #e8ebf0;
 
 .luxury-container {
-  padding: 50px;
+  padding: 0 30px;
   background: $bg-luxury;
   font-family: 'Inter', -apple-system, system-ui, sans-serif;
 
@@ -315,11 +315,156 @@ $border-premium: #e8ebf0;
   }
 }
 
-.no-data-luxury {
-  text-align: center;
-  padding: 60px;
-  color: #666;
-  font-size: 0.95rem;
-  font-weight: 500;
-  i { font-size: 2.2rem; color: #cbd5e1; }
+:host ::ng-deep {
+  .no-data-luxury {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 12px;
+    transition: all 0.4s ease;
+
+    .luxury-empty-art {
+      position: relative;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .art-circle {
+        width: 90px;
+        height: 90px;
+        border: 1px dashed #e2e8f0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: radial-gradient(circle, #fafafa 0%, #ffffff 100%);
+        
+        .art-icon-2 {
+          font-size: 2rem;
+          color: #cbd5e1;
+          font-weight: 100;
+        }
+
+        .art-icon-1 {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          font-size: 1rem;
+          color: #c5a059; /* Điểm xuyết sắc vàng kim của phòng khám */
+          animation: pulseGlow 3s infinite ease-in-out;
+        }
+      }
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #1e293b;
+      margin: 0 0 10px 0;
+    }
+
+    p {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      font-weight: 400;
+      max-width: 360px;
+      margin: 0 0 28px 0;
+      line-height: 1.5;
+    }
+
+    /* Nút xóa bộ lọc mảnh mai tinh tế */
+    .btn-clear-filter {
+      background: transparent;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      padding: 10px 24px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        color: #1e293b;
+        transform: translateY(-1px);
+      }
+      
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+  }
+  .btn-status-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+    .status-text-label {
+      line-height: 1;
+    }
+
+    /* KHI TRẠNG THÁI ĐANG ACTIVE (HIỂN THỊ XANH LÁ LUXURY) */
+    &.is-active {
+      background: #f0fdf4 !important;
+      color: #15803d !important;
+      border-color: #bbf7d0 !important;
+      box-shadow: 0 2px 8px rgba(21, 128, 61, 0.04);
+
+      /* Đổi màu sắc icon và kích hoạt nhịp thở neon */
+      .status-active-breath {
+        color: #10b981 !important;
+        display: inline-block;
+        filter: drop-shadow(0 1px 2px rgba(16, 185, 129, 0.2));
+        animation: emeraldBreath 2.5s infinite ease-in-out;
+      }
+
+      &:hover:not([disabled]) {
+        background: #e6fced !important;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+        transform: translateY(-0.5px);
+      }
+    }
+
+    /* Trạng thái khi dòng đang bị khóa chỉnh sửa */
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 4px rgba(197, 160, 89, 0.4)); }
+}
+@keyframes emeraldBreath {
+  0%, 100% {
+    filter: drop-shadow(0 1px 2px rgba(16, 185, 129, 0.3));
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    filter: drop-shadow(0 3px 10px rgba(16, 185, 129, 0.75));
+    transform: scale(1.12); /* Giãn nở nhẹ tạo độ lấp lánh nhẹ nhàng */
+    opacity: 1;
+  }
 }
