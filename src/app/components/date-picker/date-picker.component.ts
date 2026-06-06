@@ -73,4 +73,26 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
         this.onChange(this.innerValue);
         this.onTouched();
     }
+    onInputChange(event: Event) {
+        const inputElement = event.target as HTMLInputElement;
+        const inputValue = inputElement.value;
+        
+        // Nếu ô nhập bị xóa trống
+        if (!inputValue) {
+            this.innerValue = null;
+            this.onChange(null);
+            return;
+        }
+
+        // Tự động cập nhật nếu chuỗi nhập vào chuyển đổi thành ngày hợp lệ
+        // (PrimeNG p-calendar sẽ tự parse chuỗi dạng dd/mm/yy dựa vào dateFormat)
+        setTimeout(() => {
+            this.onChange(this.innerValue);
+        });
+    }
+    onInputBlur() {
+        // Cập nhật lại giá trị cuối cùng và đánh dấu form đã touched
+        this.onChange(this.innerValue);
+        this.onTouched();
+    }
 }

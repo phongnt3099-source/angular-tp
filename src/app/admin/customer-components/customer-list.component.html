@@ -1,47 +1,49 @@
 <div [@routerTransition]>
-    <!-- <sub-header [title]="'Khách Hàng' | localize">
-        <div role="actions">
-            <button *ngIf="'Pages.Tenants.Create' | permission" class="btn btn-primary" (click)="createCustomer()">
-                <i class="fa fa-plus btn-md-icon"></i>
-                <span class="d-none d-md-inline-block">
-                    {{ 'Thêm ' | localize }}
-                </span>
-            </button>
-        </div>
-    </sub-header> -->
-    
-  <app-header 
-    [title]= "'Quản Lý Hồ Sơ Bệnh Nhân'"
-    [buttonText] = "'Thêm mới'"
-    class="d-block mb-5"
-    [permission]="'Pages.Tenants.Create' | permission"
-    (addClicked)="createCustomer()">
-</app-header>
+    <!-- Header Luxury -->
+    <app-header
+        [title]="'QUẢN LÝ HỒ SƠ BỆNH NHÂN'"
+        [buttonText]="'Thêm bệnh nhân mới'"
+        class="d-block mb-5 luxury-header-wrapper"
+        [permission]="'Pages.Tenants.Create' | permission"
+        (addClicked)="createCustomer()"
+    ></app-header>
+
     <div [class]="containerClass">
-        <div class="card card-custom gutter-b">
-            <div class="card-body">
-                <div class="row align-items-end mb-4">
-                <div class="col-md-4">
-                    <label for="CustomerFilter" class="form-label fw-bold text-dark">
-                        <i class="fas fa-filter me-1"></i> {{ 'Tìm kiếm bệnh nhân' | localize }}
-                    </label>
-                    <div class="input-group">
-                        <input id="CustomerFilter" [(ngModel)]="filterInput.cuS_PHONE" name="filterText"
-                            class="form-control" placeholder="{{ 'Nhập SĐT hoặc tên...' | localize }}" type="text" />
-                        <button class="btn btn-primary" (click)="getCustomer()">
-                            <i class="fa fa-search"></i>
-                        </button>
+        <!-- Card Luxury Super -->
+        <div class="card card-luxury-super gutter-b">
+            <div class="card-body p-5">
+                <!-- Thanh công cụ / Tìm kiếm -->
+                <div class="row align-items-end mb-5">
+                    <div class="col-md-5 col-lg-4">
+                        <label for="CustomerFilter" class="form-label-luxury">
+                            <i class="fas fa-search-plus me-2 text-primary"></i>
+                            {{ 'Tìm kiếm hồ sơ bệnh nhân' | localize }}
+                        </label>
+                        <div class="input-group input-group-luxury">
+                            <span class="input-group-text"><i class="fas fa-user-check fs-5 text-muted"></i></span>
+                            <input
+                                id="CustomerFilter"
+                                [(ngModel)]="filterInput.cuS_PHONE"
+                                name="filterText"
+                                class="form-control"
+                                (keyup.enter)="getCustomer()"
+                                placeholder="{{ 'Nhập Số điện thoại hoặc Tên bệnh nhân...' | localize }}"
+                                type="text"
+                            />
+                            <button class="btn btn-luxury-primary px-4" (click)="getCustomer()">
+                                <i class="fa fa-search fs-5 me-1"></i>
+                                Tìm kiếm
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-8 text-end">
-                    <button class="btn btn-outline-secondary me-2">
-                        <i class="fas fa-file-export me-1"></i> Xuất Excel
-                    </button>
-                </div> -->
-            </div>
+
+                <!-- Bảng Dữ Liệu Tối Thượng -->
                 <div class="row align-items-center">
-                    <!--<Primeng-TurboTable-Start>-->
-                    <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                    <div
+                        class="col primeng-datatable-container custom-luxury-table"
+                        [busyIf]="primengTableHelper.isLoading"
+                    >
                         <p-table
                             #dataTable
                             sortMode="multiple"
@@ -50,136 +52,174 @@
                             rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
                             [paginator]="false"
                             [lazy]="true"
-                            [tableStyle]="{'min-width': '50rem'}"
+                            [tableStyle]="{ width: '100%', 'table-layout': 'fixed' }"
+                            [rowHover]="true"
                         >
+                            <!-- Header Table -->
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th class="center">
-                                        <span style="width: 40px">{{l("STT")}}</span>
+                                    <th class="text-center" style="width: 65px">{{ l('STT') }}</th>
+                                    <th class="text-center" style="width: 110px">{{ 'Mã KH' | localize }}</th>
+                                    <th class="text-start" style="min-width: 200px">
+                                        {{ 'Họ và tên bệnh nhân' | localize }}
                                     </th>
-                                    <th style="text-align: center; width: 100px;">
-                                        {{ 'Mã KH' | localize }}
+                                    <th class="text-center" style="width: 85px">{{ 'SN' | localize }}</th>
+                                    <th class="text-center" style="width: 80px">{{ 'Tuổi' | localize }}</th>
+                                    <th class="text-center" style="width: 85px">{{ 'GT' | localize }}</th>
+                                    <th class="text-center" style="width: 140px">{{ 'Điện thoại' | localize }}</th>
+                                    <th class="text-start" style="min-width: 155px">
+                                        {{ 'Trạng thái khám' | localize }}
                                     </th>
-                                    <th style="text-align: center;">
-                                        {{ 'Tên khách hàng' | localize }}
-                                    </th>
-                                    <th style="text-align: center;">
-                                        {{ 'SN' | localize }}
-                                    </th>
-                                    <th style="text-align: center;">
-                                        {{ 'Tuổi' | localize }}
-                                    </th>
-                                    <th style="text-align: center;">
-                                        {{ 'GT' | localize }}
-                                    </th>
-                                    <th style="text-align: center;">
-                                        {{ 'Điện thoại' | localize }}
-                                    </th>
-                                    <th style="text-align: center;">
-                                        {{ 'Đang khám' | localize }}
-                                    </th>
-                                    <th style="text-align: center;width: 190px;">
-                                        {{ 'Lịch hẹn tới' | localize }}
-                                    </th>
-                                    <th style="text-align: center;">
-                                        {{ 'Hoạt động gần đây' | localize }}
-                                    </th>
-                                    <th style="text-align: center;">
-                                        {{ 'Còn nợ' | localize }}
-                                    </th>
-                                    <th style="text-align: center;">
-                                        {{ 'Thanh toán' | localize }}
-                                    </th>
+                                    <th class="text-center" style="width: 200px">{{ 'Lịch hẹn tới' | localize }}</th>
+                                    <th class="text-end" style="width: 150px">{{ 'Còn nợ' | localize }}</th>
+                                    <th class="text-end" style="width: 160px">{{ 'Thanh toán' | localize }}</th>
                                 </tr>
                             </ng-template>
+
+                            <!-- Body Table -->
                             <ng-template pTemplate="body" let-record="$implicit" let-recordIndex="index">
-                                <tr (click)="viewDetail(record)" class="cursor-pointer-row">
-                                    <td class="center"><span class="mo-header"></span>{{(filterInput.skipCount + primengTableHelper.records.indexOf(record)) + 1}}</td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'Mã KH' | localize }}</span>
-                                        {{ record.cuS_CODE }}
+                                <tr (click)="viewDetail(record)" class="luxury-row-clickable mode-fire">
+                                    <!-- STT -->
+                                    <td class="text-center fw-bold text-muted">
+                                        {{ filterInput.skipCount + primengTableHelper.records.indexOf(record) + 1 }}
                                     </td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'Tên khách hàng' | localize }}</span>
-                                        <!-- {{ record.cuS_NAME }} -->
-                                        <div class="fw-bold text-primary">{{ record.cuS_NAME }}</div>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'SN' | localize }}</span>
-                                        {{ record.sn }}
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'Age' | localize }}</span>
-                                        {{ record.age }}
-                                    </td>
+
+                                    <!-- Mã KH -->
                                     <td class="text-center">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <i class="fas fs-5 me-2" 
-                                                [class.fa-mars]="record.cuS_GENDER === 1" 
-                                                [class.fa-venus]="record.cuS_GENDER === 2"
-                                                [class.text-primary]="record.cuS_GENDER === 1"
-                                                [class.text-danger]="record.cuS_GENDER === 2">
-                                            </i>
-                                        </div>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'Điện thoại' | localize }}</span>
-                                        {{ record.cuS_PHONE }}
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'Đang khám' | localize }}</span>
-                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
-                                    </td>
-                                   <td class="text-center align-middle">
-                                        <div *ngIf="record.timE_DISTANCE" 
-                                            class="appointment-card"
-                                            [ngClass]="{
-                                                'card-late': record.timE_DISTANCE.includes('Trễ'),
-                                                'card-soon': record.timE_DISTANCE.includes('phút tới') || (record.timE_DISTANCE.includes('giờ tới') && !record.timE_DISTANCE.includes('Trễ')),
-                                                'card-future': record.timE_DISTANCE.includes('ngày tới')
-                                            }">
-                                            
-                                            <div class="time-row fw-bold">
-                                            {{ record.onlY_TIME }}
-                                            </div>
-
-                                            <div class="date-row">
-                                            {{ record.formatteD_DATE }}
-                                            </div>
-
-                                            <div class="status-row">
-                                            <span class="status-badge">
-                                                <i class="fas fa-clock me-1"></i>
-                                                {{ record.timE_DISTANCE }}
-                                            </span>
-                                            </div>
-
-                                        </div>
-                                        <span *ngIf="!record.timE_DISTANCE" class="text-muted small">-</span>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'Hoạt động gần đây' | localize }}</span>
-                                        {{ record.cuS_MEDICAL_HISTORY_NOTES }}
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'Còn nợ' | localize }}</span>
-                                        <span class="badge bg-danger-subtle text-danger fw-bold px-3">
-                                            {{ record.debtAmount | number }}đ
+                                        <span class="badge bg-light text-dark border fw-semibold px-2 py-1 fs-7">
+                                            {{ record.cuS_CODE }}
                                         </span>
                                     </td>
-                                    <td style="text-align: center;">
-                                        <span class="p-column-title">{{ 'Thanh toán' | localize }}</span>
-                                        <span class="text-success fw-bold">
+
+                                    <!-- Tên khách hàng -->
+                                    <td class="text-start">
+                                        <div class="patient-profile-container">
+                                            <div
+                                                class="ultimate-avatar"
+                                            >
+                                                <div class="shockwave-ring ring-1"></div>
+                                                <div class="shockwave-ring ring-2"></div>
+
+                                                <div
+                                                    class="avatar-core-front"
+                                                    [ngClass]="'avatar-end-' + (record.cuS_INITIALS?.slice(-1) || '?')"
+                                                >
+                                                    <div class="hologram-glare"></div>
+                                                </div>
+
+                                                <div class="avatar-core-back">
+                                                    <div class="cinematic-energy"></div>
+                                                    <div class="cosmic-dust cd-1"></div>
+                                                    <div class="cosmic-dust cd-2"></div>
+                                                </div>
+
+                                                <span class="ultimate-initials">{{ record.cuS_INITIALS }}</span>
+                                            </div>
+
+                                            <div class="patient-name-luxury">{{ record.cuS_NAME }}</div>
+                                        </div>
+                                    </td>
+
+                                    <!-- Năm sinh -->
+                                    <td class="text-center patient-sn-luxury font-monospace">
+                                        {{ record.sn }}
+                                    </td>
+
+                                    <!-- Tuổi -->
+                                    <td class="text-center fw-semibold text-dark">{{ record.age }}</td>
+
+                                    <!-- Giới tính -->
+                                    <td class="text-center">
+                                        <div
+                                            class="gender-pill-luxury"
+                                            [class.gender-male]="record.cuS_GENDER === 1"
+                                            [class.gender-female]="record.cuS_GENDER === 2"
+                                        >
+                                            <i
+                                                class="fas"
+                                                [class.fa-mars]="record.cuS_GENDER === 1"
+                                                [class.fa-venus]="record.cuS_GENDER === 2"
+                                            ></i>
+                                            <span>
+                                                {{
+                                                    record.cuS_GENDER === 1
+                                                        ? 'Nam'
+                                                        : record.cuS_GENDER === 2
+                                                          ? 'Nữ'
+                                                          : '-'
+                                                }}
+                                            </span>
+                                        </div>
+                                    </td>
+
+                                    <!-- Điện thoại -->
+                                    <td class="text-center patient-phone-luxury font-monospace">
+                                        {{ record.cuS_PHONE }}
+                                    </td>
+
+                                    <!-- Đang khám -->
+                                    <td class="text-start text-truncate-luxury">
+                                        <span class="text-dark">{{ record.cuS_MEDICAL_HISTORY_NOTES || '-' }}</span>
+                                    </td>
+
+                                    <!-- Lịch hẹn tới -->
+                                    <td class="text-center align-middle">
+                                        <div
+                                            *ngIf="record.timE_DISTANCE"
+                                            class="appointment-card-luxury"
+                                            [ngClass]="{
+                                                'card-luxury-late': record.timE_DISTANCE.includes('Trễ'),
+                                                'card-luxury-soon':
+                                                    record.timE_DISTANCE.includes('phút tới') ||
+                                                    (record.timE_DISTANCE.includes('giờ tới') &&
+                                                        !record.timE_DISTANCE.includes('Trễ')),
+                                                'card-luxury-future': record.timE_DISTANCE.includes('ngày tới')
+                                            }"
+                                        >
+                                            <div class="time-row-luxury">
+                                                <i class="far fa-clock me-1"></i>
+                                                {{ record.onlY_TIME }}
+                                            </div>
+                                            <div class="date-row-luxury">{{ record.formatteD_DATE }}</div>
+                                            <div class="status-badge-luxury">
+                                                <span class="pulse-dot"></span>
+                                                {{ record.timE_DISTANCE }}
+                                            </div>
+                                        </div>
+                                        <span *ngIf="!record.timE_DISTANCE" class="text-muted fs-7">—</span>
+                                    </td>
+
+                                    <!-- Còn nợ -->
+                                    <td class="text-end font-monospace">
+                                        <span *ngIf="record.debtAmount > 0" class="badge-luxury debt-luxury">
+                                            {{ record.debtAmount | number }}đ
+                                        </span>
+                                        <span
+                                            *ngIf="!record.debtAmount || record.debtAmount === 0"
+                                            class="text-muted fs-7"
+                                        >
+                                            —
+                                        </span>
+                                    </td>
+
+                                    <!-- Thanh toán -->
+                                    <td class="text-end font-monospace">
+                                        <span class="badge-luxury paid-luxury">
                                             {{ record.totalPayment | number }}đ
                                         </span>
                                     </td>
                                 </tr>
                             </ng-template>
                         </p-table>
-                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                            {{ 'NoData' | localize }}
+
+                        <!-- Trạng thái không có dữ liệu -->
+                        <div class="primeng-no-data-luxury" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            <i class="fas fa-folder-open d-block mb-3 text-muted fs-1"></i>
+                            {{ 'Không tìm thấy dữ liệu phù hợp' | localize }}
                         </div>
-                        <div class="primeng-paging-container">
+
+                        <!-- Phân trang Luxury -->
+                        <div class="primeng-paging-container-luxury">
                             <p-paginator
                                 [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                 #paginator
@@ -187,11 +227,10 @@
                                 [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                 [showCurrentPageReport]="true"
-                                [currentPageReportTemplate]="'Tổng số dòng: {totalRecords}'"
+                                [currentPageReportTemplate]="'Hiển thị tất cả: {totalRecords} hồ sơ bệnh nhân'"
                             ></p-paginator>
                         </div>
                     </div>
-                    <!--<Primeng-TurboTable-End>-->
                 </div>
             </div>
         </div>

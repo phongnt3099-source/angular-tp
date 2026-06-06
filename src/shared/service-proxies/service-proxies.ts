@@ -2749,6 +2749,69 @@ export class CustomerServiceProxy {
     }
 
     /**
+     * @param phone (optional) 
+     * @return Success
+     */
+    cM_CUSTOMER_CheckPhone(phone: string | undefined): Observable<CM_CUSTOMER_ENTITY[]> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_CheckPhone?";
+        if (phone === null)
+            throw new Error("The parameter 'phone' cannot be null.");
+        else if (phone !== undefined)
+            url_ += "phone=" + encodeURIComponent("" + phone) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_CUSTOMER_CheckPhone(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_CUSTOMER_CheckPhone(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CM_CUSTOMER_ENTITY[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CM_CUSTOMER_ENTITY[]>;
+        }));
+    }
+
+    protected processCM_CUSTOMER_CheckPhone(response: HttpResponseBase): Observable<CM_CUSTOMER_ENTITY[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CM_CUSTOMER_ENTITY.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -19610,9 +19673,12 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
     formatteD_DATE!: string | undefined;
     statuS_COLOR!: string | undefined;
     onlY_TIME!: string | undefined;
+    cuS_INITIALS!: string | undefined;
     exM_COUNT!: number;
     totaL_PAID!: number | undefined;
     remaininG_DEBT!: number | undefined;
+    relatioN_XML!: string | undefined;
+    relationList!: CM_RELATIONSHIP_ENTITY[] | undefined;
 
     constructor(data?: ICM_CUSTOMER_ENTITY) {
         if (data) {
@@ -19674,9 +19740,16 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
             this.formatteD_DATE = _data["formatteD_DATE"];
             this.statuS_COLOR = _data["statuS_COLOR"];
             this.onlY_TIME = _data["onlY_TIME"];
+            this.cuS_INITIALS = _data["cuS_INITIALS"];
             this.exM_COUNT = _data["exM_COUNT"];
             this.totaL_PAID = _data["totaL_PAID"];
             this.remaininG_DEBT = _data["remaininG_DEBT"];
+            this.relatioN_XML = _data["relatioN_XML"];
+            if (Array.isArray(_data["relationList"])) {
+                this.relationList = [] as any;
+                for (let item of _data["relationList"])
+                    this.relationList!.push(CM_RELATIONSHIP_ENTITY.fromJS(item));
+            }
         }
     }
 
@@ -19738,9 +19811,16 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
         data["formatteD_DATE"] = this.formatteD_DATE;
         data["statuS_COLOR"] = this.statuS_COLOR;
         data["onlY_TIME"] = this.onlY_TIME;
+        data["cuS_INITIALS"] = this.cuS_INITIALS;
         data["exM_COUNT"] = this.exM_COUNT;
         data["totaL_PAID"] = this.totaL_PAID;
         data["remaininG_DEBT"] = this.remaininG_DEBT;
+        data["relatioN_XML"] = this.relatioN_XML;
+        if (Array.isArray(this.relationList)) {
+            data["relationList"] = [];
+            for (let item of this.relationList)
+                data["relationList"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -19795,9 +19875,12 @@ export interface ICM_CUSTOMER_ENTITY {
     formatteD_DATE: string | undefined;
     statuS_COLOR: string | undefined;
     onlY_TIME: string | undefined;
+    cuS_INITIALS: string | undefined;
     exM_COUNT: number;
     totaL_PAID: number | undefined;
     remaininG_DEBT: number | undefined;
+    relatioN_XML: string | undefined;
+    relationList: CM_RELATIONSHIP_ENTITY[] | undefined;
 }
 
 export class CM_EMPLOYEE_ENTITY implements ICM_EMPLOYEE_ENTITY {
@@ -19823,6 +19906,7 @@ export class CM_EMPLOYEE_ENTITY implements ICM_EMPLOYEE_ENTITY {
     email!: string | undefined;
     recorD_STATUS!: string | undefined;
     isactive!: string | undefined;
+    emP_INITIALS!: string | undefined;
     makeR_ID!: string | undefined;
     iS_CREATE_USER!: boolean | undefined;
     creatE_DT!: DateTime | undefined;
@@ -19860,6 +19944,7 @@ export class CM_EMPLOYEE_ENTITY implements ICM_EMPLOYEE_ENTITY {
             this.email = _data["email"];
             this.recorD_STATUS = _data["recorD_STATUS"];
             this.isactive = _data["isactive"];
+            this.emP_INITIALS = _data["emP_INITIALS"];
             this.makeR_ID = _data["makeR_ID"];
             this.iS_CREATE_USER = _data["iS_CREATE_USER"];
             this.creatE_DT = _data["creatE_DT"] ? DateTime.fromISO(_data["creatE_DT"].toString()) : <any>undefined;
@@ -19897,6 +19982,7 @@ export class CM_EMPLOYEE_ENTITY implements ICM_EMPLOYEE_ENTITY {
         data["email"] = this.email;
         data["recorD_STATUS"] = this.recorD_STATUS;
         data["isactive"] = this.isactive;
+        data["emP_INITIALS"] = this.emP_INITIALS;
         data["makeR_ID"] = this.makeR_ID;
         data["iS_CREATE_USER"] = this.iS_CREATE_USER;
         data["creatE_DT"] = this.creatE_DT ? this.creatE_DT.toString() : <any>undefined;
@@ -19927,9 +20013,78 @@ export interface ICM_EMPLOYEE_ENTITY {
     email: string | undefined;
     recorD_STATUS: string | undefined;
     isactive: string | undefined;
+    emP_INITIALS: string | undefined;
     makeR_ID: string | undefined;
     iS_CREATE_USER: boolean | undefined;
     creatE_DT: DateTime | undefined;
+}
+
+export class CM_RELATIONSHIP_ENTITY implements ICM_RELATIONSHIP_ENTITY {
+    reL_ID!: string | undefined;
+    cuS_ID!: string | undefined;
+    emP_ID!: string | undefined;
+    reL_TYPE!: string | undefined;
+    notes!: string | undefined;
+    makeR_ID!: string | undefined;
+    creatE_DT!: string | undefined;
+    updatE_ID!: string | undefined;
+    updatE_DT!: string | undefined;
+
+    constructor(data?: ICM_RELATIONSHIP_ENTITY) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.reL_ID = _data["reL_ID"];
+            this.cuS_ID = _data["cuS_ID"];
+            this.emP_ID = _data["emP_ID"];
+            this.reL_TYPE = _data["reL_TYPE"];
+            this.notes = _data["notes"];
+            this.makeR_ID = _data["makeR_ID"];
+            this.creatE_DT = _data["creatE_DT"];
+            this.updatE_ID = _data["updatE_ID"];
+            this.updatE_DT = _data["updatE_DT"];
+        }
+    }
+
+    static fromJS(data: any): CM_RELATIONSHIP_ENTITY {
+        data = typeof data === 'object' ? data : {};
+        let result = new CM_RELATIONSHIP_ENTITY();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["reL_ID"] = this.reL_ID;
+        data["cuS_ID"] = this.cuS_ID;
+        data["emP_ID"] = this.emP_ID;
+        data["reL_TYPE"] = this.reL_TYPE;
+        data["notes"] = this.notes;
+        data["makeR_ID"] = this.makeR_ID;
+        data["creatE_DT"] = this.creatE_DT;
+        data["updatE_ID"] = this.updatE_ID;
+        data["updatE_DT"] = this.updatE_DT;
+        return data;
+    }
+}
+
+export interface ICM_RELATIONSHIP_ENTITY {
+    reL_ID: string | undefined;
+    cuS_ID: string | undefined;
+    emP_ID: string | undefined;
+    reL_TYPE: string | undefined;
+    notes: string | undefined;
+    makeR_ID: string | undefined;
+    creatE_DT: string | undefined;
+    updatE_ID: string | undefined;
+    updatE_DT: string | undefined;
 }
 
 export class CM_ROLES_ENTITY implements ICM_ROLES_ENTITY {

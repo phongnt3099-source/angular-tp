@@ -714,7 +714,7 @@ export class ExaminationEditComponent extends AppComponentBase implements OnInit
     else item.showDiscountPanel = true;
     if (item.tD_STATUS === 2) {
       // 1. KIỂM TRA: Nếu đã có dữ liệu ngày hết hạn từ trước thì GIỮ NGUYÊN, không tính toán lại
-      if (!item.tD_WARRANTY_EXPIRED_DATE) {
+      if (!item.tD_WARRANTY_EXPIRED_DATE || (item.tD_WARRANTY_EXPIRED_DATE == '01/01/1900 00:00:00')) {
 
         // 2. Cập nhật ngày bắt đầu bảo hành bằng ngày hiện tại
         item.tD_WARRANTY_START_DATE = DateTime.local().toISODate();

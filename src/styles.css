@@ -266,7 +266,7 @@ ul.p-autocomplete-items{
 /* Container tiêu đề */
 .modal-header-custom {
     padding: 20px 25px;
-    background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
     border-bottom: 1px solid #e2e8f0;
 }
 

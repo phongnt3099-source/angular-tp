@@ -1,300 +1,458 @@
-/* Làm cho bảng không bị dính sát vào nhau */
-.primeng-datatable-container ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-    padding: 1rem 0.5rem;
-    vertical-align: middle;
-}
+/* ==========================================
+   LUXURY SUPER DESIGN SYSTEM - LEVEL MAX
+   ========================================== */
 
-/* Hiệu ứng hover cho hàng */
-.primeng-datatable-container ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
-    background-color: #f8f9fa !important;
-    cursor: pointer;
-}
-
-/* Badge màu sắc hiện đại */
-.bg-danger-subtle {
-    background-color: #fee2e2 !important;
-    color: #dc2626 !important;
-}
-
-.bg-primary-subtle {
-    background-color: #e0e7ff !important;
-    color: #4338ca !important;
-}
-
-/* Tiêu đề bảng in hoa và đậm */
-th {
-    text-transform: uppercase;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    font-weight: 700 !important;
-    color: #64748b !important;
-}
-
-/* 1. Card bao ngoài cho sang trọng */
-.card-custom {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.05) !important;
+/* 1. Thiết lập Card tổng thể */
+.card-luxury-super {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(145, 158, 171, 0.14) !important;
+    box-shadow: 0 0px 2px 0 rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12) !important;
     overflow: hidden;
+    transition: box-shadow 0.3s ease;
 }
 
-/* 2. Style cho tiêu đề cột (Header) */
-::ng-deep .p-datatable .p-datatable-thead > tr > th {
-    background-color: #f8fafc !important; /* Màu nền xám nhạt hiện đại */
-    color: #64748b !important; /* Chữ xám đậm */
-    font-size: 11px;
-    font-weight: 700 !important;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 1rem 0.75rem !important;
-    border-top: none !important;
-    border-bottom: 2px solid #e2e8f0 !important;
-}
-
-/* 3. Style cho các dòng dữ liệu (Body) */
-::ng-deep .p-datatable .p-datatable-tbody > tr {
-    transition: all 0.2s ease;
-}
-
-::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-    padding: 1.25rem 0.75rem !important; /* Tăng padding để bảng thoáng hơn */
-    border-bottom: 1px solid #f1f5f9 !important;
-    vertical-align: middle;
+/* 2. Tiêu đề bộ lọc tìm kiếm */
+.form-label-luxury {
     font-size: 14px;
+    font-weight: 700;
     color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: block;
 }
 
-/* 4. Hiệu ứng Hover dòng */
-::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
-    background-color: #f0f7ff !important; /* Màu xanh cực nhạt khi rê chuột */
-    cursor: pointer;
+/* 3. Ô tìm kiếm Luxury */
+.input-group-luxury {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    border: 1px solid #cbd5e1;
+    transition: all 0.25s ease-in-out;
 }
-
-/* 5. Style cho các Badges (Nợ/Thanh toán) */
-.badge-custom {
-    padding: 0.5em 1em;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 12px;
+.input-group-luxury:focus-within {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 225, 0.15);
 }
-
-.debt-red {
-    background-color: #fee2e2;
-    color: #dc2626;
-}
-
-.paid-green {
-    background-color: #dcfce7;
-    color: #16a34a;
-}
-
-::ng-deep .p-paginator {
-    background-color: transparent !important;
+.input-group-luxury .form-control {
     border: none !important;
-    padding: 1.5rem 0 !important;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 500;
 }
-
-::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
-    border-radius: 8px;
-    margin: 0 4px;
+.input-group-luxury .input-group-text {
+    background: #f8fafc;
+    border: none;
+    padding-left: 16px;
+}
+.btn-luxury-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
     transition: all 0.2s;
 }
-
-::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background-color: #4f46e5 !important; /* Màu xanh Indigo hiện đại */
-    color: #ffffff !important;
+.btn-luxury-primary:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 4px 12px rgba(79, 70, 225, 0.3);
 }
 
-.avatar-custom {
-    width: 65px;
-    height: 65px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    
-    /* Điều chỉnh font-size nhỏ lại một chút so với lúc chỉ hiện 1 chữ cái */
-    font-size: 18px; 
-    
-    /* Đảm bảo chữ không sát mép */
-    padding: 5px;
-    text-align: center;
-    line-height: 1.2;
-    word-break: break-all; /* Nếu tên quá dài sẽ tự xuống dòng hoặc co lại */
-    text-transform: capitalize; /* Luôn viết hoa chữ cái đầu cho đẹp */
+/* 4. Định dạng TABLE HEAD */
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.75px !important;
+    padding: 16px 14px !important;
+    border-top: none !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    text-align: inherit;
 }
 
-/* Đối với size nhỏ 50px */
-.avatar-sm {
-    width: 50px !important;
-    height: 50px !important;
-    font-size: 14px !important;
+/* 5. Định dạng TABLE BODY & HÀNG DỮ LIỆU */
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr {
+    background-color: #ffffff;
+    transition: background-color 0.25s ease;
+}
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 16px 14px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    vertical-align: middle !important;
+    font-size: 15px;
+    color: #334155;
 }
 
-/* Style chung cho Pill */
-.status-pill {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 10px;
-    border-radius: 12px;
+/* Nổi bật cột Năm sinh (SN) */
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td.patient-sn-luxury {
+    color: #334155 !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+}
+
+/* Nổi bật cột Điện thoại */
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td.patient-phone-luxury {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    font-size: 15.5px !important;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   6. THIẾT LẬP NỀN TẢNG TĨNH CHO AVATAR & TEXT
+   ========================================== */
+.patient-profile-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.ultimate-avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ultimate-initials {
+  position: relative;
+  z-index: 10;
+  font-weight: 900;
+  font-size: 1rem;
+  color: #1e293b;
+  letter-spacing: -0.3px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.patient-name-luxury {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.1px;
+  line-height: 1.2;
+  white-space: normal; 
+  word-break: break-word;
+}
+
+/* Huy hiệu giới tính mềm mại */
+.gender-pill-luxury {
     display: inline-flex;
     align-items: center;
-    white-space: nowrap;
-}
-
-/* 1. Trạng thái TRỄ (Nền xám nhạt, chữ đen/xám đậm) */
-.pill-late {
-    background-color: #f3f4f6; /* Gray 100 */
-    color: #1f2937; /* Gray 800 */
-    border: 1px solid #e5e7eb;
-}
-
-/* 2. Trạng thái SẮP ĐẾN (Nền đỏ nhạt, chữ đỏ đậm) */
-.pill-soon {
-    background-color: #fef2f2; /* Red 50 */
-    color: #dc2626; /* Red 600 */
-    border: 1px solid #fee2e2;
-}
-
-/* 3. Trạng thái TƯƠNG LAI (Nền xanh nhạt, chữ xanh đậm) */
-.pill-future {
-    background-color: #ecfdf5; /* Emerald 50 */
-    color: #059669; /* Emerald 600 */
-    border: 1px solid #d1fae5;
-}
-
-/* Hiệu ứng nhấp nháy nhẹ cho ca đang TRỄ */
-.pill-late {
-    animation: pulse-gray 2s infinite;
-}
-
-@keyframes pulse-gray {
-    0% { background-color: #f3f4f6; }
-    50% { background-color: #e5e7eb; }
-    100% { background-color: #f3f4f6; }
-}
-/* Container chính chống lệch */
-.appointment-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Căn giữa theo trục ngang */
-    justify-content: center; /* Căn giữa theo trục dọc */
-    gap: 2px; /* Khoảng cách giữa 3 hàng */
-    width: 100%;
-}
-
-.time-main {
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    line-height: 1.2;
-}
-
-.date-sub {
-    font-size: 11px;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
     font-weight: 600;
-    line-height: 1;
 }
+.gender-male { background-color: #e0f2fe; color: #0369a1; }
+.gender-female { background-color: #fce7f3; color: #be185d; }
 
-/* Tùy chỉnh Badge trạng thái dạng chữ màu có nền nhạt */
-.status-text {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 12px;
-    border-radius: 20px; /* Bo tròn pill */
-    display: inline-block;
+/* Cắt chữ ô Ghi chú nếu quá dài */
+.text-truncate-luxury {
+    max-width: 220px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.small-text-luxury {
+    font-size: 14px;
+    color: #64748b;
 }
 
-/* 1. Ca trễ (Xám đen) */
-.late-mode {
-    background-color: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
-}
-
-/* 2. Ca sắp đến (Đỏ nhạt) */
-.soon-mode {
-    background-color: #fff1f2;
-    color: #e11d48;
-    border: 1px solid #fecdd3;
-}
-
-/* 3. Ca tương lai (Xanh nhạt) */
-.future-mode {
-    background-color: #ecfdf5;
-    color: #059669;
-    border: 1px solid #d1fae5;
-}
-
-/* Căn chỉnh lại cho table cell */
-td.align-middle {
-    vertical-align: middle !important;
-}
-/* Khung bao chung cho 3 dòng */
-.appointment-card {
+/* THIẾT LẬP CARD LỊCH HẸN */
+.appointment-card-luxury {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 8px 12px;
-    border-radius: 12px; /* Bo góc cực đẹp */
-    margin: 4px auto;
-    width: 90%;
-    transition: all 0.3s ease;
+    padding: 10px 14px;
+    border-radius: 12px;
+    margin: 2px auto;
+    width: 100%;
+    max-width: 180px;
     border: 1px solid transparent;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.time-row-luxury { font-size: 15px; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
+.date-row-luxury { font-size: 12px; font-weight: 600; opacity: 0.85; margin-bottom: 5px; }
+.status-badge-luxury { font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; }
+.pulse-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+
+.card-luxury-late { background-color: #f8fafc; border-color: #cbd5e1; color: #475569; }
+.card-luxury-late .time-row-luxury { color: #1e293b; }
+.card-luxury-late .pulse-dot { background-color: #64748b; }
+
+.card-luxury-soon { background-color: #fff1f2; border-color: #fecdd3; color: #e11d48; }
+.card-luxury-soon .time-row-luxury { color: #9f1239; }
+.card-luxury-soon .pulse-dot { background-color: #e11d48; animation: luxury-pulse 1.5s infinite; }
+
+.card-luxury-future { background-color: #f0fdf4; border-color: #bbf7d0; color: #16a34a; }
+.card-luxury-future .time-row-luxury { color: #14532d; }
+.card-luxury-future .pulse-dot { background-color: #16a34a; }
+
+@keyframes luxury-pulse {
+    0% { transform: scale(0.9); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.5; }
+    100% { transform: scale(0.9); opacity: 1; }
 }
 
-/* Kiểu chữ cho từng dòng */
-.time-row {
-    font-size: 13.5px;
-    line-height: 1.2;
-    margin-bottom: 2px;
+/* BADGES KHỐI TIỀN TỆ */
+.badge-luxury {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+}
+.debt-luxury { background-color: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+.paid-luxury { background-color: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+
+
+/* ==========================================
+   7. TRẠNG THÁI TĨNH AVATAR: PHA LÊ HOLOGRAM
+   ========================================== */
+.avatar-core-front {
+  position: absolute;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  z-index: 4;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+  background: #e6e9f0;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.2, 1), opacity 0.45s ease;
 }
 
-.date-row {
-    font-size: 11px;
+.hologram-glare {
+  position: absolute;
+  top: -50%; left: -150%; width: 60%; height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  transform: rotate(30deg);
+  animation: hologram-sweep 3.5s infinite ease-in-out;
+}
+
+/* BẢNG GRADIENT CHỮ CÁI TONE SÁNG */
+.ultimate-avatar [class*="avatar-end-P"], .ultimate-avatar [class*="avatar-end-N"], .ultimate-avatar [class*="avatar-end-T"] { background: linear-gradient(135deg, #baffd8 0%, #66ffca 100%) !important; }
+.ultimate-avatar [class*="avatar-end-A"], .ultimate-avatar [class*="avatar-end-B"], .ultimate-avatar [class*="avatar-end-C"] { background: linear-gradient(135deg, #ffdee9 0%, #b5fffc 100%) !important; }
+.ultimate-avatar [class*="avatar-end-D"], .ultimate-avatar [class*="avatar-end-Đ"], .ultimate-avatar [class*="avatar-end-E"] { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%) !important; }
+.ultimate-avatar [class*="avatar-end-H"], .ultimate-avatar [class*="avatar-end-I"], .ultimate-avatar [class*="avatar-end-K"] { background: linear-gradient(135deg, #cdfedd 0%, #a2e7ff 100%) !important; }
+.ultimate-avatar [class*="avatar-end-M"], .ultimate-avatar [class*="avatar-end-O"], .ultimate-avatar [class*="avatar-end-R"] { background: linear-gradient(135deg, #ffe5b4 0%, #ffb6c1 100%) !important; }
+.ultimate-avatar [class*="avatar-end-S"], .ultimate-avatar [class*="avatar-end-V"], .ultimate-avatar [class*="avatar-end-Z"] { background: linear-gradient(135deg, #ffffdb 0%, #c2ffd8 100%) !important; }
+
+
+/* ==========================================
+   8. TRẠNG THÁI KÍCH HOẠT DƯỚI LÕI AVATAR (HỎA BIẾN)
+   ========================================== */
+.avatar-core-back {
+  position: absolute;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  z-index: 2;
+  background: #050811;
+  opacity: 0;
+  transform: scale(0.6);
+  overflow: hidden;
+  border: 2px solid #ff3300;
+  box-shadow: 0 0 20px #ff5500, inset 0 0 12px #ff3300;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.2, 1), opacity 0.45s ease;
+}
+
+.cinematic-energy {
+  position: absolute;
+  width: 200%; height: 200%;
+  top: -50%; left: -50%;
+  background: conic-gradient(from 0deg, #ff1100, #ff8800, #ff0055, #ff1100);
+  animation: spin-clockwise 1.5s infinite linear;
+  filter: blur(2px);
+}
+
+.cosmic-dust {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  background: #fffb00;
+  bottom: -6px;
+  animation: dust-up 0.7s infinite linear;
+}
+.cd-1 { width: 5px; height: 5px; left: 30%; animation-delay: 0s; }
+.cd-2 { width: 4px; height: 4px; left: 65%; animation-delay: 0.3s; }
+
+.shockwave-ring {
+  position: absolute;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  border: 1px solid rgba(255, 69, 0, 0.6);
+}
+/* ==========================================
+   9. SIÊU HIỆU ỨNG HOVER CHUẨN MƯỢT ULTRA-PERFORMANCE (CẬP NHẬT TỐI THƯỢNG)
+   ========================================== */
+
+/* Thiết lập hiệu ứng chuyển dịch mượt mà không dùng 'all' */
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td,
+.luxury-row-clickable td,
+.luxury-row-clickable .patient-name-luxury,
+.luxury-row-clickable td.text-muted,
+.luxury-row-clickable .badge,
+.luxury-row-clickable .gender-pill-luxury,
+.luxury-row-clickable .appointment-card-luxury,
+.luxury-row-clickable .badge-luxury {
+  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              color 0.2s ease-out, 
+              background-color 0.2s ease-out, 
+              border-color 0.2s ease-out,
+              box-shadow 0.2s ease-out;
+}
+
+/* Hover dòng TR: Đổi màu nền và vạch chỉ thị chỉ định */
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover {
+  background-color: #f8fafc !important;
+  transform: scale(1.002);
+  box-shadow: inset 4px 0 0 #00a2ff, 0 4px 12px rgba(0,0,0,0.03) !important;
+  cursor: pointer;
+}
+
+/* Kích hoạt bùng nổ lõi lửa Avatar */
+.luxury-row-clickable:hover .avatar-core-front {
+  opacity: 0;
+  transform: scale(0.4) rotate(-90deg);
+}
+.luxury-row-clickable:hover .avatar-core-back {
+  opacity: 1;
+  transform: scale(1);
+}
+.luxury-row-clickable:hover .ultimate-initials {
+  color: #ffffff !important;
+  text-shadow: 0 0 8px #ff3300, 0 0 15px #ffaa00;
+}
+.luxury-row-clickable:hover .ring-1 { animation: shockwave-explode 1.2s infinite ease-out; }
+.luxury-row-clickable:hover .ring-2 { animation: shockwave-explode 1.2s infinite ease-out; animation-delay: 0.4s; }
+
+/* ÉP ĐÈ MÀU XANH BĂNG VÀ DỊCH CHUYỂN TOÀN BỘ CÁC THẺ TD BÊN TRONG BẢNG PRIMENG */
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover > td {
+  color: #00a2ff !important;
+  transform: translateX(6px);
+  text-shadow: 0 0 4px rgba(0, 162, 255, 0.2); 
+}
+
+/* ĐỤC SÂU ĐÈ MÀU TẤT CẢ CLASS ĐẶC THÙ (TUỔI, SĐT, NĂM SINH, TÊN) */
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover ::ng-deep .patient-name-luxury,
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover ::ng-deep td.text-muted,
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover ::ng-deep td.text-dark,
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover ::ng-deep .text-dark,
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover ::ng-deep td.patient-phone-luxury,
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover ::ng-deep .patient-phone-luxury,
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover ::ng-deep td.patient-sn-luxury,
+.custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr.luxury-row-clickable:hover ::ng-deep .patient-sn-luxury {
+  color: #00a2ff !important;
+}
+
+/* Đồng bộ các khối bổ trợ qua cấu trúc PrimeNG vững chắc */
+.luxury-row-clickable:hover ::ng-deep .badge {
+  border-color: #00a2ff !important;
+  background-color: rgba(0, 162, 255, 0.05) !important;
+  color: #00a2ff !important;
+}
+
+.luxury-row-clickable:hover ::ng-deep .gender-pill-luxury {
+  border-color: #00a2ff !important;
+  color: #00a2ff !important;
+  background: rgba(0, 162, 255, 0.05) !important;
+}
+
+.luxury-row-clickable:hover ::ng-deep .appointment-card-luxury {
+  border-color: #00a2ff !important;
+  box-shadow: 0 0 8px rgba(0, 162, 255, 0.15) !important;
+}
+.luxury-row-clickable:hover ::ng-deep .appointment-card-luxury div,
+.luxury-row-clickable:hover ::ng-deep .appointment-card-luxury span {
+  color: #00a2ff !important;
+}
+
+.luxury-row-clickable:hover ::ng-deep .badge-luxury {
+  border-color: #00a2ff !important;
+  color: #00a2ff !important;
+}
+
+/* ==========================================
+   10. HỆ THỐNG ANIMATIONS CHIẾN PHIM VÀ PHÂN TRANG
+   ========================================== */
+@keyframes hologram-sweep {
+  0% { left: -150%; }
+  50% { left: 150%; }
+  100% { left: 150%; }
+}
+@keyframes spin-clockwise {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes dust-up {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-42px) scale(0.2); opacity: 0; }
+}
+@keyframes shockwave-explode {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; border-width: 2px; }
+}
+
+/* PHÂN TRANG LUXURY */
+.primeng-paging-container-luxury {
+    padding: 16px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+.primeng-paging-container-luxury ::ng-deep .p-paginator {
+    background: transparent !important;
+    border: none !important;
+    justify-content: space-between;
+}
+.primeng-paging-container-luxury ::ng-deep .p-paginator .p-paginator-current {
+    font-size: 14px;
     font-weight: 600;
-    opacity: 0.8;
-    margin-bottom: 4px;
+    color: #64748b;
+}
+.primeng-paging-container-luxury ::ng-deep .p-paginator-pages .p-paginator-page {
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px !important;
+    min-width: 36px;
+    height: 36px;
+    margin: 0 3px;
+    transition: all 0.2s;
+}
+.primeng-paging-container-luxury ::ng-deep .p-paginator-pages .p-paginator-page.p-highlight {
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(79, 70, 225, 0.25);
 }
 
-.status-badge {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
+/* Empty State */
+.primeng-no-data-luxury {
+    text-align: center;
+    padding: 48px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #94a3b8;
 }
 
-/* --- MÀU SẮC CHO TỪNG TRẠNG THÁI --- */
-
-/* 1. Ca TRỄ (Nền xám tối, chữ trắng hoặc xám đậm) */
-.card-late {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-    color: #343a40;
-}
-.card-late .time-row { color: #212529; }
-
-/* 2. Ca SẮP TỚI (Nền đỏ nhạt, chữ đỏ đậm) - Ưu tiên nhìn thấy */
-.card-soon {
-    background-color: #fff5f5;
-    border-color: #ffc9c9;
-    color: #e03131;
-}
-.card-soon .time-row { color: #c92a2a; }
-
-/* 3. Ca TƯƠNG LAI (Nền xanh nhạt, chữ xanh đậm) */
-.card-future {
-    background-color: #ebfbee;
-    border-color: #b2f2bb;
-    color: #2b8a3e;
-}
-.card-future .time-row { color: #099268; }
-
-/* Hiệu ứng bóng đổ nhẹ khi di chuột qua */
-.appointment-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+/* Responsive tinh tế, mượt mà */
+@media (max-width: 1400px) {
+    .custom-luxury-table ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+    .custom-luxury-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+        padding: 12px 8px !important;
+        font-size: 13.5px !important;
+    }
+    .appointment-card-luxury { padding: 6px 8px !important; }
+    .time-row-luxury { font-size: 13px !important; }
 }

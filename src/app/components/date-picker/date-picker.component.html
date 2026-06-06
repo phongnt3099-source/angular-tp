@@ -17,6 +17,7 @@
         panelStyleClass="luxury-calendar-popover"
         appendTo="body"
         (onSelect)="onDateSelect()"
-        (onBlur)="onTouched()"
+        (onInput)="onInputChange($event)"
+        (onBlur)="onInputBlur()"
     ></p-calendar>
 </div>

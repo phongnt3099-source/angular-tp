@@ -390,7 +390,7 @@
             </div>
         </div>
 
-        <div class="patient-sidebar" style="height: 100% !important; display: flex !important; flex-direction: column !important;">
+        <div class="patient-sidebar">
             <div class="patient-card shadow-sm">
                 <div class="patient-card-header text-center">
                     <div class="mb-3">
@@ -789,13 +789,19 @@
                             class="payment-action-wrapper mt-4"
                             *ngIf="examination.exM_FINAL_AMOUNT - examination.totaL_PAID > 0"
                         >
-                            <button
-                                type="button"
-                                class="btn btn-luxury-trigger w-100 py-3"
-                                (click)="openReceiptModal()"
-                            >
-                                <i class="fa-solid fa-file-invoice-dollar me-2 text-white"></i>
-                                Tiến hành lập phiếu thu tiền
+                            <button type="button" class="btn btn-ultimate-cinematic w-100" (click)="openReceiptModal()">
+                                <div class="laze-border-line"></div>
+
+                                <div class="photon-particles">
+                                    <span class="photon pt-1"></span>
+                                    <span class="photon pt-2"></span>
+                                    <span class="photon pt-3"></span>
+                                </div>
+
+                                <div class="btn-ultimate-content">
+                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                                    <span>Tiến hành lập phiếu thu tiền</span>
+                                </div>
                             </button>
                         </div>
                     </div>
