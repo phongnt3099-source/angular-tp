@@ -1,66 +1,333 @@
-/* Layout chung */
+/* ====================================================================
+   LAYOUT TỔNG THỂ & CONTAINER SYSTEM
+   ==================================================================== */
 .customer-detail-container {
     background-color: #f1f5f9;
     min-height: 100vh;
 }
 
-/* Header & Avatar */
+/* ====================================================================
+   HEADER & AVATAR MONOGRAM LARGE CHỮ TO RÕ CÂN ĐỐI
+   ==================================================================== */
 .avatar-large {
-    width: 65px; 
-    height: 65px;
-    border-radius: 14px;
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    color: white; 
-    font-size: 26px; 
-    font-weight: bold;
-    transition: all 0.3s ease;
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 18px !important;
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important;
+    color: white !important; 
+    font-size: 30px !important;
+    font-weight: 800 !important;
+    flex-shrink: 0 !important;
+    margin-right: 18px !important; /* Khoảng cách 18px chuẩn tỉ lệ vàng */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-/* Màu Xanh (Nam hoặc Mặc định) */
+
 .bg-male {
-    background: linear-gradient(135deg, #4f46e5, #0ea5e9);
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+    box-shadow: 0 10px 25px -5px rgba(29, 78, 216, 0.3) !important;
 }
 
-/* Màu Hồng (Nữ) - Tông hồng phấn sang trọng */
 .bg-female {
-    background: linear-gradient(135deg, #f472b6, #db2777);
-    box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+    background: linear-gradient(135deg, #ec4899, #be185d) !important;
+    box-shadow: 0 10px 25px -5px rgba(190, 24, 93, 0.3) !important;
 }
 
-/* Nút không bị tràn */
-.btn { width: auto !important; white-space: nowrap; }
+.ultimate-header-name {
+    font-size: 1.65rem !important;
+    font-weight: 900 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.2 !important;
+}
 
-/* Thẻ thống kê (Stat Cards) */
-.stat-card {
-    border-radius: 12px;
-    min-height: 100px; /* Đặt chiều cao bằng nhau cho tất cả các thẻ */
-    transition: transform 0.2s ease-in-out;
+/* ====================================================================
+   KHỐI THÔNG TIN HÀNH CHÍNH - TIÊU CHUẨN ULTIMATE SUPER LUXURY V3
+   ==================================================================== */
+.ultimate-luxury-card {
+    border-radius: 28px !important;
+    background: #ffffff !important;
+    box-shadow: 
+        0 6px 30px -4px rgba(15, 23, 42, 0.015), 
+        0 20px 50px -15px rgba(15, 23, 42, 0.04) !important;
+    border: 1px solid #f1f5f9 !important;
+    overflow: hidden;
+}
+
+.header-border-ultimate {
+    border-bottom: 1px solid #f8fafc !important;
+}
+
+/* Tiêu đề lớn hoành tráng */
+.ultimate-title {
+    font-size: 1.25rem !important;
+    letter-spacing: -0.015em !important;
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+.ultimate-title .text-indigo-ultimate {
+    color: #4f46e5 !important;
+    font-size: 1.35rem !important;
+    margin-right: 18px !important; /* Đồng bộ khoảng cách 18px */
+    filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.15)) !important;
+}
+
+/* Khối danh sách phẳng */
+.ultimate-luxury-flat-list {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Căn giữa nội dung theo chiều dọc */
+    gap: 4px;
 }
 
-.stat-card .info-value {
-    line-height: 1.2; /* Đảm bảo số không bị dính vào label */
-    margin-bottom: 0;
+.ultimate-admin-flat-row {
+    background: transparent !important;
+    border-radius: 16px !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-.stat-card .info-label {
+.ultimate-admin-flat-row:hover {
+    background: rgba(15, 23, 42, 0.025) !important;
+}
+
+/* Đồng bộ toàn bộ font-size label kịch trần 1.05rem */
+.ultimate-admin-dot-tag {
+    font-size: 1.05rem !important; 
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important; /* Dãn khoảng cách chấm tròn và chữ đúng 10px */
+    white-space: nowrap;
+}
+
+.ultimate-admin-dot-tag.tag-admin-sapphire { color: #334155 !important; }
+.ultimate-admin-dot-tag.tag-admin-sapphire::before { content: ""; width: 6px; height: 6px; background: #4f46e5; border-radius: 50%; flex-shrink: 0; }
+
+.ultimate-admin-dot-tag.tag-admin-slate { color: #475569 !important; }
+.ultimate-admin-dot-tag.tag-admin-slate::before { content: ""; width: 6px; height: 6px; background: #94a3b8; border-radius: 50%; flex-shrink: 0; }
+
+.ultimate-admin-dot-tag.tag-admin-rose { color: #e11d48 !important; }
+.ultimate-admin-dot-tag.tag-admin-rose::before { content: ""; width: 6px; height: 6px; background: #f43f5e; border-radius: 50%; flex-shrink: 0; }
+
+/* Đồng bộ font-size value 1.15rem siêu to rõ */
+.ultimate-admin-value-zone {
+    font-size: 1.15rem !important;
+    color: #1e293b !important;
+}
+
+.text-slate-dark { color: #0f172a !important; }
+.text-slate-deep { color: #334155 !important; }
+.fw-black { font-weight: 900 !important; }
+
+.text-truncate-custom {
+    max-width: 320px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ultimate-gender-icon { color: #475569; font-size: 1.15rem; }
+
+.ultimate-age-pill {
+    background: rgba(99, 102, 241, 0.08) !important;
+    color: #4f46e5 !important;
+    font-size: 0.88rem !important;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 100px !important;
+    border: 1px solid rgba(99, 102, 241, 0.12);
+}
+
+.ultimate-zalo-anchor { text-decoration: none !important; color: #4f46e5 !important; transition: color 0.15s ease; }
+.ultimate-zalo-anchor:hover { color: #1e1b4b !important; }
+
+.ultimate-admin-flat-row.ultimate-danger-row:hover {
+    background: rgba(244, 63, 94, 0.03) !important;
+}
+.text-rose-danger { color: #e11d48 !important; }
+.ultimate-pulse-animation { animation: ultHeartbeat 1.3s infinite alternate; }
+@keyframes ultHeartbeat { to { transform: scale(1.1); } }
+
+/* ====================================================================
+   HUY HIỆU GIỚI TÍNH BỎ CHẤM TRÒN TỐI GIẢN
+   ==================================================================== */
+.ultimate-gender-luxury-badge {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 4px 14px !important;
+    border-radius: 100px !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.ultimate-gender-luxury-badge.gender-sapphire-male {
+    color: #2563eb !important;
+    background: rgba(37, 99, 235, 0.06) !important;
+}
+
+.ultimate-gender-luxury-badge.gender-rose-female {
+    color: #e11d48 !important;
+    background: rgba(225, 29, 72, 0.06) !important;
+}
+
+.ultimate-gender-luxury-badge.gender-slate-other {
+    color: #475569 !important;
+    background: #f1f5f9 !important;
+}
+
+/* ====================================================================
+   HUY HIỆU MÃ KHÁCH HÀNG (HIGH CONTRAST)
+   ==================================================================== */
+.ultimate-customer-code-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 4px 14px !important;
+    background: rgba(79, 70, 229, 0.05) !important; 
+    border: 1px solid rgba(79, 70, 229, 0.1) !important; 
+    border-radius: 8px !important;
+}
+
+.ultimate-customer-code-badge .code-label {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+}
+
+.ultimate-customer-code-badge .code-value {
+    font-size: 1.15rem !important;
+    font-weight: 900 !important;
+    color: #4f46e5 !important;
+    letter-spacing: 0.04em !important;
+}
+
+/* ====================================================================
+   PHÂN VÙNG LIÊN HỆ GIA ĐÌNH ĐỒNG BỘ HOÀN HẢO
+   ==================================================================== */
+.ultimate-rel-zone {
+    border-top: 1px solid #f8fafc !important;
+}
+
+.ultimate-rel-header {
+    font-size: 1.05rem !important; /* Đồng bộ kích thước chuẩn 1.05rem */
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: #94a3b8 !important; /* Màu xám Slate mảnh khảnh giống Tiền sử bệnh */
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
     margin-bottom: 5px;
-    font-size: 11px;
-    font-weight: 700;
+}
+
+.ultimate-dot-pulse {
+    display: none !important; /* Ẩn hoàn toàn dấu chấm tròn màu tím đứng trước chữ */
+}
+
+.ultimate-counter {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    padding: 3px 10px !important;
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.ultimate-rel-scroll-viewport { max-height: 250px; overflow-y: auto; }
+.ultimate-rel-scroll-viewport::-webkit-scrollbar { width: 3.5px; }
+.ultimate-rel-scroll-viewport::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+.ultimate-rel-row-item {
+    background: transparent !important;
+    border-radius: 16px !important;
+    cursor: pointer !important;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.ultimate-rel-row-item:hover {
+    background: rgba(15, 23, 42, 0.035) !important;
+    padding-left: 16px !important;
+}
+.ultimate-rel-row-item:hover .ultimate-arrow-nav { opacity: 0.6 !important; transform: translateX(0); }
+
+.ultimate-monogram-circle {
+    width: 42px !important;
+    height: 42px !important;
+    background: #f1f5f9 !important;
+    color: #1e293b !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    flex-shrink: 0 !important;
+    margin-right: 18px !important;
+}
+
+.ultimate-leading { line-height: 1.25 !important; }
+.ultimate-rel-name { font-size: 1.15rem !important; color: #0f172a !important; font-weight: 800 !important; } /* Đồng bộ size 1.15rem */
+.ultimate-rel-code { font-size: 0.85rem !important; color: #94a3b8 !important; font-weight: 600; }
+
+.ultimate-role-pill {
+    font-size: 0.88rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+.ultimate-role-pill.pill-family-sapphire { color: #4f46e5 !important; }
+.ultimate-role-pill.pill-family-sapphire::before { content: ""; width: 6px; height: 6px; background: #4f46e5; border-radius: 50%; flex-shrink: 0; }
+
+.ultimate-role-pill.pill-other-slate { color: #64748b !important; }
+.ultimate-role-pill.pill-other-slate::before { content: ""; width: 6px; height: 6px; background: #94a3b8; border-radius: 50%; flex-shrink: 0; }
+
+.ultimate-arrow-nav { font-size: 0.85rem !important; color: #4f46e5 !important; opacity: 0; transform: translateX(-5px); transition: all 0.2s ease; }
+
+/* ====================================================================
+   NÚT HỒ SƠ ĐIỀU TRỊ CHỮ SIÊU ĐẬM ĐẠI CỠ
+   ==================================================================== */
+.ultimate-action-zone { border-top: 1px dashed #e2e8f0 !important; }
+.btn-ultimate-treatment {
+    background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-size: 1rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15) !important;
+    transition: all 0.25s ease !important;
+}
+.btn-ultimate-treatment:hover {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6) !important;
+    box-shadow: 0 10px 28px rgba(79, 70, 229, 0.25) !important;
+    transform: translateY(-1px);
+}
+
+/* ====================================================================
+   CÁC THÀNH PHẦN UTILITIES KHÁC GIỮ NGUYÊN
+   ==================================================================== */
+.btn { width: auto !important; white-space: nowrap; }
+
+.stat-card {
+    border-radius: 12px;
+    padding: 1rem !important; 
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    transition: transform 0.2s ease-in-out;
+    background: #fff;
+    border: 0;
 }
 .stat-card:hover { transform: translateY(-3px); }
+.stat-card .info-value { line-height: 1.2; margin-bottom: 0; font-size: 15px !important; font-weight: 700; }
+.stat-card .info-label { margin-bottom: 5px; font-size: 11px; font-weight: 700; }
 
-.bg-primary-gradient {
-    background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
-}
-
+.bg-primary-gradient { background: linear-gradient(135deg, #4f46e5, #6366f1) !important; }
 .small-text { font-size: 11px; }
-
-/* Textarea & Ghi chú */
 .bg-light-blue { background-color: #f8fafc; }
 
 textarea.form-control:focus {
@@ -78,13 +345,12 @@ textarea.form-control:focus {
 }
 
 .note-content-text {
-    font-size: 18px !important; /* To rõ cho bác sĩ đọc */
+    font-size: 18px !important;
     color: #0f172a !important;
     font-weight: 500;
     line-height: 1.5;
 }
 
-/* Timeline điều trị */
 .treatment-timeline { padding-left: 10px; }
 .timeline-item {
     position: relative; padding-bottom: 25px;
@@ -98,16 +364,8 @@ textarea.form-control:focus {
     box-shadow: 0 0 0 1px #e2e8f0;
 }
 
-/* Label & Value */
-.info-label {
-    font-size: 11px; text-transform: uppercase;
-    font-weight: 700; color: #64748b; margin-bottom: 3px;
-}
-.info-value { font-size: 17px; font-weight: 600; color: #1e293b; }
-
 .italic { font-style: italic; }
 
-/* Nút quay lại tròn và mượt */
 .btn-light.rounded-circle {
     width: 40px;
     height: 40px;
@@ -117,63 +375,19 @@ textarea.form-control:focus {
     border: 1px solid #e2e8f0;
     transition: all 0.2s;
 }
+.btn-light.rounded-circle:hover { background-color: #4f46e5; transform: translateX(-3px); }
+.btn-light.rounded-circle:hover i { color: white !important; }
 
-.btn-light.rounded-circle:hover {
-    background-color: #4f46e5;
-    transform: translateX(-3px);
-}
+.hover-danger:hover { background-color: #fff1f2; border-radius: 8px; color: #be123c !important; }
+.hover-shadow:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
 
-.btn-light.rounded-circle:hover i {
-    color: white !important;
-}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; }
+.active { background-color: #4f46e5; }
+.completed { background-color: #10b981; }
+.pending { background-color: #f59e0b; }
 
-/* Nút xoá tinh tế */
-.hover-danger:hover {
-    background-color: #fff1f2;
-    border-radius: 8px;
-    color: #be123c !important;
-}
-
-/* Hiệu ứng bóng cho các nút nhỏ */
-.hover-shadow:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-/* Responsive cho các nút trên mobile */
-@media (max-width: 576px) {
-    /* Cho cụm nút dàn hàng ngang đều hoặc xuống hàng */
-    .d-flex.gap-2 {
-        width: 100%;
-        justify-content: flex-end; /* Hoặc space-between nếu muốn nút trải đều */
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid #f1f5f9;
-    }
-
-    /* Thu nhỏ Avatar một chút trên mobile */
-    .avatar-large {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-
-    /* Thu nhỏ nút Back */
-    .back-icon {
-        width: 32px;
-        height: 32px;
-    }
-
-    /* Đảm bảo Dropdown menu không bị lệch khỏi màn hình */
-    .dropdown-menu-end {
-        right: 0 !important;
-        left: auto !important;
-    }
-}
-
-/* Helper class để ẩn chữ trên mobile nhưng hiện trên desktop */
-.d-none { display: none !important; }
-@media (min-width: 768px) {
-    .d-md-inline { display: inline !important; }
-}
+.info-value { padding: 4px 8px; border-radius: 6px; transition: all 0.2s ease; }
+.info-value:hover { background-color: #f1f5f9; }
 
 .back-navigation {
     display: flex;
@@ -183,23 +397,6 @@ textarea.form-control:focus {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Biểu tượng mũi tên */
-.back-icon {
-    width: 38px;
-    height: 38px;
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px; /* Bo góc nhẹ cho hiện đại */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
-
-/* Chữ "Quay lại" bên cạnh */
 .back-text {
     font-weight: 600;
     font-size: 14px;
@@ -212,32 +409,22 @@ textarea.form-control:focus {
     opacity: 0;
 }
 
-/* HIỆU ỨNG KHI HOVER */
 .back-navigation:hover .back-icon {
     background-color: #4f46e5;
     color: #ffffff;
     border-color: #4f46e5;
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-    transform: translateX(-3px); /* Khẽ giật lùi về sau */
+    transform: translateX(-3px);
 }
 
-.back-navigation:hover .back-text {
-    margin-left: 10px;
-    max-width: 100px;
-    opacity: 1;
-    color: #4f46e5;
-}
+.back-navigation:hover .back-text { margin-left: 10px; max-width: 100px; opacity: 1; color: #4f46e5; }
 
-/* Class viền hồng cho nữ */
-.border-female {
-    border-color: #f472b6 !important; /* Màu hồng Pink 400 */
-}
+.border-female { border-color: #f472b6 !important; }
 
 .luxury-tooltip {
     visibility: hidden;
     opacity: 0;
     position: absolute;
-    /* Đẩy lên phía trên hoặc căn chỉnh lại vị trí */
     bottom: 120%; 
     left: 0;
     width: 200px;
@@ -248,58 +435,98 @@ textarea.form-control:focus {
     border: 1px solid #f0f0f0;
     z-index: 9999;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none; /* Tránh giật lag khi di chuột */
+    pointer-events: none;
 }
-.has-tooltip:hover + .luxury-tooltip {
-    visibility: visible;
-    opacity: 1;
-    bottom: 100%; /* Trồi lên đúng vị trí */
-}
-.tooltip-header {
-    font-size: 0.7rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #64748b;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #f1f5f9;
-    padding-bottom: 5px;
-}
+.has-tooltip:hover + .luxury-tooltip { visibility: visible; opacity: 1; bottom: 100%; }
+.tooltip-header { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; color: #64748b; margin-bottom: 8px; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; }
 .luxury-tooltip li { font-size: 0.8rem; color: #444; }
 
-.stat-card {
-    border-radius: 12px;
-    padding: 1rem !important; 
-    height: 100%; /* Ép chiều cao lấp đầy cột */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Căn giữa dọc */
-    transition: transform 0.2s ease-in-out;
-    background: #fff;
-    border: 0;
+/* Responsive layout */
+@media (max-width: 576px) {
+    .d-flex.gap-2 { width: 100%; justify-content: flex-end; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
+    .avatar-large { width: 50px; height: 50px; font-size: 20px; }
+    .back-icon { width: 32px; height: 32px; }
+    .dropdown-menu-end { right: 0 !important; left: auto !important; }
 }
 
-/* Đảm bảo các mã hồ sơ không xuống dòng quá sớm */
-.info-value {
-    font-size: 15px !important; /* Thu nhỏ một chút để 5 mã nằm vừa hàng ngang */
-    font-weight: 700;
+.d-none { display: none !important; }
+@media (min-width: 768px) { .d-md-inline { display: inline !important; } }
+
+/* ====================================================================
+   HUY HIỆU TUỔI MINI DÀNH CHO CARD LIÊN HỆ GIA ĐÌNH
+   ==================================================================== */
+.ultimate-age-pill-mini {
+    background: rgba(15, 23, 42, 0.04) !important; /* Phủ sương xám mờ tối giản */
+    color: #475569 !important; /* Tông màu Slate thanh lịch */
+    font-size: 0.78rem !important; /* Size chữ nhỏ gọn tinh tế */
+    font-weight: 800 !important;
+    padding: 2px 8px !important;
+    border-radius: 6px !important; /* Bo góc khớp cấu trúc danh sách */
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-/* Chấm tròn trạng thái */
-.status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
+/* Cập nhật thêm màu sắc nổi bật cho các tag gia đình động khi di chuột qua */
+.ultimate-rel-row-item:hover .ultimate-age-pill-mini {
+    background: rgba(99, 102, 241, 0.08) !important;
+    color: #4f46e5 !important;
 }
-.active { background-color: #4f46e5; }
-.completed { background-color: #10b981; }
-.pending { background-color: #f59e0b; }
+.ultimate-address-multiline {
+    max-width: 65%; /* Giới hạn chiều rộng tối đa để ép xuống hàng, nhường không gian cho label bên trái */
+    word-break: break-word !important; /* Bẻ đôi từ nếu từ quá dài */
+    white-space: normal !important; /* Cho phép xuống hàng tự nhiên */
+    line-height: 1.4 !important; /* Tạo khoảng cách giãn dòng thoáng đãng, dễ đọc */
+    font-size: 1.12rem !important;
+    color: #334155 !important;
+}
+.ultimate-luxury-row-inline {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(241, 245, 249, 0.6) !important;
+}
 
-/* Định dạng hover để trông đẳng cấp hơn */
-.info-value {
-    padding: 4px 8px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
+.luxury-label-text {
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
 }
-.info-value:hover {
-    background-color: #f1f5f9;
+
+.luxury-phone-number {
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.2px;
+}
+
+.text-luxury-indigo {
+    color: #5c59e8 !important;
+    font-size: 1rem;
+}
+
+/* TAG INLINE TỐI GIẢN */
+.luxury-inline-tag {
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    padding: 2px 10px !important;
+    border-radius: 6px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Chính chủ: Nền mờ trong suốt, chữ xanh tím tinh tế */
+.luxury-inline-tag.tag-self {
+    background: rgba(92, 89, 232, 0.06) !important;
+    color: #5c59e8 !important;
+}
+
+/* Người thân: Tông màu Slate nhẹ nhàng hòa vào nền */
+.luxury-inline-tag.tag-relative {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+}
+/* Responsive mượt mà trên thiết bị di động */
+@media (max-width: 576px) {
+    .ultimate-address-multiline {
+        max-width: 60%;
+        font-size: 1.05rem !important;
+    }
 }

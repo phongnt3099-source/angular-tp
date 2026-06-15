@@ -3,13 +3,13 @@
         <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
             
             <div class="modal-header-custom d-flex justify-content-between align-items-center" 
-                 [ngClass]="{'bg-receipt': transactionForm.fT_TRANSACTION_TYPE === 1, 'bg-payment': transactionForm.fT_TRANSACTION_TYPE === 2}">
+                 [ngClass]="{'bg-receipt': transactionForm.fT_TYPE === 1, 'bg-payment': transactionForm.fT_TYPE === 2}">
                 <div class="d-flex align-items-center">
                     <div class="icon-box-header me-3">
-                        <i [class]="transactionForm.fT_TRANSACTION_TYPE === 1 ? 'fas fa-arrow-alt-circle-down text-white' : 'fas fa-arrow-alt-circle-up text-white'"></i>
+                        <i [class]="transactionForm.fT_TYPE === 1 ? 'fas fa-arrow-alt-circle-down text-white' : 'fas fa-arrow-alt-circle-up text-white'"></i>
                     </div>
                     <h5 class="modal-title-custom mb-0 text-white">
-                        {{ (transactionForm.fT_TRANSACTION_TYPE === 1 ? 'LẬP PHIẾU THU TIỀN' : 'LẬP PHIẾU CHI TIỀN') | localize }}
+                        {{ (transactionForm.fT_TYPE === 1 ? 'LẬP PHIẾU THU TIỀN' : 'LẬP PHIẾU CHI TIỀN') | localize }}
                     </h5>
                 </div>
                 <button type="button" class="btn-close btn-close-white shadow-none" (click)="close()" aria-label="Close"></button>
@@ -19,11 +19,11 @@
                 <div class="modal-body p-0 bg-light-gray">
                     
                     <div class="p-4 bg-white border-b-light d-flex gap-3">
-                        <div class="switch-luxury-card" [class.active-r]="transactionForm.fT_TRANSACTION_TYPE === 1" (click)="changeTransactionType(1)">
+                        <div class="switch-luxury-card" [class.active-r]="transactionForm.fT_TYPE === 1" (click)="changeTransactionType(1)">
                             <div class="dot-status bg-success-pure"></div>
                             <span class="fw-bold fs-14">{{ 'PHIẾU THU (Dòng tiền vào)' | localize }}</span>
                         </div>
-                        <div class="switch-luxury-card" [class.active-p]="transactionForm.fT_TRANSACTION_TYPE === 2" (click)="changeTransactionType(2)">
+                        <div class="switch-luxury-card" [class.active-p]="transactionForm.fT_TYPE === 2" (click)="changeTransactionType(2)">
                             <div class="dot-status bg-danger-pure"></div>
                             <span class="fw-bold fs-14">{{ 'PHIẾU CHI (Dòng tiền ra)' | localize }}</span>
                         </div>
@@ -33,24 +33,24 @@
                         
                         <div class="col-lg-7 bg-white p-4 border-e-light">
                             <div class="section-title-zone mb-4">
-                                <span class="line-indicator" [ngClass]="transactionForm.fT_TRANSACTION_TYPE === 1 ? 'indicator-receipt' : 'indicator-payment'"></span>
+                                <span class="line-indicator" [ngClass]="transactionForm.fT_TYPE === 1 ? 'indicator-receipt' : 'indicator-payment'"></span>
                                 <h6 class="fw-bold text-dark mb-0">{{ 'Thông tin chứng từ gốc' | localize }}</h6>
                             </div>
 
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label-custom">{{ 'Mã Phiếu' | localize }}</label>
-                                    <input type="text" name="transactionId" [(ngModel)]="transactionForm.fT_TRANSACTION_ID" disabled class="form-control-custom disabled-input-custom font-mono" />
+                                    <input type="text" name="transactionId" [(ngModel)]="transactionForm.fT_ID" disabled class="form-control-custom disabled-input-custom font-mono" />
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label-custom">{{ 'Ngày Chứng Từ' | localize }}</label>
-                                    <input type="datetime-local" name="documentDate" [(ngModel)]="transactionForm.fT_DOCUMENT_DATE" class="form-control-custom" required />
+                                    <input type="datetime-local" name="documentDate" [(ngModel)]="transactionForm.documenT_DATE" class="form-control-custom" required />
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label-custom">{{ 'Phân loại lý do' | localize }}</label>
-                                    <select name="categoryId" [(ngModel)]="transactionForm.fT_CATEGORY_ID" class="form-select-custom" required>
+                                    <select name="categoryId" [(ngModel)]="transactionForm.categorY_ID" class="form-select-custom" required>
                                         <option [ngValue]="undefined" hidden disabled selected>-- Chọn lý do --</option>
                                         <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
                                     </select>
@@ -59,9 +59,9 @@
                                 <div class="col-md-6">
                                     <label class="form-label-custom">{{ 'Hình thức thanh toán' | localize }}</label>
                                     <div class="d-flex gap-2">
-                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.fT_METHOD_ID === 1" (click)="transactionForm.fT_METHOD_ID = 1">{{ 'Tiền mặt' | localize }}</button>
-                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.fT_METHOD_ID === 2" (click)="transactionForm.fT_METHOD_ID = 2">{{ 'Chuyển khoản' | localize }}</button>
-                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.fT_METHOD_ID === 3" (click)="transactionForm.fT_METHOD_ID = 3">{{ 'Khác' | localize }}</button>
+                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.methoD_ID === 1" (click)="transactionForm.methoD_ID = 1">{{ 'Tiền mặt' | localize }}</button>
+                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.methoD_ID === 2" (click)="transactionForm.methoD_ID = 2">{{ 'Chuyển khoản' | localize }}</button>
+                                        <button type="button" class="btn-method flex-fill" [class.active]="transactionForm.methoD_ID === 3" (click)="transactionForm.methoD_ID = 3">{{ 'Khác' | localize }}</button>
                                     </div>
                                 </div>
 
@@ -75,7 +75,7 @@
 
                                 <div class="col-12">
                                     <label class="form-label-custom">{{ 'Ghi chú nội dung phiếu' | localize }}</label>
-                                    <textarea name="notes" [(ngModel)]="transactionForm.fT_NOTES" rows="3" class="form-control-custom textarea-custom" placeholder="Nhập ghi chú chi tiết..."></textarea>
+                                    <textarea name="notes" [(ngModel)]="transactionForm.notes" rows="3" class="form-control-custom textarea-custom" placeholder="Nhập ghi chú chi tiết..."></textarea>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
 
                                 <div class="mb-4">
                                     <label class="form-label-custom">{{ 'Liên kết Phiếu khám bệnh phát sinh nợ' | localize }}</label>
-                                    <select name="examinationId" [(ngModel)]="transactionForm.fT_EXAMINATION_ID" class="form-select-custom debt-select-highlight" (change)="onExaminationChange()">
+                                    <select name="examinationId" [(ngModel)]="transactionForm.fT_EXM_ID" class="form-select-custom debt-select-highlight" (change)="onExaminationChange()">
                                         <option [ngValue]="null">-- Không liên kết phiếu khám (Chi ngoài/Thu ngoài) --</option>
                                         <option *ngFor="let exam of examinations" [ngValue]="exam.id">{{ exam.code }} ({{ exam.date | date:'dd/MM/yyyy' }})</option>
                                     </select>
@@ -115,7 +115,7 @@
                                     <div class="position-relative d-flex align-items-center">
                                         <input type="text" 
                                                name="totalAmount" 
-                                               [value]="formatNumber(transactionForm.fT_TOTAL_AMOUNT)"
+                                               [value]="formatNumber(transactionForm.totaL_AMOUNT)"
                                                (input)="onAmountInput($event)" 
                                                class="amount-giant-input" 
                                                placeholder="0" 
@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="text-muted fs-11 mt-2 d-flex align-items-center">
                                         <span class="pulse-dot-indicator me-1.5"></span>
-                                        Dư nợ dự kiến sau lượt này: <strong class="text-dark ms-1 font-mono">{{ (currentDebtInfo.remainingDebt - transactionForm.fT_TOTAL_AMOUNT) | number }} đ</strong>
+                                        Dư nợ dự kiến sau lượt này: <strong class="text-dark ms-1 font-mono">{{ (currentDebtInfo.remainingDebt - transactionForm.totaL_AMOUNT) | number }} đ</strong>
                                     </div>
                                 </div>
                             </div>
@@ -135,14 +135,14 @@
 
                 <div class="modal-footer border-0 bg-white p-4">
                     <div>
-                        <button *ngIf="transactionForm.fT_TRANSACTION_ID && !saving" type="button" class="btn btn-outline-danger me-auto d-flex align-items-center rounded-pill px-3" (click)="onDelete()">
+                        <button *ngIf="transactionForm.fT_ID && !saving" type="button" class="btn btn-outline-danger me-auto d-flex align-items-center rounded-pill px-3" (click)="onDelete()">
                             <i class="fas fa-trash-alt me-2"></i> {{ 'Xóa chứng từ' | localize }}
                         </button>
                     </div>
                     <button type="button" class="btn btn-light rounded-pill px-4 fw-bold text-muted shadow-none" (click)="close()">{{ 'HỦY BỎ' | localize }}</button>
                     <button type="submit" [disabled]="!form.form.valid || saving" 
                             class="btn btn-luxury-action rounded-pill px-5 fw-bold shadow text-white"
-                            [ngClass]="transactionForm.fT_TRANSACTION_TYPE === 1 ? 'btn-receipt-active' : 'btn-payment-active'">
+                            [ngClass]="transactionForm.fT_TYPE === 1 ? 'btn-receipt-active' : 'btn-payment-active'">
                         <i class="fas fa-print me-2 text-white"></i> {{ 'XÁC NHẬN & IN' | localize }}
                     </button>
                 </div>
@@ -162,7 +162,7 @@
         <p class="clinic-info">Hotline: 0912.xxx.xxx — Giấy phép: 084xx/SYT-GPHĐ</p>
       </div>
       <div class="barcode-zone">
-        <div class="voucher-id">{{ transactionForm.fT_TRANSACTION_ID }}</div>
+        <div class="voucher-id">{{ transactionForm.fT_ID }}</div>
         <p class="print-date">Ngày in: {{ new Date() | date:'dd/MM/yyyy HH:mm' }}</p>
       </div>
     </div>
@@ -171,14 +171,14 @@
 
     <div class="print-title-zone">
       <h2 class="main-title">
-        {{ transactionForm.fT_TRANSACTION_TYPE === 1 ? 'PHIẾU THU TIỀN' : 'PHIẾU CHI TIỀN' }}
+        {{ transactionForm.fT_TYPE === 1 ? 'PHIẾU THU TIỀN' : 'PHIẾU CHI TIỀN' }}
       </h2>
       <p class="document-date">Ngày chứng từ: {{ transactionForm.fT_DOCUMENT_DATE | date:'dd/MM/yyyy HH:mm' }}</p>
     </div>
 
     <div class="print-body">
       <div class="info-row">
-        <span class="info-label">{{ transactionForm.fT_TRANSACTION_TYPE === 1 ? 'Khách hàng nộp' : 'Người nhận tiền' }}:</span>
+        <span class="info-label">{{ transactionForm.fT_TYPE === 1 ? 'Khách hàng nộp' : 'Người nhận tiền' }}:</span>
         <span class="info-value fw-bold text-uppercase">{{ transactionForm.fT_PATIENT_ID }}</span>
       </div>
 
@@ -187,14 +187,14 @@
         <span class="info-value">{{ transactionForm.fT_CATEGORY_ID }}</span>
       </div>
 
-      <div class="info-row" *ngIf="transactionForm.fT_EXAMINATION_ID">
+      <div class="info-row" *ngIf="transactionForm.fT_EXM_ID">
         <span class="info-label">Mã phiếu khám nợ:</span>
-        <span class="info-value font-mono">{{ transactionForm.fT_EXAMINATION_ID }}</span>
+        <span class="info-value font-mono">{{ transactionForm.fT_EXM_ID }}</span>
       </div>
 
       <div class="info-row">
         <span class="info-label">Hình thức:</span>
-        <span class="info-value">{{ transactionForm.fT_METHOD_ID === 1 ? 'Tiền mặt' : (transactionForm.fT_METHOD_ID === 2 ? 'Chuyển khoản' : 'Khác') }}</span>
+        <span class="info-value">{{ transactionForm.methoD_ID === 1 ? 'Tiền mặt' : (transactionForm.methoD_ID === 2 ? 'Chuyển khoản' : 'Khác') }}</span>
       </div>
 
       <div class="money-highlight-box">

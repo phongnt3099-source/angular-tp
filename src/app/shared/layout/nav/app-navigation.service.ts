@@ -141,6 +141,12 @@ export class AppNavigationService {
                 '/app/admin/examination'
             ),
             new AppMenuItem(
+                'Thu & Chi',
+                '',
+                'fas fa-chart-line',
+                '/app/admin/transaction'
+            ),
+            new AppMenuItem(
                 'Nhân sự',
                 '',
                 'fas fa-users',

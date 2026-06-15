@@ -5,21 +5,23 @@
             [ngClass]="inputModel.cuS_GENDER === 2 ? 'border-female' : 'border-primary'"
         >
             <div class="d-flex align-items-center flex-grow-1">
-                <a (click)="goBack()" class="back-navigation me-2 me-md-3">
+                <a (click)="goBack()" class="back-navigation me-3">
                     <div class="back-icon"><i class="fas fa-chevron-left"></i></div>
                 </a>
                 <div
-                    class="avatar-large me-2 me-md-3"
+                    class="avatar-large ultimate-avatar-shadow"
                     [ngClass]="inputModel.cuS_GENDER === 2 ? 'bg-female' : 'bg-male'"
                 >
                     {{ getDisplayName(inputModel.cuS_NAME)?.charAt(0) }}
                 </div>
-                <div>
-                    <h2 class="fw-bold mb-0 text-dark fs-4 fs-md-2">{{ inputModel.cuS_NAME }}</h2>
-                    <span class="text-muted small">
-                        Mã KH:
-                        <strong>{{ inputModel.cuS_CODE }}</strong>
-                    </span>
+                <div class="d-flex flex-column justify-content-center">
+                    <h2 class="fw-black mb-1 ultimate-header-name">{{ inputModel.cuS_NAME }}</h2>
+                    <div class="mt-1">
+                        <span class="ultimate-customer-code-badge animate__animated animate__fadeIn">
+                            <span class="code-label">Mã KH:</span>
+                            <strong class="code-value">{{ inputModel.cuS_CODE }}</strong>
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -108,32 +110,42 @@
                 <div class="stat-card p-3 shadow-sm bg-white rounded-3 border-start border-4 border-success">
                     <div class="info-label text-success text-uppercase">Tài chính</div>
                     <div class="info-value">
-                        <span class="text-success">{{ inputModel.totaL_PAID || 0 | number:'1.0-0':'vi-VN' }}</span>
+                        <span class="text-success">{{ inputModel.totaL_PAID || 0 | number: '1.0-0' : 'vi-VN' }}</span>
                         /
-                        <span class="text-danger">{{ inputModel.remaininG_DEBT || 0 | number:'1.0-0':'vi-VN' }}</span>
+                        <span class="text-danger">
+                            {{ inputModel.remaininG_DEBT || 0 | number: '1.0-0' : 'vi-VN' }}
+                        </span>
                     </div>
                     <small class="text-muted small-text">Đã trả / Còn nợ</small>
                 </div>
             </div>
-           <div class="col-md-3">
-                <div class="stat-card p-3 shadow-sm bg-white rounded-3 border-0 h-100 d-flex flex-column justify-content-center">
-                    <div class="info-label text-uppercase mb-2" style="letter-spacing: 1px; color: #64748b; font-weight: 700;">Hồ sơ điều trị</div>
-                    
+            <div class="col-md-3">
+                <div
+                    class="stat-card p-3 shadow-sm bg-white rounded-3 border-0 h-100 d-flex flex-column justify-content-center"
+                >
+                    <div
+                        class="info-label text-uppercase mb-2"
+                        style="letter-spacing: 1px; color: #64748b; font-weight: 700"
+                    >
+                        Hồ sơ điều trị
+                    </div>
+
                     <div class="d-flex flex-wrap gap-2">
-                        <div *ngFor="let item of treatmentList | slice:0:8" class="position-relative">
-                            <span 
+                        <div *ngFor="let item of treatmentList | slice: 0 : 8" class="position-relative">
+                            <span
                                 class="info-value cursor-pointer has-tooltip fw-bold d-flex align-items-center"
                                 [ngClass]="getStatusClass(item.exM_STATUS)"
                                 (click)="viewTreatmentDetail(item.exM_ID)"
-                                style="cursor: pointer;">
+                                style="cursor: pointer"
+                            >
                                 <span class="status-dot me-1" [ngClass]="item.exM_STATUS"></span>
                                 {{ item.exM_CODE }}
                             </span>
-                            
+
                             <div class="luxury-tooltip">
                                 <div class="tooltip-header">{{ item.serviceName }}</div>
                                 <ul class="list-unstyled mb-0">
-                                    <li class="small text-muted">{{ item.exM_DATE | date:'dd/MM/yyyy' }}</li>
+                                    <li class="small text-muted">{{ item.exM_DATE | date: 'dd/MM/yyyy' }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -165,52 +177,206 @@
 
         <div class="row">
             <div class="col-lg-4">
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold text-primary">
-                            <i class="fas fa-id-card me-2"></i>
-                            Hành chính
+                <div class="card ultimate-luxury-card border-0 mb-4">
+                    <div class="card-header bg-white py-4 header-border-ultimate">
+                        <h5 class="mb-0 fw-extrabold d-flex align-items-center ultimate-title">
+                            <i class="fas fa-id-card me-2.5 text-indigo-ultimate"></i>
+                            Thông Tin Hành Chính
                         </h5>
                     </div>
-                    <div class="card-body p-4">
-                        <div class="mb-3">
-                            <div class="info-label">Ngày sinh / Tuổi</div>
-                            <div class="info-value">
-                                {{ inputModel.cuS_DOB | date: 'dd/MM/yyyy' }} ({{ inputModel.age }} tuổi)
+
+                    <div class="card-body p-4.5 pt-4">
+                        <div class="ultimate-luxury-flat-list">
+                            <div
+                                class="ultimate-admin-flat-row d-flex align-items-center justify-content-between p-3 mb-2"
+                            >
+                                <div class="d-flex align-items-center flex-grow-1 min-w-0">
+                                    <div class="ultimate-admin-label-zone">
+                                        <span class="ultimate-admin-dot-tag tag-admin-sapphire">Ngày sinh / Tuổi</span>
+                                    </div>
+                                </div>
+                                <div class="ultimate-admin-value-zone fw-bold text-slate-dark text-end">
+                                    {{ inputModel.cuS_DOB | date: 'dd/MM/yyyy' }}
+                                    <span class="ultimate-age-pill ms-3">{{ inputModel.age }} tuổi</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="info-label">Giới tính</div>
-                            <div class="info-value">
-                                <i
-                                    class="fas me-1"
-                                    [class.fa-mars]="inputModel.cuS_GENDER === 1"
-                                    [class.fa-venus]="inputModel.cuS_GENDER === 2"
-                                ></i>
-                                {{ inputModel.cuS_GENDER === 1 ? 'Nam' : inputModel.cuS_GENDER === 2 ? 'Nữ' : 'Khác' }}
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="info-label">Số điện thoại</div>
-                            <div class="info-value text-primary fw-bold">
-                                <a
-                                    href="javascript:;"
-                                    (click)="openZalo(inputModel.cuS_PHONE)"
-                                    class="zalo-btn"
-                                    title="Mở Zalo nhắn tin"
+
+                            <div
+                                class="ultimate-admin-flat-row d-flex align-items-center justify-content-between p-3 mb-2"
+                            >
+                                <div class="d-flex align-items-center flex-grow-1 min-w-0">
+                                    <div class="ultimate-admin-label-zone">
+                                        <span class="ultimate-admin-dot-tag tag-admin-sapphire">Giới tính</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="ultimate-admin-value-zone text-end d-flex align-items-center justify-content-end"
                                 >
-                                    <i class="fas fa-comment-dots me-2"></i>
-                                    <span class="fw-bold">{{ inputModel.cuS_PHONE }}</span>
-                                </a>
+                                    <span
+                                        class="ultimate-gender-luxury-badge"
+                                        [ngClass]="{
+                                            'gender-sapphire-male': inputModel.cuS_GENDER === 1,
+                                            'gender-rose-female': inputModel.cuS_GENDER === 2,
+                                            'gender-slate-other': inputModel.cuS_GENDER === 3
+                                        }"
+                                    >
+                                        {{
+                                            inputModel.cuS_GENDER === 1
+                                                ? 'Nam'
+                                                : inputModel.cuS_GENDER === 2
+                                                  ? 'Nữ'
+                                                  : 'Khác'
+                                        }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="ultimate-admin-flat-row d-flex align-items-center justify-content-between p-3 mb-2">
+                                <div class="d-flex align-items-center flex-grow-1 min-w-0">
+                                    <div class="ultimate-admin-label-zone">
+                                        <span class="ultimate-admin-dot-tag tag-admin-sapphire">Số điện thoại</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="luxury-value-block d-flex align-items-center gap-3">
+                                    <a href="javascript:;" (click)="openZalo(inputModel.cuS_PHONE)" class="luxury-phone-link d-flex align-items-center">
+                                        <i class="fas fa-comment-dots text-luxury-indigo me-2"></i>
+                                        <span class="luxury-phone-number">{{ inputModel.cuS_PHONE }}</span>
+                                    </a>
+
+                                    <span *ngIf="inputModel.cuS_PHONE_OWNER && inputModel.cuS_PHONE_OWNER!='Chính chủ'" 
+                                        class="luxury-inline-tag"
+                                        [ngClass]="{
+                                            'tag-self': ['Chính chủ', 'Chính Chủ'].includes(inputModel.cuS_PHONE_OWNER),
+                                            'tag-relative': !['Chính chủ', 'Chính Chủ'].includes(inputModel.cuS_PHONE_OWNER)
+                                        }">
+                                        {{ inputModel.cuS_PHONE_OWNER }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div
+                                class="ultimate-admin-flat-row d-flex align-items-start justify-content-between p-3 mb-2"
+                            >
+                                <div class="d-flex align-items-center flex-grow-1 min-w-0 me-3">
+                                    <div class="ultimate-admin-label-zone">
+                                        <span class="ultimate-admin-dot-tag tag-admin-slate">Địa chỉ</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="ultimate-admin-value-zone text-slate-deep fw-bold text-end ultimate-address-multiline"
+                                >
+                                    {{ inputModel.cuS_ADDRESS_FULL || 'Chưa cập nhật địa chỉ' }}
+                                </div>
+                            </div>
+
+                            <div
+                                class="ultimate-admin-flat-row d-flex align-items-center justify-content-between p-3 mb-2"
+                                [class.ultimate-danger-row]="inputModel.cuS_MEDICAL_HISTORY"
+                            >
+                                <div class="d-flex align-items-center flex-grow-1 min-w-0 me-3">
+                                    <div class="ultimate-admin-label-zone">
+                                        <span
+                                            class="ultimate-admin-dot-tag"
+                                            [ngClass]="
+                                                inputModel.cuS_MEDICAL_HISTORY ? 'tag-admin-rose' : 'tag-admin-slate'
+                                            "
+                                        >
+                                            Tiền sử bệnh
+                                        </span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="ultimate-admin-value-zone fw-extrabold text-end text-truncate-custom"
+                                    [class.text-rose-danger]="inputModel.cuS_MEDICAL_HISTORY"
+                                    title="{{ inputModel.cuS_MEDICAL_HISTORY }}"
+                                >
+                                    <i
+                                        class="fas fa-heart-beat me-2 ultimate-pulse-animation"
+                                        *ngIf="inputModel.cuS_MEDICAL_HISTORY"
+                                    ></i>
+                                    {{ inputModel.cuS_MEDICAL_HISTORY || 'Không ghi nhận bệnh lý' }}
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <div class="info-label">Địa chỉ</div>
-                            <div class="info-value fs-6 lh-sm">{{ inputModel.cuS_ADDRESS_FULL }}</div>
-                        </div>
-                        <div class="mb-0">
-                            <div class="info-label">T.Sử bệnh</div>
-                            <div class="info-value fs-6 lh-sm">{{ inputModel.cuS_MEDICAL_HISTORY || 'Không' }}</div>
+
+                        <div
+                            class="ultimate-rel-zone mt-5 pt-4.5"
+                            *ngIf="inputModel.relationList && inputModel.relationList.length > 0"
+                        >
+                            <div class="d-flex justify-content-between align-items-center mb-4 px-1">
+                                <div class="ultimate-rel-header">
+                                    <i class="ultimate-dot-pulse me-2.5"></i>
+                                    Liên hệ / Gia đình
+                                </div>
+                                <span class="ultimate-counter">{{ inputModel.relationList.length }}</span>
+                            </div>
+
+                            <div class="ultimate-rel-scroll-viewport">
+                                <div
+                                    class="ultimate-rel-row-item d-flex align-items-center justify-content-between p-3 mb-2"
+                                    *ngFor="let rel of inputModel.relationList"
+                                    (click)="navigateToCustomer(rel.relateD_CUS_ID)"
+                                    title="Mở chi tiết {{ rel.cuS_NAME_TEMP }}"
+                                >
+                                    <div class="d-flex align-items-center flex-grow-1 min-w-0">
+                                        <div class="ultimate-monogram-circle">
+                                            <span>{{ $any(rel.cuS_INITIALS) }}</span>
+                                        </div>
+
+                                        <div class="d-flex flex-column min-w-0 ultimate-leading">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="ultimate-rel-name text-truncate fw-extrabold">
+                                                    {{ rel.cuS_NAME_TEMP }}
+                                                </span>
+                                                <span class="ultimate-age-pill-mini" *ngIf="rel.age">
+                                                    {{ rel.age }} tuổi
+                                                </span>
+                                            </div>
+                                            <span class="ultimate-rel-code mt-1">{{ rel.cuS_CODE }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span
+                                            class="ultimate-role-pill"
+                                            [ngClass]="{
+                                                'pill-family-sapphire': [
+                                                    'Cha',
+                                                    'Mẹ',
+                                                    'Ba',
+                                                    'Vợ/Chồng',
+                                                    'Anh ruột',
+                                                    'Chị ruột',
+                                                    'Con',
+                                                    'Con trai',
+                                                    'Con gái',
+                                                    'Em trai',
+                                                    'Em gái',
+                                                    'Thành viên gia đình'
+                                                ].includes(rel.reL_TYPE),
+                                                'pill-other-slate': ![
+                                                    'Cha',
+                                                    'Mẹ',
+                                                    'Ba',
+                                                    'Vợ/Chồng',
+                                                    'Anh ruột',
+                                                    'Chị ruột',
+                                                    'Con',
+                                                    'Con trai',
+                                                    'Con gái',
+                                                    'Em trai',
+                                                    'Em gái',
+                                                    'Thành viên gia đình'
+                                                ].includes(rel.reL_TYPE)
+                                            }"
+                                        >
+                                            {{ rel.reL_TYPE }}
+                                        </span>
+                                        <i class="fas fa-arrow-right-long ultimate-arrow-nav"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

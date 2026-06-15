@@ -2750,14 +2750,19 @@ export class CustomerServiceProxy {
 
     /**
      * @param phone (optional) 
+     * @param current_cus_id (optional) 
      * @return Success
      */
-    cM_CUSTOMER_CheckPhone(phone: string | undefined): Observable<CM_CUSTOMER_ENTITY[]> {
+    cM_CUSTOMER_CheckPhone(phone: string | undefined, current_cus_id: string | undefined): Observable<CM_CUSTOMER_ENTITY[]> {
         let url_ = this.baseUrl + "/api/services/app/Customer/CM_CUSTOMER_CheckPhone?";
         if (phone === null)
             throw new Error("The parameter 'phone' cannot be null.");
         else if (phone !== undefined)
             url_ += "phone=" + encodeURIComponent("" + phone) + "&";
+        if (current_cus_id === null)
+            throw new Error("The parameter 'current_cus_id' cannot be null.");
+        else if (current_cus_id !== undefined)
+            url_ += "current_cus_id=" + encodeURIComponent("" + current_cus_id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -11775,6 +11780,242 @@ export class ProfileServiceProxy {
 }
 
 @Injectable()
+export class RelationshipServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_RELATIONSHIP_UpdateFamilyRole(body: CM_RELATIONSHIP_ENTITY | undefined): Observable<InsertResult> {
+        let url_ = this.baseUrl + "/api/services/app/Relationship/CM_RELATIONSHIP_UpdateFamilyRole";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_RELATIONSHIP_UpdateFamilyRole(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_RELATIONSHIP_UpdateFamilyRole(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InsertResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InsertResult>;
+        }));
+    }
+
+    protected processCM_RELATIONSHIP_UpdateFamilyRole(response: HttpResponseBase): Observable<InsertResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InsertResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_RELATIONSHIP_SaveSingle(body: CM_RELATIONSHIP_ENTITY | undefined): Observable<InsertResult> {
+        let url_ = this.baseUrl + "/api/services/app/Relationship/CM_RELATIONSHIP_SaveSingle";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_RELATIONSHIP_SaveSingle(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_RELATIONSHIP_SaveSingle(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InsertResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InsertResult>;
+        }));
+    }
+
+    protected processCM_RELATIONSHIP_SaveSingle(response: HttpResponseBase): Observable<InsertResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InsertResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    cM_RELATIONSHIP_ById(id: string | undefined): Observable<CM_RELATIONSHIP_ENTITY> {
+        let url_ = this.baseUrl + "/api/services/app/Relationship/CM_RELATIONSHIP_ById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_RELATIONSHIP_ById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_RELATIONSHIP_ById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CM_RELATIONSHIP_ENTITY>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CM_RELATIONSHIP_ENTITY>;
+        }));
+    }
+
+    protected processCM_RELATIONSHIP_ById(response: HttpResponseBase): Observable<CM_RELATIONSHIP_ENTITY> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CM_RELATIONSHIP_ENTITY.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cM_RELATIONSHIP_RemoveFromFamily(body: CM_RELATIONSHIP_ENTITY | undefined): Observable<CommonResult> {
+        let url_ = this.baseUrl + "/api/services/app/Relationship/CM_RELATIONSHIP_RemoveFromFamily";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCM_RELATIONSHIP_RemoveFromFamily(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCM_RELATIONSHIP_RemoveFromFamily(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CommonResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CommonResult>;
+        }));
+    }
+
+    protected processCM_RELATIONSHIP_RemoveFromFamily(response: HttpResponseBase): Observable<CommonResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CommonResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class RoleServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -15922,6 +16163,62 @@ export class TransactionServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    fIN_TRANSACTION_GetDashboard(body: FIN_TRANSACTION_ENTITY | undefined): Observable<FinancialDashboardDto> {
+        let url_ = this.baseUrl + "/api/services/app/Transaction/FIN_TRANSACTION_GetDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processFIN_TRANSACTION_GetDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processFIN_TRANSACTION_GetDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FinancialDashboardDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FinancialDashboardDto>;
+        }));
+    }
+
+    protected processFIN_TRANSACTION_GetDashboard(response: HttpResponseBase): Observable<FinancialDashboardDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FinancialDashboardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     fIN_TRANSACTION_Ins(body: FIN_TRANSACTION_ENTITY | undefined): Observable<InsertResult> {
         let url_ = this.baseUrl + "/api/services/app/Transaction/FIN_TRANSACTION_Ins";
         url_ = url_.replace(/[?&]$/, "");
@@ -19667,9 +19964,11 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
     sn!: number;
     debtAmount!: number;
     totalPayment!: number;
+    familY_ID!: string | undefined;
     apP_ID!: string | undefined;
     sloT_NAME!: string | undefined;
     timE_DISTANCE!: string | undefined;
+    cuS_PHONE_OWNER!: string | undefined;
     formatteD_DATE!: string | undefined;
     statuS_COLOR!: string | undefined;
     onlY_TIME!: string | undefined;
@@ -19734,9 +20033,11 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
             this.sn = _data["sn"];
             this.debtAmount = _data["debtAmount"];
             this.totalPayment = _data["totalPayment"];
+            this.familY_ID = _data["familY_ID"];
             this.apP_ID = _data["apP_ID"];
             this.sloT_NAME = _data["sloT_NAME"];
             this.timE_DISTANCE = _data["timE_DISTANCE"];
+            this.cuS_PHONE_OWNER = _data["cuS_PHONE_OWNER"];
             this.formatteD_DATE = _data["formatteD_DATE"];
             this.statuS_COLOR = _data["statuS_COLOR"];
             this.onlY_TIME = _data["onlY_TIME"];
@@ -19805,9 +20106,11 @@ export class CM_CUSTOMER_ENTITY implements ICM_CUSTOMER_ENTITY {
         data["sn"] = this.sn;
         data["debtAmount"] = this.debtAmount;
         data["totalPayment"] = this.totalPayment;
+        data["familY_ID"] = this.familY_ID;
         data["apP_ID"] = this.apP_ID;
         data["sloT_NAME"] = this.sloT_NAME;
         data["timE_DISTANCE"] = this.timE_DISTANCE;
+        data["cuS_PHONE_OWNER"] = this.cuS_PHONE_OWNER;
         data["formatteD_DATE"] = this.formatteD_DATE;
         data["statuS_COLOR"] = this.statuS_COLOR;
         data["onlY_TIME"] = this.onlY_TIME;
@@ -19869,9 +20172,11 @@ export interface ICM_CUSTOMER_ENTITY {
     sn: number;
     debtAmount: number;
     totalPayment: number;
+    familY_ID: string | undefined;
     apP_ID: string | undefined;
     sloT_NAME: string | undefined;
     timE_DISTANCE: string | undefined;
+    cuS_PHONE_OWNER: string | undefined;
     formatteD_DATE: string | undefined;
     statuS_COLOR: string | undefined;
     onlY_TIME: string | undefined;
@@ -20022,13 +20327,23 @@ export interface ICM_EMPLOYEE_ENTITY {
 export class CM_RELATIONSHIP_ENTITY implements ICM_RELATIONSHIP_ENTITY {
     reL_ID!: string | undefined;
     cuS_ID!: string | undefined;
-    emP_ID!: string | undefined;
+    cuS_CODE!: string | undefined;
+    relateD_CUS_ID!: string | undefined;
+    familY_ID!: string | undefined;
+    action!: string | undefined;
+    cuS_INITIALS!: string | undefined;
     reL_TYPE!: string | undefined;
     notes!: string | undefined;
     makeR_ID!: string | undefined;
     creatE_DT!: string | undefined;
+    age!: string | undefined;
     updatE_ID!: string | undefined;
     updatE_DT!: string | undefined;
+    cuS_NAME_TEMP!: string | undefined;
+    isFamilyMember!: string | undefined;
+    relTypeOriginal!: string | undefined;
+    selectedRelType!: string | undefined;
+    isDropdownOpen!: string | undefined;
 
     constructor(data?: ICM_RELATIONSHIP_ENTITY) {
         if (data) {
@@ -20043,13 +20358,23 @@ export class CM_RELATIONSHIP_ENTITY implements ICM_RELATIONSHIP_ENTITY {
         if (_data) {
             this.reL_ID = _data["reL_ID"];
             this.cuS_ID = _data["cuS_ID"];
-            this.emP_ID = _data["emP_ID"];
+            this.cuS_CODE = _data["cuS_CODE"];
+            this.relateD_CUS_ID = _data["relateD_CUS_ID"];
+            this.familY_ID = _data["familY_ID"];
+            this.action = _data["action"];
+            this.cuS_INITIALS = _data["cuS_INITIALS"];
             this.reL_TYPE = _data["reL_TYPE"];
             this.notes = _data["notes"];
             this.makeR_ID = _data["makeR_ID"];
             this.creatE_DT = _data["creatE_DT"];
+            this.age = _data["age"];
             this.updatE_ID = _data["updatE_ID"];
             this.updatE_DT = _data["updatE_DT"];
+            this.cuS_NAME_TEMP = _data["cuS_NAME_TEMP"];
+            this.isFamilyMember = _data["isFamilyMember"];
+            this.relTypeOriginal = _data["relTypeOriginal"];
+            this.selectedRelType = _data["selectedRelType"];
+            this.isDropdownOpen = _data["isDropdownOpen"];
         }
     }
 
@@ -20064,13 +20389,23 @@ export class CM_RELATIONSHIP_ENTITY implements ICM_RELATIONSHIP_ENTITY {
         data = typeof data === 'object' ? data : {};
         data["reL_ID"] = this.reL_ID;
         data["cuS_ID"] = this.cuS_ID;
-        data["emP_ID"] = this.emP_ID;
+        data["cuS_CODE"] = this.cuS_CODE;
+        data["relateD_CUS_ID"] = this.relateD_CUS_ID;
+        data["familY_ID"] = this.familY_ID;
+        data["action"] = this.action;
+        data["cuS_INITIALS"] = this.cuS_INITIALS;
         data["reL_TYPE"] = this.reL_TYPE;
         data["notes"] = this.notes;
         data["makeR_ID"] = this.makeR_ID;
         data["creatE_DT"] = this.creatE_DT;
+        data["age"] = this.age;
         data["updatE_ID"] = this.updatE_ID;
         data["updatE_DT"] = this.updatE_DT;
+        data["cuS_NAME_TEMP"] = this.cuS_NAME_TEMP;
+        data["isFamilyMember"] = this.isFamilyMember;
+        data["relTypeOriginal"] = this.relTypeOriginal;
+        data["selectedRelType"] = this.selectedRelType;
+        data["isDropdownOpen"] = this.isDropdownOpen;
         return data;
     }
 }
@@ -20078,13 +20413,23 @@ export class CM_RELATIONSHIP_ENTITY implements ICM_RELATIONSHIP_ENTITY {
 export interface ICM_RELATIONSHIP_ENTITY {
     reL_ID: string | undefined;
     cuS_ID: string | undefined;
-    emP_ID: string | undefined;
+    cuS_CODE: string | undefined;
+    relateD_CUS_ID: string | undefined;
+    familY_ID: string | undefined;
+    action: string | undefined;
+    cuS_INITIALS: string | undefined;
     reL_TYPE: string | undefined;
     notes: string | undefined;
     makeR_ID: string | undefined;
     creatE_DT: string | undefined;
+    age: string | undefined;
     updatE_ID: string | undefined;
     updatE_DT: string | undefined;
+    cuS_NAME_TEMP: string | undefined;
+    isFamilyMember: string | undefined;
+    relTypeOriginal: string | undefined;
+    selectedRelType: string | undefined;
+    isDropdownOpen: string | undefined;
 }
 
 export class CM_ROLES_ENTITY implements ICM_ROLES_ENTITY {
@@ -23639,14 +23984,20 @@ export class FIN_TRANSACTION_ENTITY implements IFIN_TRANSACTION_ENTITY {
     fT_TYPE!: number;
     methoD_ID!: number;
     patienT_ID!: string | undefined;
+    cuS_INITIALS!: string | undefined;
+    cuS_NAME!: string | undefined;
     documenT_DATE!: string | undefined;
     totaL_AMOUNT!: number;
     totaL_PAID!: number | undefined;
     notes!: string | undefined;
     categorY_ID!: string | undefined;
+    categorY_NAME!: string | undefined;
     makeR_ID!: string | undefined;
     creatE_DT!: string | undefined;
     fT_EXM_ID!: string | undefined;
+    searcH_KEYWORD!: string | undefined;
+    froM_DATE!: string | undefined;
+    tO_DATE!: string | undefined;
 
     constructor(data?: IFIN_TRANSACTION_ENTITY) {
         if (data) {
@@ -23667,14 +24018,20 @@ export class FIN_TRANSACTION_ENTITY implements IFIN_TRANSACTION_ENTITY {
             this.fT_TYPE = _data["fT_TYPE"];
             this.methoD_ID = _data["methoD_ID"];
             this.patienT_ID = _data["patienT_ID"];
+            this.cuS_INITIALS = _data["cuS_INITIALS"];
+            this.cuS_NAME = _data["cuS_NAME"];
             this.documenT_DATE = _data["documenT_DATE"];
             this.totaL_AMOUNT = _data["totaL_AMOUNT"];
             this.totaL_PAID = _data["totaL_PAID"];
             this.notes = _data["notes"];
             this.categorY_ID = _data["categorY_ID"];
+            this.categorY_NAME = _data["categorY_NAME"];
             this.makeR_ID = _data["makeR_ID"];
             this.creatE_DT = _data["creatE_DT"];
             this.fT_EXM_ID = _data["fT_EXM_ID"];
+            this.searcH_KEYWORD = _data["searcH_KEYWORD"];
+            this.froM_DATE = _data["froM_DATE"];
+            this.tO_DATE = _data["tO_DATE"];
         }
     }
 
@@ -23695,14 +24052,20 @@ export class FIN_TRANSACTION_ENTITY implements IFIN_TRANSACTION_ENTITY {
         data["fT_TYPE"] = this.fT_TYPE;
         data["methoD_ID"] = this.methoD_ID;
         data["patienT_ID"] = this.patienT_ID;
+        data["cuS_INITIALS"] = this.cuS_INITIALS;
+        data["cuS_NAME"] = this.cuS_NAME;
         data["documenT_DATE"] = this.documenT_DATE;
         data["totaL_AMOUNT"] = this.totaL_AMOUNT;
         data["totaL_PAID"] = this.totaL_PAID;
         data["notes"] = this.notes;
         data["categorY_ID"] = this.categorY_ID;
+        data["categorY_NAME"] = this.categorY_NAME;
         data["makeR_ID"] = this.makeR_ID;
         data["creatE_DT"] = this.creatE_DT;
         data["fT_EXM_ID"] = this.fT_EXM_ID;
+        data["searcH_KEYWORD"] = this.searcH_KEYWORD;
+        data["froM_DATE"] = this.froM_DATE;
+        data["tO_DATE"] = this.tO_DATE;
         return data;
     }
 }
@@ -23716,14 +24079,20 @@ export interface IFIN_TRANSACTION_ENTITY {
     fT_TYPE: number;
     methoD_ID: number;
     patienT_ID: string | undefined;
+    cuS_INITIALS: string | undefined;
+    cuS_NAME: string | undefined;
     documenT_DATE: string | undefined;
     totaL_AMOUNT: number;
     totaL_PAID: number | undefined;
     notes: string | undefined;
     categorY_ID: string | undefined;
+    categorY_NAME: string | undefined;
     makeR_ID: string | undefined;
     creatE_DT: string | undefined;
     fT_EXM_ID: string | undefined;
+    searcH_KEYWORD: string | undefined;
+    froM_DATE: string | undefined;
+    tO_DATE: string | undefined;
 }
 
 export class FacebookExternalLoginProviderSettings implements IFacebookExternalLoginProviderSettings {
@@ -24034,6 +24403,50 @@ export interface IFileDto {
     fileName: string;
     fileType: string | undefined;
     fileToken: string;
+}
+
+export class FinancialDashboardDto implements IFinancialDashboardDto {
+    totaL_REVENUE!: number | undefined;
+    totaL_EXPENSES!: number | undefined;
+    currenT_BALANCE!: number | undefined;
+
+    constructor(data?: IFinancialDashboardDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totaL_REVENUE = _data["totaL_REVENUE"];
+            this.totaL_EXPENSES = _data["totaL_EXPENSES"];
+            this.currenT_BALANCE = _data["currenT_BALANCE"];
+        }
+    }
+
+    static fromJS(data: any): FinancialDashboardDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FinancialDashboardDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totaL_REVENUE"] = this.totaL_REVENUE;
+        data["totaL_EXPENSES"] = this.totaL_EXPENSES;
+        data["currenT_BALANCE"] = this.currenT_BALANCE;
+        return data;
+    }
+}
+
+export interface IFinancialDashboardDto {
+    totaL_REVENUE: number | undefined;
+    totaL_EXPENSES: number | undefined;
+    currenT_BALANCE: number | undefined;
 }
 
 export class FindOrganizationUnitRolesInput implements IFindOrganizationUnitRolesInput {

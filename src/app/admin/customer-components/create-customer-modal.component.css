@@ -287,3 +287,595 @@ textarea.form-control {
     color: #ef4444 !important; /* Đỏ rực đồng bộ required */
     font-size: 0.85rem !important;
 }
+
+/* ====================================================================
+   TINH CHỈNH GIAO DIỆN MỐI QUAN HỆ KHÁCH HÀNG - MODERN LUXURY CRYSTAL
+   ==================================================================== */
+
+.luxury-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.luxury-text-input-group {
+    border-radius: 16px !important;
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 0.75rem 3rem 0.75rem 1.1rem !important; /* Chừa không gian bên phải cho nút hành động */
+    height: auto !important;
+    width: 100%;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-luxury-action {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    background: rgba(79, 70, 229, 0.08) !important;
+    border: 1px solid rgba(79, 70, 229, 0.15) !important;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-luxury-action:hover {
+    background: #4f46e5 !important;
+}
+.btn-luxury-action:hover i {
+    color: #ffffff !important;
+}
+
+/* KHỐI KHÁCH HÀNG LIÊN QUAN PHA LÊ */
+.crystal-relation-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid rgba(244, 63, 94, 0.2) !important; /* Viền hồng đỏ cảnh báo sang trọng */
+    backdrop-filter: blur(15px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(160%) !important;
+    border-radius: 18px !important;
+    padding: 1.2rem !important;
+    box-shadow: 0 10px 30px -10px rgba(244, 63, 94, 0.08) !important;
+}
+
+.relation-title-text {
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: #e11d48 !important;
+    letter-spacing: 0.02em;
+}
+
+/* Chấm tròn hiệu ứng mạch đập phát sáng */
+.pulse-icon-orange {
+    width: 8px;
+    height: 8px;
+    background: #e11d48;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7);
+    animation: pulse-rose 1.6s infinite;
+}
+
+@keyframes pulse-rose {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(225, 29, 72, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+}
+
+
+
+.avatar-mini-luxury {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.rel-cus-name {
+    font-size: 0.92rem;
+    color: #0f172a;
+}
+
+.rel-cus-sub {
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* Dropdown chọn mối quan hệ */
+.select-luxury-wrapper {
+    position: relative;
+}
+
+.select-relation-luxury {
+    border-radius: 10px !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    padding: 0.45rem 2rem 0.45rem 0.75rem !important;
+    border: 1px solid #cbd5e1 !important;
+    background-color: #f8fafc !important;
+    color: #334155 !important;
+    min-width: 160px;
+}
+
+.select-relation-luxury:focus {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08) !important;
+}
+
+/* Nút liên kết dạng Capsule quý phái */
+.btn-luxury-connect {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    padding: 0.5rem 1.2rem !important;
+    border-radius: 100px !important;
+    box-shadow: 0 4px 12px -2px rgba(79, 70, 229, 0.25) !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-luxury-connect:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px -2px rgba(79, 70, 229, 0.35) !important;
+}
+
+.btn-luxury-connect:disabled {
+    background: #e2e8f0 !important;
+    color: #94a3b8 !important;
+    box-shadow: none !important;
+    cursor: not-allowed;
+}
+
+/* Các tag khách hàng đã kết nối thành công */
+.badge-luxury-connected {
+    background: rgba(16, 185, 129, 0.06) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+    color: #065f46 !important;
+    padding: 6px 12px !important;
+    border-radius: 8px !important;
+    font-size: 0.82rem !important;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.remove-tag-btn {
+    cursor: pointer;
+    color: #94a3b8;
+    transition: color 0.15s ease;
+}
+
+.remove-tag-btn:hover {
+    color: #ef4444;
+}
+.gender-badge-luxury {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    padding: 2px 8px !important;
+    border-radius: 6px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-transform: uppercase;
+}
+
+.gender-badge-luxury.male {
+    background-color: rgba(59, 130, 246, 0.08) !important;
+    border: 1px solid rgba(59, 130, 246, 0.2) !important;
+    color: #1d4ed8 !important;
+}
+
+.gender-badge-luxury.female {
+    background-color: rgba(244, 63, 94, 0.08) !important;
+    border: 1px solid rgba(244, 63, 94, 0.2) !important;
+    color: #b91c1c !important;
+}
+
+.gender-badge-luxury.other {
+    background-color: rgba(148, 163, 184, 0.1) !important;
+    border: 1px solid rgba(148, 163, 184, 0.2) !important;
+    color: #475569 !important;
+}
+
+
+/* Label thông báo trạng thái "Đã nối" thay thế vị trí nút bấm */
+.luxury-status-connected-label {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: #10b981 !important;
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 100px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 95px;
+}
+/* Style cho trường tuổi */
+.rel-cus-age {
+    font-size: 0.85rem;
+    color: #8a8a8a; /* Màu xám nhẹ tinh tế */
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05); /* Nền mờ nhẹ nếu là giao diện tối */
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.05); /* Đường viền mảnh luxury */
+}
+
+/* Thêm icon nếu muốn (tùy chọn) */
+.rel-cus-age i {
+    color: #d4af37; /* Màu vàng kim luxury */
+    font-size: 0.75rem;
+}
+/* Khung bọc viên thuốc All-in-One Luxury */
+/* ====================================================================
+   TINH CHỈNH GIAO DIỆN SỐ ĐIỆN THOẠI - ĐỒNG BỘ 100% VỚI TÊN KHÁCH HÀNG
+   ==================================================================== */
+
+/* Khung bọc kết hợp phẳng, bo góc 16px đồng bộ hoàn hảo với .luxury-text-input */
+.luxury-combo-wrapper-modern {
+    display: flex;
+    align-items: center;
+    border-radius: 16px !important; /* Ép bo góc 16px giống Tên khách hàng */
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+    background-color: #f8fafc !important; /* Cùng tông màu nền xám nhạt */
+    border: 1px solid #e2e8f0 !important; /* Cùng độ mảnh đường viền */
+    padding: 0.35rem 0.5rem 0.35rem 1.1rem !important; /* Thụt lề trái chuẩn */
+    height: 47px !important; /* Chiều cao khớp hoàn toàn với ô Name khi gõ */
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.luxury-combo-wrapper-modern:hover {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+}
+
+/* Hiệu ứng Focus chuyển màu Deep Indigo/Indigo đồng bộ hệ thống */
+.luxury-combo-wrapper-modern:focus-within {
+    background-color: #ffffff !important;
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08) !important;
+}
+
+/* Trạng thái Lỗi đồng bộ màu đỏ rực rỡ */
+.luxury-combo-wrapper-modern.is-invalid {
+    border-color: #ef4444 !important;
+}
+.luxury-combo-wrapper-modern.is-invalid:focus-within {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.08) !important;
+}
+
+/* Khối nhập chủ sở hữu bên trái */
+.owner-inline-zone {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.owner-inline-input {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+    color: #0f172a !important; /* Màu chữ đen đậm chuẩn hệ thống */
+    min-width: 35px;
+    max-width: 150px;
+    text-align: left;
+    height: 100%;
+    transition: width 0.1s ease;
+}
+
+.owner-inline-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Thanh phân cách thanh mảnh tinh tế */
+.separator-line {
+    color: #cbd5e1 !important;
+    margin: 0 12px 0 6px !important;
+    font-weight: 300 !important;
+    user-select: none;
+}
+
+/* Khối nhập Số điện thoại chính */
+.phone-inline-input {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100% !important;
+    flex-grow: 1;
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
+}
+
+.phone-inline-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.phone-inline-input::placeholder {
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
+}
+
+/* Nút bấm chọn hành động thiết kế vuông bo góc 12px đồng bộ với .btn-luxury-action gốc */
+.btn-combo-action-modern {
+    background: rgba(79, 70, 229, 0.08) !important;
+    border: 1px solid rgba(79, 70, 229, 0.15) !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 12px !important; /* Đổi từ tròn hẳn sang bo góc vuông 12px quý phái */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4f46e5 !important;
+    font-size: 0.9rem !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.btn-combo-action-modern:hover {
+    background: #4f46e5 !important;
+    color: #ffffff !important;
+}
+/* Container bọc ngoài */
+.luxury-dropdown-wrapper {
+    position: relative !important;
+    min-width: 190px;
+}
+
+/* Nút giả lập Select */
+.select-emulate-btn {
+    width: 100%;
+    text-align: left;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    color: #334155 !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease-in-out;
+}
+
+.select-emulate-btn:hover {
+    border-color: #6366f1 !important; /* Đổi sang màu tím Indigo Luxury */
+    background: #f8fafc !important;
+}
+
+.select-emulate-btn:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+    border-color: #6366f1 !important;
+}
+
+/* Mũi tên Dropdown */
+.select-emulate-btn::after {
+    margin-left: auto;
+    color: #94a3b8;
+    border-top: 0.35em solid;
+    border-right: 0.35em solid transparent;
+    border-left: 0.35em solid transparent;
+}
+
+/* Khung Menu chứa danh sách đổ xuống */
+.luxury-menu-panel {
+    border: 1px solid rgba(99, 102, 241, 0.08) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 
+                0 8px 10px -6px rgba(15, 23, 42, 0.05) !important;
+    padding: 0.5rem !important;
+    margin-top: 6px !important;
+    background: #ffffff !important;
+}
+
+/* Tiêu đề nhóm (Group Header) */
+.luxury-group-header {
+    font-size: 0.72rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #6366f1 !important; /* Màu Indigo chủ đạo */
+    font-weight: 800 !important;
+    padding: 0.4rem 0.6rem 0.2rem 0.6rem !important;
+}
+
+/* Đường gạch ngang phân dòng mỏng */
+.dropdown-divider-luxury {
+    margin: 0.2rem 0.5rem !important;
+    border-top: 1px solid #f1f5f9 !important;
+    opacity: 1 !important;
+}
+
+/* Từng Item lựa chọn */
+.luxury-item {
+    font-size: 0.85rem !important;
+    color: #475569 !important;
+    font-weight: 500 !important;
+    padding: 0.45rem 0.8rem !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+/* Hiệu ứng khi lướt chuột qua Item */
+.luxury-item:hover {
+    background-color: rgba(99, 102, 241, 0.06) !important;
+    color: #4f46e5 !important;
+    padding-left: 1.1rem !important; /* Đẩy chữ nhẹ sang phải tạo cảm giác mượt */
+}
+
+/* Khi dòng khách hàng đã bị khóa liên kết */
+.disabled-ctx {
+    opacity: 0.6;
+    pointer-events: none;
+}
+.disabled-ctx .select-emulate-btn {
+    background-color: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+}
+:host ::ng-deep .luxury-menu-panel.show {
+    display: block !important;
+    position: absolute !important;
+    top: 100% !important; 
+    left: auto !important;
+    right: 0 !important;             /* Căn lề phải theo nút bấm để chống tràn mép */
+    width: auto !important;
+    min-width: 230px !important; 
+    background: #ffffff !important;
+    z-index: 9999999 !important;     /* Ép số cực đại để nổi hẳn lên trên vùng cuộn */
+    margin-top: 4px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 
+                0 8px 10px -6px rgba(15, 23, 42, 0.1) !important;
+}
+
+.luxury-dropdown-wrapper:hover .luxury-menu-panel.show,
+.luxury-menu-panel.show:hover {
+    top: 100% !important;
+    position: absolute !important;
+    z-index: 999999 !important;
+}
+.col-md-12:has(.crystal-relation-card) {
+    position: relative !important;
+    z-index: 9999 !important; /* Đứng trên tầng của các col-md-6 phía dưới */
+}
+/* ====================================================================
+   KIẾN TRÚC FIX LỖI MẤT SCROLL DANH SÁCH LIÊN QUAN - THIEN PHUC DENTAL
+   ==================================================================== */
+/* Lớp phủ mở rộng điều khiển trạng thái hiển thị */
+:host ::ng-deep .luxury-menu-panel.show {
+    display: block !important;
+    position: absolute !important;
+    
+    /* Neo cứng vị trí ngay sát dưới nút bấm */
+    top: 100% !important;
+    left: auto !important;
+    right: 0 !important; /* Căn mép phải theo nút bấm để chống tràn khung modal */
+    
+    width: auto !important;
+    min-width: 240px !important; /* Tăng nhẹ độ rộng để text không bị kích */
+    margin-top: 6px !important;
+    padding: 0.6rem !important;
+    background: #ffffff !important;
+    
+    /* CHỈ SỐ TẦNG TỐI CAO: Vượt qua mọi bộ lọc overflow của thẻ cha và z-index của Xã/Phường */
+    z-index: 99999999 !important; 
+    
+    /* Hiệu ứng nổi khối Luxury Flat (Đổ bóng ba tầng sâu siêu mịn) */
+    border: 1px solid rgba(99, 102, 241, 0.15) !important;
+    border-radius: 14px !important;
+    box-shadow: 
+        0 4px 6px -1px rgba(15, 23, 42, 0.05),
+        0 20px 40px -12px rgba(15, 23, 42, 0.2),
+        0 30px 60px -15px rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Triệt tiêu hoàn toàn hiện tượng nhảy vị trí hoặc thụt dòng khi hover chuột vào lòng menu */
+:host ::ng-deep .luxury-dropdown-wrapper:hover .luxury-menu-panel.show,
+:host ::ng-deep .luxury-menu-panel.show:hover {
+    top: 100% !important;
+    position: absolute !important;
+    z-index: 99999999 !important;
+}
+
+/* Tăng cường độ nổi bật cho các item bên trong khi tương tác */
+:host ::ng-deep .luxury-item {
+    font-size: 0.88rem !important;
+    color: #334155 !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 0.9rem !important;
+    border-radius: 10px !important;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:host ::ng-deep .luxury-item:hover {
+    background-color: rgba(79, 70, 229, 0.06) !important; /* Nền tím mờ Luxury */
+    color: #4f46e5 !important; /* Chữ tím Indigo đậm */
+    padding-left: 1.2rem !important; /* Hiệu ứng trượt nhẹ sang phải */
+}
+/* Badge trạng thái đã có gia đình trong danh sách tìm kiếm */
+.badge-has-family {
+    background: rgba(79, 70, 229, 0.08) !important;
+    color: #4f46e5 !important;
+    font-size: 0.75rem !important;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+/* Khối phân tách cụm hộ gia đình */
+.family-cluster-zone {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+}
+
+/* Badge của chính bản thân người lập */
+.badge-luxury-self {
+    background: #0f172a !important;
+    color: #ffffff !important;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Làm nổi bật vai trò động */
+.role-highlight {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+/* Shading dòng khi phát hiện người đó đã nằm trong cùng FAMILY_ID */
+.family-member-shading {
+    background-color: rgba(14, 165, 233, 0.04) !important;
+    border-left: 4px solid #0ea5e9 !important;
+}
+
+/* Nút hủy kết nối nhanh */
+.btn-luxury-disconnect {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #dc2626 !important;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+.btn-luxury-disconnect:hover {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+}

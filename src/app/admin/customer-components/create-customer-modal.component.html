@@ -134,48 +134,221 @@
                     </div>
 
                     <div class="col-md-6 mb-5">
-                    <label class="form-label required fw-bold text-dark" for="Name">{{ 'Tên khách hàng:' | localize }}</label>
-                    
-                    <div class="luxury-input-wrapper">
-                        <input
-                            id="Name"
-                            #nameInput="ngModel"
-                            type="text"
-                            name="Name"
-                            class="form-control luxury-text-input"
-                            [ngClass]="{ edited: customer.cuS_NAME }"
-                            [(ngModel)]="customer.cuS_NAME"
-                            required
-                        />
-                        
-                        <div class="case-converter-actions d-flex gap-1.5 mt-1.5 justify-content-end" *ngIf="customer.cuS_NAME">
-                            <button type="button" class="btn btn-case-action" (click)="changeTextCase('ABC')" title="VIẾT HOA TOÀN BỘ">ABC</button>
-                            <button type="button" class="btn btn-case-action" (click)="changeTextCase('Abc')" title="Viết Hoa Chữ Đầu">Abc</button>
-                            <button type="button" class="btn btn-case-action" (click)="changeTextCase('abc')" title="viết thường toàn bộ">abc</button>
+                        <label class="form-label required fw-bold text-dark" for="Name">
+                            {{ 'Tên khách hàng:' | localize }}
+                        </label>
+
+                        <div class="luxury-input-wrapper">
+                            <input
+                                id="Name"
+                                #nameInput="ngModel"
+                                type="text"
+                                name="Name"
+                                class="form-control luxury-text-input"
+                                [ngClass]="{ edited: customer.cuS_NAME }"
+                                [(ngModel)]="customer.cuS_NAME"
+                                required
+                            />
+
+                            <div
+                                class="case-converter-actions d-flex gap-1.5 mt-1.5 justify-content-end"
+                                *ngIf="customer.cuS_NAME"
+                            >
+                                <button
+                                    type="button"
+                                    class="btn btn-case-action"
+                                    (click)="changeTextCase('ABC')"
+                                    title="VIẾT HOA TOÀN BỘ"
+                                >
+                                    ABC
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-case-action"
+                                    (click)="changeTextCase('Abc')"
+                                    title="Viết Hoa Chữ Đầu"
+                                >
+                                    Abc
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-case-action"
+                                    (click)="changeTextCase('abc')"
+                                    title="viết thường toàn bộ"
+                                >
+                                    abc
+                                </button>
+                            </div>
+                        </div>
+
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="col-md-6 mb-5">
+                        <label class="form-label required" for="Phone">
+                            {{ 'Số điện thoại:' | localize }}
+                        </label>
+
+                        <div
+                            class="luxury-combo-wrapper-modern"
+                            [class.is-invalid]="phoneInput.invalid && phoneInput.touched"
+                        >
+                            <div class="owner-inline-zone">
+                                <input
+                                    id="PhoneOwner"
+                                    type="text"
+                                    name="PhoneOwner"
+                                    class="owner-inline-input"
+                                    [(ngModel)]="customer.cuS_PHONE_OWNER"
+                                    placeholder="Tôi"
+                                    (blur)="formatPhoneOwnerOnBlur()"
+                                    [style.width.ch]="
+                                        customer.cuS_PHONE_OWNER ? customer.cuS_PHONE_OWNER.length + 1 : 4
+                                    "
+                                />
+                                <span class="separator-line">|</span>
+                            </div>
+
+                            <input
+                                id="Phone"
+                                #phoneInput="ngModel"
+                                type="text"
+                                name="Phone"
+                                class="phone-inline-input"
+                                placeholder="Nhập số điện thoại..."
+                                [(ngModel)]="customer.cuS_PHONE"
+                                required
+                                pattern="^(0[35789])[0-9]{8}$"
+                                (input)="checkDuplicatePhone(customer.cuS_PHONE)"
+                            />
+
+                            <button
+                                type="button"
+                                class="btn-combo-action-modern"
+                                (click)="openSelectCustomerModal()"
+                                title="Chọn khách hàng liên quan thủ công"
+                            >
+                                <i class="fas fa-user-plus"></i>
+                            </button>
+                        </div>
+
+                        <validation-messages
+                            [formCtrl]="phoneInput"
+                            [errorDefs]="[{ error: 'pattern', localizationKey: 'Số điện thoại chưa đúng định dạng' }]"
+                        ></validation-messages>
+                    </div>
+                    <div class="col-md-12 mb-4 animate__animated animate__fadeIn" *ngIf="relatedCustomers && relatedCustomers.length > 0">
+                        <div class="crystal-relation-card">
+                            <div class="card-relation-header d-flex align-items-center mb-3">
+                                <div class="pulse-icon-orange me-2"></div>
+                                <span class="relation-title-text">
+                                    {{ 'Kết quả tìm kiếm & Thiết lập liên kết' | localize }}
+                                </span>
+                            </div>
+
+                            <div class="relation-scroll-container">
+                                <div *ngFor="let rel of relatedCustomers" 
+                                    class="relation-item-row d-flex align-items-center justify-content-between p-3 mb-2"
+                                    [class.family-member-shading]="rel.familY_ID && rel.familY_ID === customer.familY_ID">
+                                    
+                                    <div class="d-flex align-items-center flex-grow-1">
+                                        <div class="avatar-mini-luxury me-3">
+                                            <i class="fas" [ngClass]="rel.isFamilyMember ? 'fa-users-cog text-sapphire' : 'fa-user'"></i>
+                                        </div>
+                                        <div class="d-flex flex-column flex-grow-1">
+                                            <div class="d-flex align-items-center gap-2 mb-1">
+                                                <span class="rel-cus-name fw-bold mb-0">{{ rel.cuS_NAME }}</span>
+                                                
+                                                <span class="gender-badge-luxury" [ngClass]="{ 'male': rel.cuS_GENDER === 1, 'female': rel.cuS_GENDER === 2 }">
+                                                    <i class="fas" [ngClass]="{ 'fa-mars': rel.cuS_GENDER === 1, 'fa-venus': rel.cuS_GENDER === 2 }"></i>
+                                                    {{ rel.cuS_GENDER === 1 ? 'Nam' : 'Nữ' }}
+                                                </span>
+
+                                                <span *ngIf="rel.age" class="rel-cus-age">
+                                                    <i class="fas fa-cake-candles me-1"></i> {{ rel.age }} tuổi
+                                                </span>
+
+                                                <span *ngIf="rel.isFamilyMember" class="badge-has-family">
+                                                    <i class="fas fa-home me-1"></i> Hộ: {{ rel.familY_ID }}
+                                                </span>
+                                            </div>
+                                            <span class="rel-cus-sub">
+                                                <i class="fas fa-id-card-alt me-1"></i> {{ rel.cuS_CODE }}
+                                                <span class="mx-2 text-muted">|</span>
+                                                <i class="fas fa-map-marker-alt me-1"></i> {{ rel.cuS_ADDRESS_FULL || 'Chưa cập nhật địa chỉ' }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="d-flex align-items-center gap-2 ms-3">
+                                        <div class="select-luxury-wrapper">
+                                            <div class="dropdown luxury-dropdown-wrapper" [class.show]="rel.isDropdownOpen">
+                                                <button class="btn dropdown-toggle select-emulate-btn" type="button"
+                                                        (click)="rel.isDropdownOpen = !rel.isDropdownOpen; $event.stopPropagation()">
+                                                    <span *ngIf="!rel.selectedRelType" class="placeholder-text">-- Thiết lập vai trò --</span>
+                                                    <span *ngIf="rel.selectedRelType" class="selected-value-text fw-bold text-dark">
+                                                        <i class="fas fa-tag text-indigo me-1"></i> {{ rel.selectedRelType }}
+                                                    </span>
+                                                </button>
+
+                                                <ul class="dropdown-menu luxury-menu-panel" [class.show]="rel.isDropdownOpen">
+                                                    <li><h6 class="dropdown-header luxury-group-header"><i class="fas fa-home me-1"></i> Nhóm Gia đình</h6></li>
+                                                    <li><hr class="dropdown-divider-luxury" /></li>
+                                                    <li><a class="dropdown-item luxury-item" (click)="onSelectRole(rel, 'Cha')">Cha</a></li>
+                                                    <li><a class="dropdown-item luxury-item" (click)="onSelectRole(rel, 'Mẹ')">Mẹ</a></li>
+                                                    <li><a class="dropdown-item luxury-item" (click)="onSelectRole(rel, 'Con')">Con</a></li>
+                                                    <li><a class="dropdown-item luxury-item" (click)="onSelectRole(rel, 'Vợ/Chồng')">Vợ/Chồng</a></li>
+                                                    
+                                                    <li class="mt-2"><h6 class="dropdown-header luxury-group-header"><i class="fas fa-users me-1"></i> Liên hệ phẳng 1-1</h6></li>
+                                                    <li><hr class="dropdown-divider-luxury" /></li>
+                                                    <li><a class="dropdown-item luxury-item" (click)="onSelectRole(rel, 'Bạn bè')">Bạn bè</a></li>
+                                                    <li><a class="dropdown-item luxury-item" (click)="onSelectRole(rel, 'Người giám hộ')">Người giám hộ</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <button *ngIf="!isCustomerConnected(rel.cuS_ID)" 
+                                                type="button" class="btn-luxury-connect"
+                                                [disabled]="!rel.selectedRelType" 
+                                                (click)="connectCustomer(rel)">
+                                            <i class="fas fa-link me-1"></i> Kết nối
+                                        </button>
+
+                                        <button *ngIf="isCustomerConnected(rel.cuS_ID)" 
+                                                type="button" class="btn-luxury-disconnect"
+                                                (click)="disconnectCustomer(rel)">
+                                            <i class="fas fa-unlink me-1"></i> Hủy nối
+                                        </button>
+                                    </div> -->
+                                </div>
+                            </div>
+
+                            <div class="family-cluster-zone mt-3 p-3" *ngIf="customer.familY_ID || (customer.relationList && customer.relationList.length > 0)">
+                                <div class="cluster-header mb-2 text-muted fw-bold">
+                                    <i class="fas fa-network-wired me-1"></i> Cấu trúc cây quan hệ hiện tại của phiếu:
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="badge-luxury-self">
+                                        <i class="fas fa-star text-warning me-1"></i>
+                                        <span>Chủ hộ: {{ customer.cuS_NAME }} (Bản thân)</span>
+                                    </div>
+
+                                    <div *ngFor="let connected of customer.relationList" class="badge-luxury-connected animate__animated animate__bounceIn">
+                                        <i class="fas fa-check-circle text-success me-1"></i>
+                                        <span>
+                                            {{ connected.cuS_NAME_TEMP }} 
+                                            (<strong>{{ connected.cuS_CODE }}</strong>): 
+                                            <span class="role-highlight">{{ connected.reL_TYPE }}</span>
+                                        </span>
+                                        <span class="remove-tag-btn ms-2" (click)="disconnectCustomer(connected)">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    
-                    <validation-messages [formCtrl]="nameInput"></validation-messages>
-                </div>
-
-                <div class="col-md-6 mb-5 position-relative">
-                    <label class="form-label required" for="Phone">{{ 'Số điện thoại:' | localize }}</label>
-                   <input
-                        id="Phone"
-                        #phoneInput="ngModel"
-                        type="text"
-                        name="Phone"
-                        class="form-control luxury-text-input"
-                        [(ngModel)]="customer.cuS_PHONE"
-                        required
-                        pattern="^(0[3|5|7|8|9])+([0-9]{8})\b$"
-                    />
-
-                    <validation-messages 
-                        [formCtrl]="phoneInput" 
-                        [errorDefs]="[{ error: 'pattern', localizationKey: 'Số điện thoại chưa đúng định dạng' }]">
-                    </validation-messages>
-                </div>
 
                     <div class="col-md-6 mb-5">
                         <label class="form-label required" for="DOB">{{ 'Ngày sinh:' | localize }}</label>
@@ -201,10 +374,10 @@
                             [(ngModel)]="customer.cuS_EMAIL"
                             pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                         />
-                        <validation-messages 
-                            [formCtrl]="EmailInput" 
-                            [errorDefs]="[{ error: 'pattern', localizationKey: 'Email chưa đúng định dạng' }]">
-                        </validation-messages>
+                        <validation-messages
+                            [formCtrl]="EmailInput"
+                            [errorDefs]="[{ error: 'pattern', localizationKey: 'Email chưa đúng định dạng' }]"
+                        ></validation-messages>
                     </div>
                     <div class="col-md-12 mb-5">
                         <label class="form-label required" for="Address">{{ 'Địa chỉ:' | localize }}</label>

@@ -286,18 +286,6 @@
                 </div>
 
                 <div class="modal-footer border-0 bg-white p-4">
-                    <div>
-                        <!-- Nút xóa chứng từ khi ở mode chỉnh sửa -->
-                        <button
-                            *ngIf="transactionForm.fT_ID"
-                            type="button"
-                            class="btn btn-outline-danger me-auto d-flex align-items-center rounded-pill"
-                            (click)="onDelete()"
-                        >
-                            <i class="fas fa-trash-alt me-2"></i>
-                            {{ 'Xóa chứng từ' | localize }}
-                        </button>
-                    </div>
                     <button
                         type="button"
                         class="btn btn-light rounded-pill px-4 fw-bold text-muted shadow-none m-0"
@@ -331,3 +319,4 @@
         </div>
     </div>
 </div>
+

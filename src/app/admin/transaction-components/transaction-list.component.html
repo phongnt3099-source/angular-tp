@@ -1,0 +1,328 @@
+<div [@routerTransition] class="treatment-list-wrapper">
+    <app-header
+        [title]="'QUẢN LÝ SỔ QUỸ THU CHI'"
+    ></app-header>
+    
+        <!-- [buttonText]="'Thêm phiếu giao dịch mới'"
+        class="d-block mb-4 luxury-header-wrapper"
+        [permission]="'Pages.Tenants.Create' | permission"
+        (addClicked)="create()" -->
+
+    <div class="container-fluid content-body mt-4">
+        <div class="row g-3 mb-4">
+            <div class="col-xl-4 col-sm-6">
+                <div class="luxury-kpi-card doing">
+                    <div class="luxury-kpi-badge-wrapper">
+                        <i class="fa-solid fa-file-invoice-dollar animate-pulse-soft"></i>
+                    </div>
+                    <div class="luxury-kpi-body">
+                        <div class="luxury-kpi-title">Tổng số giao dịch</div>
+                        <div class="luxury-kpi-number">{{ primengTableHelper.totalRecordsCount }}</div>
+                    </div>
+                    <div class="luxury-kpi-corner-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-sm-6">
+                <div class="luxury-kpi-card completed">
+                    <div class="luxury-kpi-badge-wrapper">
+                        <i class="fa-solid fa-vault"></i>
+                    </div>
+                    <div class="luxury-kpi-body">
+                        <div class="luxury-kpi-title">Tổng thu (Revenue)</div>
+                        <div class="luxury-kpi-number text-success">
+                            {{ dashboardData.totaL_REVENUE ?? 0 | number: '1.0-0' }}đ
+                        </div>
+                    </div>
+                    <div class="luxury-kpi-corner-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-sm-6">
+                <div class="luxury-kpi-card cancelled">
+                    <div class="luxury-kpi-badge-wrapper">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <div class="luxury-kpi-body">
+                        <div class="luxury-kpi-title">Tổng chi (Expenses)</div>
+                        <div class="luxury-kpi-number text-danger">
+                            {{ dashboardData.totaL_EXPENSES ?? 0 | number: '1.0-0' }}đ
+                        </div>
+                    </div>
+                    <div class="luxury-kpi-corner-glow"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-filter-card shadow-sm mb-4 border-0 p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-1 border-bottom pb-2">
+                <span class="fw-bold text-dark small-label-heading">
+                    <i class="fa-solid fa-filter text-indigo me-1"></i>
+                    Bộ lọc sổ quỹ nâng cao
+                </span>
+                <span class="badge bg-indigo-light text-indigo fw-bold" style="font-size: 11px">
+                    <i class="fa-solid fa-clock-rotate-left me-1"></i>
+                    Dữ liệu tài chính cập nhật thời gian thực
+                </span>
+            </div>
+
+            <div class="row g-3 align-items-end">
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-filter-label">
+                        <i class="fa-solid fa-keyboard me-1 text-indigo"></i>
+                        Từ khóa tìm kiếm
+                    </label>
+                    <div class="premium-input-group">
+                        <span class="input-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input
+                            type="text"
+                            [ngModel]="filterInput.searcH_KEYWORD"
+                            (ngModelChange)="onSearchChange($event)"
+                            placeholder="Mã chứng từ, mã bệnh nhân, ghi chú..."
+                            class="form-control-premium-sm"
+                        />
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-3">
+                    <label class="form-filter-label">
+                        <i class="fa-solid fa-circle-info me-1 text-indigo"></i>
+                        Loại phiếu
+                    </label>
+                    <select
+                        [(ngModel)]="filterInput.fT_TYPE"
+                        (ngModelChange)="onFilterChange()"
+                        class="form-select-premium"
+                    >
+                        <option [value]="0">Tất cả loại phiếu</option>
+                        <option [value]="1">Phiếu Thu (PT)</option>
+                        <option [value]="2">Phiếu Chi (PC)</option>
+                    </select>
+                </div>
+
+                <div class="col-xl-2 col-md-3">
+                    <label class="form-filter-label">
+                        <i class="fa-solid fa-credit-card me-1 text-indigo"></i>
+                        Hình thức
+                    </label>
+                    <select
+                        [(ngModel)]="filterInput.methoD_ID"
+                        (ngModelChange)="onFilterChange()"
+                        class="form-select-premium"
+                    >
+                        <option [value]="0">Tất cả hình thức</option>
+                        <option [value]="1">Tiền mặt</option>
+                        <option [value]="2">Chuyển khoản</option>
+                    </select>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-filter-label">
+                        <i class="fa-solid fa-calendar-days me-1 text-indigo"></i>
+                        Khoảng thời gian
+                    </label>
+                    <select
+                        [(ngModel)]="datePresetMode"
+                        (ngModelChange)="onDatePresetChange()"
+                        class="form-select-premium"
+                    >
+                        <option value="today">Hôm nay</option>
+                        <option value="week">1 tuần gần nhất</option>
+                        <option value="month">1 tháng gần nhất</option>
+                        <option value="year">1 năm gần nhất</option>
+                        <option value="all">Toàn bộ dữ liệu</option>
+                        <option value="custom">Tùy chọn khoảng ngày...</option>
+                    </select>
+                </div>
+
+                <div class="col-xl-2 col-md-6" *ngIf="datePresetMode !== 'custom'">
+                    <button
+                        class="btn btn-premium-indigo w-100 fw-bold d-flex align-items-center justify-content-center"
+                        (click)="refreshAllData()"
+                    >
+                        <i class="fa-solid fa-arrows-rotate me-2"></i>
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-3 align-items-end mt-1 pt-2 border-top border-dashed" *ngIf="datePresetMode === 'custom'">
+                <div class="col-xl-5 col-md-5">
+                    <label class="form-filter-label">
+                        <i class="fa-solid fa-calendar-minus me-1 text-indigo"></i>
+                        Từ ngày tạo
+                    </label>
+                    <date-picker
+                        id="FromDate"
+                        name="FromDate"
+                        [(ngModel)]="filterInput.froM_DATE"
+                        inputClass="form-control form-control-premium-sm"
+                        (ngModelChange)="onFilterChange()"
+                    ></date-picker>
+                </div>
+
+                <div class="col-xl-5 col-md-5">
+                    <label class="form-filter-label">
+                        <i class="fa-solid fa-calendar-plus me-1 text-indigo"></i>
+                        Đến ngày tạo
+                    </label>
+                    <date-picker
+                        id="ToDate"
+                        name="ToDate"
+                        [(ngModel)]="filterInput.tO_DATE"
+                        inputClass="form-control form-control-premium-sm"
+                        (ngModelChange)="onFilterChange()"
+                    ></date-picker>
+                </div>
+
+                <div class="col-xl-2 col-md-2">
+                    <button
+                        class="btn btn-premium-indigo w-100 fw-bold d-flex align-items-center justify-content-center"
+                        (click)="refreshAllData()"
+                    >
+                        <i class="fa-solid fa-arrows-rotate me-2"></i>
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-card shadow-sm border-0">
+            <div class="col primeng-datatable-container" [busyIf]="isTableLoading">
+                <p-table
+                    #dataTable
+                    [value]="transactions"
+                    rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                    [paginator]="false"
+                    [lazy]="true"
+                    [rowHover]="true"
+                    selectionMode="single"
+                    [(selection)]="selectedTransaction"
+                    (onRowSelect)="selectRow($event.data.fT_ID)"
+                    (onRowUnselect)="selectRow(null)"
+                    class="table-premium"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 60px" class="text-center">STT</th>
+                            <th style="width: 130px" class="text-center">Mã chứng từ</th>
+                            <th style="width: 240px; text-align: center;">Bệnh nhân / Đối tác</th>
+                            <th style="width: 160px" class="text-center">Thời gian</th>
+                            <th style="width: 140px" class="text-center">Hình thức</th>
+                            <th style="width: 130px" class="text-end">Thu (In)</th>
+                            <th style="width: 130px" class="text-end">Chi (Out)</th>
+                            <th style="width: 120px" class="text-center">Người lập</th>
+                            <th style="width: 100px" class="text-center">Thao tác</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-item let-i="rowIndex">
+                        <tr class="text-large-size" [class.selected-row]="item.fT_ID === selectedId">
+                            <td class="text-center text-muted small">{{ i + 1 }}</td>
+                            <td class="text-center">
+                                <span class="badge-code font-monospace">#{{ item.fT_ID }}</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="patient-cell" *ngIf="item.patienT_ID; else noPatient">
+                                    <div class="patient-profile-cell">
+    
+                                        <div class="patient-name-row mb-1">
+                                            <div class="patient-name clickable-patient-link" 
+                                                (click)="$event.stopPropagation(); filterByPatient(item.cuS_NAME)">
+                                                {{ item.cuS_NAME }}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="patient-notes-row" *ngIf="item.notes && item.notes.trim() !== ''">
+                                            <div class="notes clickable-note-link" 
+                                                [title]="'Bấm để xem hồ sơ điều trị liên quan'"
+                                                (click)="$event.stopPropagation(); openExaminationDetail(item.fT_EXM_ID)">
+                                                <i class="fa-solid fa-comment-dots me-1"></i>
+                                                {{ item.notes }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <ng-template #noPatient>
+                                    <span class="text-slate-400 font-italic">
+                                        <i class="fa-solid fa-gear me-1"></i> Giao dịch hệ thống
+                                    </span>
+                                </ng-template>
+                            </td>
+                            <td class="text-center">
+                                <span class="text-date fw-bold text-slate">
+                                    <i class="fa-regular fa-clock me-1 text-muted"></i>
+                                    {{ item.documenT_DATE | date: 'dd/MM/yyyy HH:mm' }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge-soft-status" [ngClass]="item.methoD_ID === 1 ? 'waiting' : 'doing'">
+                                    <span class="status-dot"></span>
+                                    {{ item.methoD_ID === 1 ? 'Tiền mặt' : 'Chuyển khoản' }}
+                                </span>
+                            </td>
+                            <td class="text-end fw-bold text-success">
+                                {{ item.fT_TYPE == 1 ? (item.totaL_AMOUNT | number: '1.0-0') + 'đ' : '—' }}
+                            </td>
+                            <td class="text-end fw-bold text-danger">
+                                {{ item.fT_TYPE == 2 ? (item.totaL_AMOUNT | number: '1.0-0') + 'đ' : '—' }}
+                            </td>
+                            <td class="text-center text-muted small">{{ item.makeR_ID }}</td>
+                            <td class="text-center" (click)="$event.stopPropagation()">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <button
+                                        class="btn-action-table edit"
+                                        title="Xem chi tiết / Sửa chứng từ"
+                                        (click)="edit(item)"
+                                    >
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                    <button
+                                        class="btn-action-table delete"
+                                        title="Xóa / Hủy phiếu"
+                                        (click)="delete(item)"
+                                    >
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8" class="text-center empty-state-row">
+                                <div class="empty-state-container py-5">
+                                    <i class="fa-solid fa-receipt fs-1 mb-3 opacity-25 text-indigo"></i>
+                                    <p class="fw-bold text-secondary mb-1">Không tìm thấy dữ liệu giao dịch</p>
+                                    <span class="small text-muted">
+                                        Vui lòng thay đổi từ khóa hoặc phân loại bộ lọc để tìm lại.
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+            <div class="card-footer-premium d-flex justify-content-between align-items-center py-3 px-4">
+                <div class="text-pagination-info small text-muted fw-bold">
+                    Hiển thị
+                    <strong>{{ transactions.length }}</strong>
+                    giao dịch tài chính trên trang
+                </div>
+                <p-paginator
+                    #paginator
+                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                    (onPageChange)="getTransactions($event)"
+                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                    dropdownAppendTo="body"
+                ></p-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+<createTransactionModal #createTransactionModal (modalSave)="refreshAllData()"></createTransactionModal>
+

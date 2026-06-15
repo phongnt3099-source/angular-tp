@@ -160,6 +160,14 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         data: { permission: '' },
                     },
                     {
+                        path: 'transaction',
+                        loadChildren: () =>
+                            import('./transaction-components/transaction-components.module').then(
+                                (m) => m.TransactionComponentsModule
+                            ),
+                        data: { permission: '' },
+                    },
+                    {
                         path: 'install',
                         loadChildren: () => import('./install/install.module').then((m) => m.InstallModule),
                     },

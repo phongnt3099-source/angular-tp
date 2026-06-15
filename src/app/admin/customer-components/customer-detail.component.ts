@@ -33,6 +33,7 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
     ) {
         super(injector);
         this.inputModel.cuS_ID = this.getRouteParam('customerId');
+        console.log(this);
     }
     ngOnInit(): void {
         this.getCustomer();
@@ -122,11 +123,11 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
     hideAlert(): void{
         this.alertVisible = false;
     }
-    getStatusClass(status: string): string {
+    getStatusClass(status: any): string {
         switch(status) {
-            case 'active': return 'text-primary';      // Đang điều trị
-            case 'completed': return 'text-success';   // Đã xong
-            case 'pending': return 'text-warning';     // Chờ xử lý
+            case 1: return 'text-primary';      // Đang điều trị
+            case 2: return 'text-success';   // Đã xong
+            case 3: return 'text-warning';     // Chờ xử lý
             default: return 'text-secondary';
         }
     }
@@ -145,5 +146,11 @@ export class CustomerDetailComponent extends AppComponentBase implements OnInit 
               this.treatmentList = result.items??[]
           });
     }
-    
+    navigateToCustomer(Id: string): void {
+        if (!Id) return;
+        
+        // Điều hướng chính xác theo hệ thống định tuyến của Admin
+        const url = `/app/admin/customer-detail/${Id}`;
+        window.open(url, '_blank');
+    }
 }

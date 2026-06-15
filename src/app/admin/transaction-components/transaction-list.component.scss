@@ -1,0 +1,64 @@
+@import '../examination-components/examination-list.component.scss';
+
+$emerald: #10b981;
+$rose: #e11d48;
+$gold-luxury: #C5A880;
+
+.text-indigo { color: #4f46e5 !important; }
+.text-success { color: $emerald !important; }
+.text-danger { color: $rose !important; }
+
+/* Tùy chỉnh riêng cho Sổ quỹ */
+.badge-income {
+    background-color: rgba($emerald, 0.1);
+    color: $emerald;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.badge-expense {
+    background-color: rgba($rose, 0.1);
+    color: $rose;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+/* Hiệu ứng Luxury cho số tiền */
+.luxury-kpi-number {
+    letter-spacing: -1px;
+    &.text-success { text-shadow: 0 0 20px rgba($emerald, 0.2); }
+    &.text-danger { text-shadow: 0 0 20px rgba($rose, 0.2); }
+}
+
+::v-deep .selected-row {
+    background-color: #f0f7ff !important;
+    box-shadow: inset 4px 0 0 $gold-luxury !important; /* Đổi vạch Indigo sang Gold Luxury cho Sổ quỹ */
+}
+.border-dashed {
+    border-style: dashed !important;
+    border-color: #cbd5e1 !important;
+}
+/* Hiệu ứng trỏ chuột cho Tên Bệnh Nhân (Màu Indigo thương hiệu) */
+.clickable-patient-link {
+    cursor: pointer;
+    transition: color 0.2s ease;
+    
+    &:hover {
+        color: #4f46e5 !important;
+        text-decoration: underline !important;
+    }
+}
+
+/* Hiệu ứng trỏ chuột cho Ghi chú / Hồ sơ liên quan (Màu Gold Quý tộc) */
+.clickable-note-link {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+    
+    &:hover {
+        color: #C5A880 !important; /* Đổi sang tông Gold Luxury khi hover */
+        transform: translateX(2px); /* Nhích nhẹ sang phải tạo cảm giác phản hồi hành động */
+    }
+}
